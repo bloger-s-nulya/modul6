@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Модуль 6. Урок 4 — Как развиваться дальше и не бросить</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #FFFFFF;
+    --bg-soft:       #F5F6F7;
+    --bg-muted:      #EDEEF0;
+    --ink:           #1A1A1A;
+    --ink-2:         #4A4D52;
+    --ink-3:         #8A8E94;
+    --line:          #E4E6E9;
+    --accent:        #C4F542;
+    --accent-strong: #B8E83D;
+    --accent-ink:    #0F1A00;
+    --font-display:  'Unbounded', ui-sans-serif, system-ui, sans-serif;
+    --font-body:     'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    --radius-sm:     10px;
+    --radius-md:     16px;
+    --radius-lg:     24px;
+    --radius-pill:   999px;
+    --shadow-sm:     0 1px 2px rgba(16,18,20,.04), 0 1px 1px rgba(16,18,20,.03);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--bg); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+
+  .hero { background: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 56px 32px 48px; }
+  .hero-inner { max-width: 880px; margin: 0 auto; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; display: block; }
+  .title-block { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-bottom: 24px; }
+  .stamp { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; background: var(--accent); color: var(--accent-ink); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-top: 10px; }
+  .title-text { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; }
+  .hero-lead { font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--ink-2); max-width: 720px; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; color: var(--ink-2); }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
+  .chip-dot.accent { background: var(--accent); }
+
+  .nav-bar { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding: 0 32px; }
+  .nav-inner { max-width: 880px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2px; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 7px; padding: 12px 12px; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--ink-2); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; border-radius: 8px 8px 0 0; }
+  .nav-btn:hover { color: var(--ink); background: var(--bg-muted); }
+  .nav-btn.active { color: var(--ink); border-bottom-color: var(--accent); background: transparent; }
+  .nav-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--accent-ink); transition: background .15s, color .15s; }
+
+  .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 32px 100px; }
+  .section { padding-top: 60px; }
+  .section-alt { margin: 48px -32px 0; padding: 48px 32px 8px; background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .section-alt + .section { padding-top: 60px; }
+  @media (max-width: 640px) { .section-alt { margin: 48px -20px 0; padding: 40px 20px 8px; } }
+  .section-label { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; }
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--ink-3); flex-shrink: 0; letter-spacing: 0; }
+  .section-title { font-family: var(--font-display); font-weight: 500; font-size: 26px; letter-spacing: -0.01em; margin-bottom: 4px; line-height: 1.2; }
+  .section-title-hl { background-image: linear-gradient(transparent 52%, var(--accent) 52%, var(--accent) 94%, transparent 94%); padding: 0 3px; }
+  .section-hr { height: 1px; background: var(--line); border: none; margin: 20px 0 28px; }
+
+  .card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .card-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .card h3 { font-family: var(--font-body); font-weight: 700; font-size: 18px; margin-bottom: 10px; line-height: 1.3; }
+  .card p, .card li { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+
+  .key-point { display: flex; gap: 16px; background: var(--bg-soft); border-radius: var(--radius-md); padding: 18px 22px; border-left: 3px solid var(--accent); margin-bottom: 16px; }
+  .key-point-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; padding-top: 3px; flex-shrink: 0; }
+  .key-point p { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.55; color: var(--ink); }
+
+  .callout-warn { background: #FFFBEB; border: 1px solid #F0D080; border-left: 3px solid #E0A000; border-radius: var(--radius-md); padding: 16px 20px; font-size: 14px; color: #5A4500; margin-bottom: 16px; line-height: 1.6; }
+  .callout-warn strong { color: #3A2E00; }
+
+  .secrets-grid { display: grid; gap: 12px; }
+  .secret-item { display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); align-items: start; }
+  .secret-num { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--accent-ink); background: var(--accent); border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .secret-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .secret-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+  .steps-list { list-style: none; counter-reset: step; display: grid; gap: 0; }
+  .steps-list li { counter-increment: step; display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .steps-list li:last-child { border-bottom: none; }
+  .steps-list li::before { content: counter(step, decimal-leading-zero); font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+  .step-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .step-desc { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+
+  .checklist-group { margin-bottom: 24px; }
+  .checklist-group-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .checklist-items { list-style: none; display: grid; gap: 8px; }
+  .checklist-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); cursor: pointer; transition: background .12s; }
+  .checklist-item:hover { background: var(--bg-soft); }
+  .checklist-item.checked { background: #F5FEE0; border-color: #C8F090; }
+  .check-box { flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--ink-3); margin-top: 1px; position: relative; transition: background .12s, border-color .12s; }
+  .checklist-item.checked .check-box { background: var(--accent); border-color: var(--accent); }
+  .checklist-item.checked .check-box::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 10px; border-right: 2px solid var(--accent-ink); border-bottom: 2px solid var(--accent-ink); transform: rotate(45deg); }
+  .check-text { font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--ink); }
+  .checklist-item.checked .check-text { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--ink-3); }
+  .checklist-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .progress-bar-wrap { flex: 1; height: 6px; background: var(--bg-muted); border-radius: var(--radius-pill); overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: var(--radius-pill); transition: width .3s ease; width: 0%; }
+  .progress-label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+
+  .glossary { display: grid; gap: 10px; }
+  .glossary-item { padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .glossary-term { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--ink); }
+  .glossary-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+  .task-dark { background: var(--ink); color: #fff; border-radius: var(--radius-lg); padding: 32px; margin-top: 24px; }
+  .task-dark h3 { font-family: var(--font-display); font-weight: 500; font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .task-dark p { color: #CCC; font-size: 15px; line-height: 1.65; margin-bottom: 12px; }
+  .task-steps { list-style: none; display: grid; gap: 10px; margin-bottom: 24px; }
+  .task-steps li { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #CCC; line-height: 1.55; }
+  .task-step-num { font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: 600; flex-shrink: 0; padding-top: 2px; }
+  .btn-accent { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-body); font-weight: 700; font-size: 14px; border-radius: var(--radius-pill); border: none; cursor: pointer; text-decoration: none; transition: background .15s; }
+  .btn-accent:hover { background: var(--accent-strong); }
+
+  .hl-line { display: inline; background-image: linear-gradient(transparent 55%, var(--accent) 55%, var(--accent) 92%, transparent 92%); padding: 0 2px; font-weight: 600; }
+
+  .section-alt .card, .section-alt .secret-item, .section-alt .glossary-item, .section-alt .checklist-item { background: var(--bg); }
+
+  @media (max-width: 640px) {
+    .hero { padding: 36px 20px 32px; }
+    .page-wrap { padding: 0 20px 80px; }
+    .nav-bar { padding: 0 20px; }
+    .title-block { grid-template-columns: 1fr; gap: 12px; }
+    .stamp { margin-top: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ШАПКА -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Fitstars · Блогер с нуля</span>
+    <div class="title-block">
+      <span class="stamp">Модуль 6 / Урок 4</span>
+      <span class="title-text">Как развиваться дальше и не бросить</span>
+    </div>
+    <p class="hero-lead">Большинство бросают не потому что не умеют — а потому что устают. Разбираем три признака выгорания, три инструмента против него и составляем план на следующий месяц.</p>
+    <div class="meta-chips">
+      <span class="chip"><span class="chip-dot accent"></span>Анастасия Дробот — Блогер @istor.ichka</span>
+      <span class="chip"><span class="chip-dot"></span>Итоги 5 недель</span>
+      <span class="chip"><span class="chip-dot"></span>3 признака выгорания</span>
+      <span class="chip"><span class="chip-dot"></span>План на месяц</span>
+    </div>
+  </div>
+</header>
+
+<!-- НАВИГАЦИЯ -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="navTo('intro')"><span class="nav-num">1</span> Итоги 5 недель</button>
+    <button class="nav-btn" onclick="navTo('burnout')"><span class="nav-num">2</span> Признаки выгорания</button>
+    <button class="nav-btn" onclick="navTo('tools')"><span class="nav-num">3</span> 3 инструмента</button>
+    <button class="nav-btn" onclick="navTo('plan')"><span class="nav-num">4</span> План на месяц</button>
+    <button class="nav-btn" onclick="navTo('checklist')"><span class="nav-num">5</span> Чек-лист</button>
+    <button class="nav-btn" onclick="navTo('glossary')"><span class="nav-num">6</span> Глоссарий</button>
+  </div>
+</nav>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="page-wrap">
+
+  <!-- СЕКЦИЯ 01: ИТОГИ 6 НЕДЕЛЬ -->
+  <section class="section" id="intro">
+    <div class="section-label"><span class="section-num">01</span>Итоги 5 недель</div>
+    <h2 class="section-title"><span class="section-title-hl">Что вы уже умеете</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Суть урока</div>
+      <p>Самое сложное в блоге — не создавать контент, а продолжать, когда кажется, что ничего не происходит. Те, кто прошли это, остаются.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">За 5 недель вы прошли путь</div>
+      <h3>От «не знаю, с чего начать» до работающего блога</h3>
+      <ul class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Нашли тему и «зачем»</div>
+            <div class="step-desc">Ответили на вопрос, зачем вести блог и о чём говорить. Большинство так и не могут это сформулировать.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Опубликовали первый пост</div>
+            <div class="step-desc">Это сложнее, чем кажется: требует настоящей смелости. Вы сделали это.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Освоили форматы и инструменты</div>
+            <div class="step-desc">Четыре типа постов, съёмка на телефон, монтаж в CapCut, контент-система, аналитика, ИИ как помощник.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Знаете, как расти и зарабатывать</div>
+            <div class="step-desc">Инструменты роста аудитории, вовлечённость, нативные продажи с FitStars. Это реальный результат шести недель.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 02: ПРИЗНАКИ ВЫГОРАНИЯ -->
+  <section class="section section-alt" id="burnout">
+    <div class="section-label"><span class="section-num">02</span>Признаки выгорания</div>
+    <h2 class="section-title"><span class="section-title-hl">3 признака — поймать заранее</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Важно</div>
+      <p>Ни один из этих признаков не означает, что нужно бросать. Они означают, что нужно что-то изменить.</p>
+    </div>
+
+    <div class="secrets-grid">
+      <div class="secret-item">
+        <div class="secret-num">01</div>
+        <div>
+          <div class="secret-title">Делаете контент «потому что надо»</div>
+          <div class="secret-desc">Вы откладываете публикации. Любой пост кажется вам недостаточно хорошим. Вы делаете контент не потому что хочется, а потому что «надо».</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">02</div>
+        <div>
+          <div class="secret-title">Постоянно сравниваете себя с другими</div>
+          <div class="secret-desc">Смотрите на чужие цифры и думаете, что движетесь неправильно. Кажется, что у других всё получается быстрее и лучше.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">03</div>
+        <div>
+          <div class="secret-title">Перестали получать удовольствие от процесса</div>
+          <div class="secret-desc">Блог стал работой в плохом смысле — обязанностью, а не выбором. Процесс не приносит никакого удовольствия.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 03: 3 ИНСТРУМЕНТА -->
+  <section class="section" id="tools">
+    <div class="section-label"><span class="section-num">03</span>3 инструмента</div>
+    <h2 class="section-title"><span class="section-title-hl">Что делать, когда трудно</span></h2>
+    <hr class="section-hr">
+
+    <div class="card">
+      <div class="card-label">Три инструмента против выгорания</div>
+      <h3>Применяйте, когда станет трудно</h3>
+      <ul class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Вернитесь к своему «зачем»</div>
+            <div class="step-desc">Перечитайте текст, который написали на первой неделе. Почему вы начали? Что изменилось? Может быть, ничего. Если изменилось — найдите новый ответ на этот вопрос.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Разрешите себе замедлиться</div>
+            <div class="step-desc">Если вы выдохлись, снизьте темп. Один пост в неделю, но стабильно, лучше, чем три поста и потом месяц тишины. Замедление — не провал, это адаптация.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Уберите сравнения</div>
+            <div class="step-desc">Зайдите и отпишитесь от аккаунтов, которые вас демотивируют. Даже если они очень полезные. Ваш путь индивидуален, и незачем ориентироваться на чужие цифры.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 04: ПЛАН НА МЕСЯЦ -->
+  <section class="section section-alt" id="plan">
+    <div class="section-label"><span class="section-num">04</span>План на месяц</div>
+    <h2 class="section-title"><span class="section-title-hl">Три вопроса — одна страница</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Как использовать</div>
+      <p>Ответьте письменно. Это займёт не больше 15–20 минут, но превратит намерения в конкретный план.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Три вопроса для плана</div>
+      <h3>Запишите ответы — по одному на каждый</h3>
+      <ul class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Что я буду делать по-другому?</div>
+            <div class="step-desc">Зафиксируйте одно конкретное изменение в подходе к блогу на следующий месяц. Не список из десяти пунктов — одно действие.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Какой результат я хочу через месяц?</div>
+            <div class="step-desc">Укажите одно реалистичное число: количество подписчиков, охват или первый рекламный доход. Конкретика важнее амбициозности.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Что может помешать — и как я это решу?</div>
+            <div class="step-desc">Один сценарий плюс одно решение. Если продумали заранее — не остановит, когда возникнет.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Если результат кажется маленьким</strong> — помните: большинство прорывов случаются на седьмом, восьмом месяце или позже. Те, кто продолжают, когда кажется, что ничего не происходит, — именно они потом рассказывают о переменах.
+    </div>
+
+    <div class="key-point">
+      <div class="key-point-label">Личный итог</div>
+      <p>Ответьте на главный вопрос курса. Что из того, что вы узнали за курс, кажется вам самым важным прямо сейчас? Напишите это в чат курса.</p>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 05: ЧЕК-ЛИСТ -->
+  <section class="section" id="checklist">
+    <div class="section-label"><span class="section-num">05</span>Чек-лист</div>
+    <h2 class="section-title"><span class="section-title-hl">Финальный чек-лист курса</span></h2>
+    <hr class="section-hr">
+
+    <div class="checklist-progress">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <span class="progress-label" id="progress-label">0 / 9</span>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Итоги 5 недель</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я могу назвать три навыка, которые освоил(а) за курс</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я зафиксировал(а) точку А и точку Б: что было до курса и что есть сейчас</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Работа с выгоранием</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я знаю три признака выгорания и могу поймать их заранее</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">У меня есть три инструмента: вернуться к «зачем», замедлиться, убрать сравнения</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я отписал(ась) от аккаунтов, которые демотивируют</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">План на месяц</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я ответил(а) письменно на три вопроса и составил(а) план на следующий месяц</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Личный итог</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я ответил(а) на главный вопрос курса и отправила в чат</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Финальное задание</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Итоговый пост опубликован: честно, с цифрами, до/после</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Ссылка на пост отправлена в чат курса</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 06: ГЛОССАРИЙ -->
+  <section class="section section-alt" id="glossary">
+    <div class="section-label"><span class="section-num">06</span>Глоссарий</div>
+    <h2 class="section-title"><span class="section-title-hl">Глоссарий урока</span></h2>
+    <hr class="section-hr">
+
+    <div class="glossary">
+      <div class="glossary-item">
+        <div class="glossary-term">Выгорание блогера</div>
+        <div class="glossary-def">Состояние, при котором создание контента перестаёт приносить удовольствие и начинает ощущаться как обязанность. Проявляется в откладывании публикаций, постоянном сравнении с другими и потере интереса к процессу.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Точка «зачем»</div>
+        <div class="glossary-def">Личная мотивация ведения блога — ответ на вопрос «зачем я это делаю». Формулируется в начале курса и служит ориентиром при потере направления или энергии.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Замедление (как инструмент)</div>
+        <div class="glossary-def">Осознанное снижение темпа публикаций при признаках усталости. Отличается от прекращения ведения блога: публикации продолжаются, но реже. Один пост в неделю стабильно — лучше, чем три поста и последующее молчание.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЗАДАНИЕ -->
+  <section class="section section-alt" id="task">
+    <div class="task-dark">
+      <h3>Финальное задание курса</h3>
+      <p>Итоговый пост — ваша история старта. Он нужен не как хвастовство, а как честный отчёт. Именно такие посты нужны тем, кто только думает начать.</p>
+      <ul class="task-steps">
+        <li>
+          <span class="task-step-num">01</span>
+          <span>Опубликуйте пост с названием примерно так: <strong style="color:#fff;">«5 недель назад я начала вести блог — вот что изменилось»</strong>. Честно, с цифрами, с вашим «до» и «после», с тем, что было сложно, с тем, что удивило.</span>
+        </li>
+        <li>
+          <span class="task-step-num">02</span>
+          <span>Составьте <strong style="color:#fff;">план на следующий месяц</strong>: ответьте письменно на три вопроса из урока. Можно уместить на одной странице.</span>
+        </li>
+        <li>
+          <span class="task-step-num">03</span>
+          <span>Скиньте ссылку на пост <strong style="color:#fff;">в чат курса</strong> — поделитесь с единомышленниками и с куратором.</span>
+        </li>
+      </ul>
+      <a class="btn-accent" onclick="navTo('checklist')" style="cursor:pointer;">Открыть чек-лист ↑</a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (el) { window.scrollTo({ top: el.offsetTop - 60, behavior: 'smooth' }); }
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const sections = ['intro','burnout','tools','plan','checklist','glossary'];
+    const idx = sections.indexOf(id);
+    if (idx > -1) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  }
+  function toggleCheck(item) { item.classList.toggle('checked'); updateProgress(); }
+  function updateProgress() {
+    const all = document.querySelectorAll('.checklist-item');
+    const done = document.querySelectorAll('.checklist-item.checked');
+    const pct = all.length ? Math.round((done.length / all.length) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = done.length + ' / ' + all.length;
+  }
+  updateProgress();
+  window.addEventListener('scroll', () => {
+    const sections = ['intro','burnout','tools','plan','checklist','glossary','task'];
+    const offset = 120;
+    let current = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY + offset >= el.offsetTop) current = i;
+    });
+    document.querySelectorAll('.nav-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === Math.min(current, 5));
+    });
+  });
+</script>
+
+</body>
+</html>

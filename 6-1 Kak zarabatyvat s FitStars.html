@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Модуль 6. Урок 1 — Как зарабатывать с FitStars: механика нативных продаж</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #FFFFFF;
+    --bg-soft:       #F5F6F7;
+    --bg-muted:      #EDEEF0;
+    --ink:           #1A1A1A;
+    --ink-2:         #4A4D52;
+    --ink-3:         #8A8E94;
+    --line:          #E4E6E9;
+    --accent:        #C4F542;
+    --accent-strong: #B8E83D;
+    --accent-ink:    #0F1A00;
+    --font-display:  'Unbounded', ui-sans-serif, system-ui, sans-serif;
+    --font-body:     'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    --radius-sm:     10px;
+    --radius-md:     16px;
+    --radius-lg:     24px;
+    --radius-pill:   999px;
+    --shadow-sm:     0 1px 2px rgba(16,18,20,.04), 0 1px 1px rgba(16,18,20,.03);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--bg); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+
+  .hero { background: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 56px 32px 48px; }
+  .hero-inner { max-width: 880px; margin: 0 auto; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; display: block; }
+  .title-block { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-bottom: 24px; }
+  .stamp { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; background: var(--accent); color: var(--accent-ink); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-top: 10px; }
+  .title-text { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; }
+  .hero-lead { font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--ink-2); max-width: 720px; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; color: var(--ink-2); }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
+  .chip-dot.accent { background: var(--accent); }
+
+  .nav-bar { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding: 0 32px; }
+  .nav-inner { max-width: 880px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2px; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 7px; padding: 12px 12px; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--ink-2); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; border-radius: 8px 8px 0 0; }
+  .nav-btn:hover { color: var(--ink); background: var(--bg-muted); }
+  .nav-btn.active { color: var(--ink); border-bottom-color: var(--accent); background: transparent; }
+  .nav-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--accent-ink); transition: background .15s, color .15s; }
+
+  .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 32px 100px; }
+  .section { padding-top: 60px; }
+  .section-alt { margin: 48px -32px 0; padding: 48px 32px 8px; background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .section-alt + .section { padding-top: 60px; }
+  @media (max-width: 640px) { .section-alt { margin: 48px -20px 0; padding: 40px 20px 8px; } }
+  .section-label { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; }
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--ink-3); flex-shrink: 0; letter-spacing: 0; }
+  .section-title { font-family: var(--font-display); font-weight: 500; font-size: 26px; letter-spacing: -0.01em; margin-bottom: 4px; line-height: 1.2; }
+  .section-title-hl { background-image: linear-gradient(transparent 52%, var(--accent) 52%, var(--accent) 94%, transparent 94%); padding: 0 3px; }
+  .section-hr { height: 1px; background: var(--line); border: none; margin: 20px 0 28px; }
+
+  .card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .card-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .card h3 { font-family: var(--font-body); font-weight: 700; font-size: 18px; margin-bottom: 10px; line-height: 1.3; }
+  .card p, .card li { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+
+  .key-point { display: flex; gap: 16px; background: var(--bg-soft); border-radius: var(--radius-md); padding: 18px 22px; border-left: 3px solid var(--accent); margin-bottom: 16px; }
+  .key-point-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; padding-top: 3px; flex-shrink: 0; }
+  .key-point p { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.55; color: var(--ink); }
+
+  .formula { background: var(--ink); color: #fff; border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 16px; }
+  .formula-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E94; margin-bottom: 10px; }
+  .formula-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+  .formula-step { background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 8px; white-space: nowrap; }
+  .formula-arrow { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
+
+  .callout-warn { background: #FFFBEB; border: 1px solid #F0D080; border-left: 3px solid #E0A000; border-radius: var(--radius-md); padding: 16px 20px; font-size: 14px; color: #5A4500; margin-bottom: 16px; line-height: 1.6; }
+  .callout-warn strong { color: #3A2E00; }
+
+  .steps-list { list-style: none; counter-reset: step; display: grid; gap: 0; }
+  .steps-list li { counter-increment: step; display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .steps-list li:last-child { border-bottom: none; }
+  .steps-list li::before { content: counter(step, decimal-leading-zero); font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+  .step-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .step-desc { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+
+  .checklist-group { margin-bottom: 24px; }
+  .checklist-group-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .checklist-items { list-style: none; display: grid; gap: 8px; }
+  .checklist-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); cursor: pointer; transition: background .12s; }
+  .checklist-item:hover { background: var(--bg-soft); }
+  .checklist-item.checked { background: #F5FEE0; border-color: #C8F090; }
+  .check-box { flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--ink-3); margin-top: 1px; position: relative; transition: background .12s, border-color .12s; }
+  .checklist-item.checked .check-box { background: var(--accent); border-color: var(--accent); }
+  .checklist-item.checked .check-box::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 10px; border-right: 2px solid var(--accent-ink); border-bottom: 2px solid var(--accent-ink); transform: rotate(45deg); }
+  .check-text { font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--ink); }
+  .checklist-item.checked .check-text { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--ink-3); }
+  .checklist-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .progress-bar-wrap { flex: 1; height: 6px; background: var(--bg-muted); border-radius: var(--radius-pill); overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: var(--radius-pill); transition: width .3s ease; width: 0%; }
+  .progress-label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+
+  .glossary { display: grid; gap: 10px; }
+  .glossary-item { padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .glossary-term { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--ink); }
+  .glossary-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+  .task-dark { background: var(--ink); color: #fff; border-radius: var(--radius-lg); padding: 32px; margin-top: 24px; }
+  .task-dark h3 { font-family: var(--font-display); font-weight: 500; font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .task-dark p { color: #CCC; font-size: 15px; line-height: 1.65; margin-bottom: 12px; }
+  .task-steps { list-style: none; display: grid; gap: 10px; margin-bottom: 24px; }
+  .task-steps li { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #CCC; line-height: 1.55; }
+  .task-step-num { font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: 600; flex-shrink: 0; padding-top: 2px; }
+  .btn-accent { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-body); font-weight: 700; font-size: 14px; border-radius: var(--radius-pill); border: none; cursor: pointer; text-decoration: none; transition: background .15s; }
+  .btn-accent:hover { background: var(--accent-strong); }
+
+  .hl-line { display: inline; background-image: linear-gradient(transparent 55%, var(--accent) 55%, var(--accent) 92%, transparent 92%); padding: 0 2px; font-weight: 600; }
+
+  .compare-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
+  @media (max-width: 560px) { .compare-pair { grid-template-columns: 1fr; } }
+  .compare-box { padding: 18px 20px; border-radius: var(--radius-md); }
+  .compare-box-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+  .compare-box-desc { font-size: 14px; line-height: 1.6; }
+  .compare-box.pink { background: #FFF0F0; border: 1px solid #F5C5C5; }
+  .compare-box.pink .compare-box-title { color: var(--ink); }
+  .compare-box.pink .compare-box-desc { color: var(--ink-2); }
+  .compare-box.green { background: #F2FAE8; border: 1px solid #C0E890; }
+  .compare-box.green .compare-box-title { color: var(--ink); }
+  .compare-box.green .compare-box-desc { color: var(--ink-2); }
+
+  .section-alt .card, .section-alt .secret-item, .section-alt .glossary-item, .section-alt .checklist-item { background: var(--bg); }
+
+  @media (max-width: 640px) {
+    .hero { padding: 36px 20px 32px; }
+    .page-wrap { padding: 0 20px 80px; }
+    .nav-bar { padding: 0 20px; }
+    .title-block { grid-template-columns: 1fr; gap: 12px; }
+    .stamp { margin-top: 0; }
+    .formula-steps { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ШАПКА -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Fitstars · Блогер с нуля</span>
+    <div class="title-block">
+      <span class="stamp">Модуль 6 / Урок 1</span>
+      <span class="title-text">Как зарабатывать с FitStars: механика нативных продаж</span>
+    </div>
+    <p class="hero-lead">Прямая реклама работает только первые несколько постов. Дальше аудитория перестаёт верить. Разбираем механику нативных продаж: как говорить о продукте так, чтобы его хотели купить без ощущения давления.</p>
+    <div class="meta-chips">
+      <span class="chip"><span class="chip-dot accent"></span>Анастасия Дробот — Блогер @istor.ichka</span>
+      <span class="chip"><span class="chip-dot"></span>Нативная vs прямая реклама</span>
+      <span class="chip"><span class="chip-dot"></span>5 точек касания</span>
+      <span class="chip"><span class="chip-dot"></span>Принцип «жить продуктом»</span>
+    </div>
+  </div>
+</header>
+
+<!-- НАВИГАЦИЯ -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="navTo('intro')"><span class="nav-num">1</span> Главное</button>
+    <button class="nav-btn" onclick="navTo('native')"><span class="nav-num">2</span> Нативная реклама</button>
+    <button class="nav-btn" onclick="navTo('touchpoints')"><span class="nav-num">3</span> 5 точек касания</button>
+    <button class="nav-btn" onclick="navTo('liveit')"><span class="nav-num">4</span> Жить продуктом</button>
+    <button class="nav-btn" onclick="navTo('checklist')"><span class="nav-num">5</span> Чек-лист</button>
+    <button class="nav-btn" onclick="navTo('glossary')"><span class="nav-num">6</span> Глоссарий</button>
+  </div>
+</nav>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="page-wrap">
+
+  <!-- СЕКЦИЯ 01: ГЛАВНОЕ -->
+  <section class="section" id="intro">
+    <div class="section-label"><span class="section-num">01</span>Главное</div>
+    <h2 class="section-title"><span class="section-title-hl">Почему прямая реклама перестаёт работать</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Суть урока</div>
+      <p>Нативная реклама начинается с боли читателя — не с описания продукта. Человек видит живой опыт, узнаёт себя и сам хочет попробовать.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Почему прямая реклама не работает</div>
+      <h3>Защитный рефлекс включается с первых секунд</h3>
+      <p>Когда блогер говорит «купи это», аудитория сразу думает: «Ему заплатили». Большинство блогеров рекламируют то, чем никогда не пользовались, — это приносит деньги в моменте, но лишает репутации и лояльной аудитории.</p>
+      <p style="margin-top:10px;">В 2026 году реклама стала менее очевидной: она интегрируется в жизнь. Такая реклама называется <strong>нативной</strong>.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Ключевое отличие</div>
+      <h3>Нативная и прямая реклама</h3>
+      <div class="compare-pair">
+        <div class="compare-box pink">
+          <div class="compare-box-title">Прямая реклама</div>
+          <div class="compare-box-desc">«FitStars классный, купи подписку». Начинается с продукта. Слушатель чувствует давление и не верит.</div>
+        </div>
+        <div class="compare-box green">
+          <div class="compare-box-title">Нативная реклама</div>
+          <div class="compare-box-desc">«Три месяца не могла начать тренироваться, пока не нашла то, что реально работает именно для меня». Начинается с боли. Слушатель узнаёт себя и доверяет.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 02: НАТИВНАЯ РЕКЛАМА -->
+  <section class="section section-alt" id="native">
+    <div class="section-label"><span class="section-num">02</span>Нативная реклама</div>
+    <h2 class="section-title"><span class="section-title-hl">Механика и авторский кейс</span></h2>
+    <hr class="section-hr">
+
+    <div class="formula">
+      <div class="formula-label">Формула нативной рекламы</div>
+      <div class="formula-steps">
+        <span class="formula-step">Боль читателя</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Ваш опыт</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Результат</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Продукт как часть истории</span>
+      </div>
+    </div>
+
+    <div class="key-point">
+      <div class="key-point-label">Как найти правильную боль</div>
+      <p>На нас подписаны люди, похожие на нас самих — схожие жизненные взгляды, образ жизни, стремления. Аудитория — это в каком-то смысле наше отражение. Подумайте, что болит конкретно у вас.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Авторский кейс — Анастасия Дробот</div>
+      <h3>Как личная боль дала реальные продажи</h3>
+      <p>Анастасия поделилась с подписчиками тем, что никогда не видела себя в лучшей физической форме — всегда была чуть полнее нормы. Это мешало носить обтягивающие платья, короткую одежду, мешало полноценно наслаждаться отражением в зеркале.</p>
+      <p style="margin-top:10px;">«Прямо сейчас, в 28 лет, я понимаю, что проживаю свои самые молодые годы. Дальше будет сложнее удерживать вес, сохранять мышцы. Я боюсь, что через много лет пойму, что никогда не видела себя в своей лучшей форме».</p>
+      <p style="margin-top:10px;">Это настоящая невыдуманная боль. Она откликнулась у множества девушек — <span class="hl-line">и принесла продажи именно потому, что была честной.</span></p>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Не угадывайте чужие боли вслепую</strong> — это выглядит картонно и манипулятивно. Говорите о своих слабых местах, открывайте душу, делайте первый шаг. Честности обязательно поверят.
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 03: 5 ТОЧЕК КАСАНИЯ -->
+  <section class="section" id="touchpoints">
+    <div class="section-label"><span class="section-num">03</span>5 точек касания</div>
+    <h2 class="section-title"><span class="section-title-hl">Путь от незнакомца до покупки</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Почему одного поста мало</div>
+      <p>С первого раза покупают единицы. Большинству нужны недели, месяцы, иногда годы. Доверие к блогеру не появляется мгновенно — его нужно выстраивать через несколько касаний.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">5 точек касания до покупки</div>
+      <h3>Выстройте эту цепочку последовательно</h3>
+      <ul class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Публикация о проблеме</div>
+            <div class="step-desc">«Меня бесит, что не могу найти время на тренировку: работа, дети, вечная усталость». Аудитория читает и узнаёт в этом себя — вы становитесь к ней ближе.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Публикация о поиске решения</div>
+            <div class="step-desc">Перепробовала несколько подходов, рассказываю, что не сработало. Строите доверие через честность: вы не продаёте, вы ищете вместе.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Публикация о результате с цифрами</div>
+            <div class="step-desc">«Вот что изменилось за четыре недели». Здесь уместно лишь упомянуть FitStars как часть системы — не продавать, просто обозначить.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Продукт в кадре, в жизни</div>
+            <div class="step-desc">Тренировка в реальном времени: «Сегодня делаю вот такую программу FitStars». Показываете, как пользуетесь платформой органично, без рекламного призыва.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Прямая рекомендация со ссылкой</div>
+            <div class="step-desc">После четырёх точек аудитория уже знает, что вы пользуетесь продуктом. Теперь такая рекомендация воспринимается с доверием — не как реклама, а как совет.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 04: ЖИТЬ ПРОДУКТОМ -->
+  <section class="section section-alt" id="liveit">
+    <div class="section-label"><span class="section-num">04</span>Жить продуктом</div>
+    <h2 class="section-title"><span class="section-title-hl">Принцип органического присутствия</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Главный принцип</div>
+      <p>Лучше всего срабатывает реклама продукта, который реально является частью вашей жизни. Аудитория чувствует разницу между «мне заплатили» и «я реально этим пользуюсь».</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Как это выглядит на практике</div>
+      <h3>Показывайте FitStars без рекламного призыва</h3>
+      <ul class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Сторис с тренировками</div>
+            <div class="step-desc">Снимайте себя на тренировке — не «вот мой рекламный пост», а просто часть вашего дня. Люди видят, что вы реально занимаетесь.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Посты о конкретных программах</div>
+            <div class="step-desc">Рассказывайте о конкретной программе, которую проходите: что нравится, что было сложно, что удивило. Детали — это доверие.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Ощущения после занятий</div>
+            <div class="step-desc">Делитесь честной реакцией. Не «всё прекрасно», а реально как вы себя чувствуете. Регулярно, но не каждый день — иначе это становится монотонным.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 05: ЧЕК-ЛИСТ -->
+  <section class="section" id="checklist">
+    <div class="section-label"><span class="section-num">05</span>Чек-лист</div>
+    <h2 class="section-title"><span class="section-title-hl">Готовы ли вы к нативным продажам?</span></h2>
+    <hr class="section-hr">
+
+    <div class="checklist-progress">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <span class="progress-label" id="progress-label">0 / 7</span>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Понимание механики</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я понимаю разницу между нативной и прямой рекламой</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я могу назвать конкретную боль своей аудитории — не выдуманную, а свою настоящую</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я знаю формулу нативной рекламы: боль → опыт → результат → продукт</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Выстраивание цепочки касаний</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я написал(а) пост о проблеме — первая точка касания готова</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">FitStars присутствует в моём контенте органично: сторис, посты о тренировках</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я не перехожу к прямой рекомендации со ссылкой раньше, чем выстроил(а) доверие</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Итоговое задание</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Пост о боли аудитории написан: FitStars — часть решения, без прямого «купите»</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 06: ГЛОССАРИЙ -->
+  <section class="section section-alt" id="glossary">
+    <div class="section-label"><span class="section-num">06</span>Глоссарий</div>
+    <h2 class="section-title"><span class="section-title-hl">Глоссарий урока</span></h2>
+    <hr class="section-hr">
+
+    <div class="glossary">
+      <div class="glossary-item">
+        <div class="glossary-term">Нативная реклама</div>
+        <div class="glossary-def">Реклама, интегрированная в личный опыт и контент автора. Начинается с боли или проблемы читателя, а продукт упоминается как часть решения — без явного рекламного призыва. Воспринимается аудиторией как честная рекомендация.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Прямая реклама</div>
+        <div class="glossary-def">Открытое рекламное сообщение: «Купи продукт X». Срабатывает защитный рефлекс аудитории, особенно если блогер не пользуется продуктом сам. При частом использовании лишает доверия и лояльности подписчиков.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Точки касания</div>
+        <div class="glossary-def">Последовательные контакты аудитории с контентом блогера на одну тему. До покупки человеку нужно несколько касаний — от публикации о проблеме до прямой рекомендации со ссылкой.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Принцип «жить продуктом»</div>
+        <div class="glossary-def">Подход, при котором рекламируемый продукт органично присутствует в контенте блогера как часть реальной жизни. Противоположность разовой рекламной интеграции «за деньги».</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Боль аудитории</div>
+        <div class="glossary-def">Актуальная проблема или страх, с которым сталкиваются подписчики. В нативной рекламе — отправная точка любого рекламного поста. Эффективнее всего работает боль, которую блогер испытал сам, а не угаданная.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЗАДАНИЕ -->
+  <section class="section section-alt" id="task">
+    <div class="task-dark">
+      <h3>Практическое задание</h3>
+      <p>Первый нативный пост — не продающий, а человеческий. Задача: написать о боли, которую FitStars помогает решить, без прямого призыва «купите».</p>
+      <ul class="task-steps">
+        <li>
+          <span class="task-step-num">01</span>
+          <span>Напишите пост, который начинается с <strong style="color:#fff;">вашей настоящей боли или проблемы</strong> — той, что близка вашей аудитории. Не выдумывайте: говорите о том, что вы сами чувствуете.</span>
+        </li>
+        <li>
+          <span class="task-step-num">02</span>
+          <span>Расскажите об опыте и результате. <strong style="color:#fff;">FitStars упоминается как часть решения</strong>, а не как главный герой поста. Без «ссылка в шапке профиля» и «переходите по промокоду».</span>
+        </li>
+        <li>
+          <span class="task-step-num">03</span>
+          <span>Опубликуйте пост. Это ваша <strong style="color:#fff;">первая точка касания</strong> — начало цепочки из пяти шагов.</span>
+        </li>
+      </ul>
+      <a class="btn-accent" onclick="navTo('checklist')" style="cursor:pointer;">Открыть чек-лист ↑</a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (el) { window.scrollTo({ top: el.offsetTop - 60, behavior: 'smooth' }); }
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const sections = ['intro','native','touchpoints','liveit','checklist','glossary'];
+    const idx = sections.indexOf(id);
+    if (idx > -1) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  }
+  function toggleCheck(item) { item.classList.toggle('checked'); updateProgress(); }
+  function updateProgress() {
+    const all = document.querySelectorAll('.checklist-item');
+    const done = document.querySelectorAll('.checklist-item.checked');
+    const pct = all.length ? Math.round((done.length / all.length) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = done.length + ' / ' + all.length;
+  }
+  updateProgress();
+  window.addEventListener('scroll', () => {
+    const sections = ['intro','native','touchpoints','liveit','checklist','glossary','task'];
+    const offset = 120;
+    let current = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY + offset >= el.offsetTop) current = i;
+    });
+    document.querySelectorAll('.nav-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === Math.min(current, 5));
+    });
+  });
+</script>
+
+</body>
+</html>

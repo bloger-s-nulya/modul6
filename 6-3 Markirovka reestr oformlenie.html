@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Модуль 6. Урок 3 — Маркировка, реестр и оформление — минимум который нужно знать</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#FFFFFF; --bg-soft:#F5F6F7; --bg-muted:#EDEEF0; --ink:#1A1A1A; --ink-2:#4A4D52; --ink-3:#8A8E94; --line:#E4E6E9; --accent:#C4F542; --accent-strong:#B8E83D; --accent-ink:#0F1A00; --font-display:'Unbounded',ui-sans-serif,system-ui,sans-serif; --font-body:'Manrope',ui-sans-serif,system-ui,sans-serif; --font-mono:'JetBrains Mono',ui-monospace,monospace; --radius-sm:10px; --radius-md:16px; --radius-lg:24px; --radius-pill:999px; --shadow-sm:0 1px 2px rgba(16,18,20,.04),0 1px 1px rgba(16,18,20,.03); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--bg); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  .hero { background: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 56px 32px 48px; }
+  .hero-inner { max-width: 880px; margin: 0 auto; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; display: block; }
+  .title-block { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-bottom: 24px; }
+  .stamp { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; background: var(--accent); color: var(--accent-ink); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-top: 10px; }
+  .title-text { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; }
+  .hero-lead { font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--ink-2); max-width: 720px; }
+  .hero-note { margin-top: 14px; font-size: 13px; line-height: 1.5; color: var(--ink-3); padding: 12px 16px; background: var(--bg); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: var(--radius-sm); max-width: 720px; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; color: var(--ink-2); }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
+  .chip-dot.accent { background: var(--accent); }
+
+  .nav-bar { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding: 0 32px; }
+  .nav-inner { max-width: 880px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2px; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 7px; padding: 12px 12px; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--ink-2); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; border-radius: 8px 8px 0 0; }
+  .nav-btn:hover { color: var(--ink); background: var(--bg-muted); }
+  .nav-btn.active { color: var(--ink); border-bottom-color: var(--accent); background: transparent; }
+  .nav-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--accent-ink); transition: background .15s, color .15s; }
+  .nav-btn.active .nav-num { background: var(--accent); color: var(--accent-ink); }
+
+  .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 32px 100px; }
+  .section { padding-top: 60px; }
+  .section-alt { margin: 48px -32px 0; padding: 48px 32px 8px; background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .section-alt + .section { padding-top: 60px; }
+  @media (max-width: 640px) { .section-alt { margin: 48px -20px 0; padding: 40px 20px 8px; } }
+  .section-label { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; }
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--ink-3); flex-shrink: 0; letter-spacing: 0; }
+  .section-title { font-family: var(--font-display); font-weight: 500; font-size: 26px; letter-spacing: -0.01em; margin-bottom: 4px; line-height: 1.2; }
+  .section-title-hl { background-image: linear-gradient(transparent 52%, var(--accent) 52%, var(--accent) 94%, transparent 94%); padding: 0 3px; }
+  .section-hr { height: 1px; background: var(--line); border: none; margin: 20px 0 28px; }
+
+  .card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .card-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .card h3 { font-family: var(--font-body); font-weight: 700; font-size: 18px; margin-bottom: 10px; line-height: 1.3; }
+  .card p, .card li { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+
+  .key-point { display: flex; gap: 16px; background: var(--bg-soft); border-radius: var(--radius-md); padding: 18px 22px; border-left: 3px solid var(--accent); margin-bottom: 16px; }
+  .key-point-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; padding-top: 3px; flex-shrink: 0; }
+  .key-point p { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.55; color: var(--ink); }
+
+  .formula { background: var(--ink); color: #fff; border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 16px; }
+  .formula-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E94; margin-bottom: 10px; }
+  .formula-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+  .formula-step { background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 8px; white-space: nowrap; }
+  .formula-arrow { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
+
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .compare-card { border-radius: var(--radius-md); padding: 20px; font-size: 14px; line-height: 1.6; }
+  .compare-bad { background: #FFF5F5; border: 1px solid #FCCACA; }
+  .compare-good { background: #F5FEE0; border: 1px solid #D4F097; }
+  .compare-header { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+  .compare-bad .compare-header { color: #C03030; }
+  .compare-good .compare-header { color: #4A8000; }
+  .compare-card p { color: #444; margin-bottom: 8px; }
+  .compare-card p:last-child { margin-bottom: 0; }
+
+  .headlines-list { list-style: none; display: grid; gap: 8px; margin-bottom: 16px; }
+  .headlines-list li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: var(--bg-soft); border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; color: var(--ink); border: 1px solid var(--line); }
+  .headlines-list li::before { content: '—'; font-family: var(--font-mono); color: var(--accent-strong); font-weight: 700; flex-shrink: 0; }
+
+  .steps-list { list-style: none; counter-reset: step; display: grid; gap: 0; }
+  .steps-list li { counter-increment: step; display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .steps-list li:last-child { border-bottom: none; }
+  .steps-list li::before { content: counter(step, decimal-leading-zero); font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+  .step-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .step-desc { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+
+  .callout-warn { background: #FFFBEB; border: 1px solid #F0D080; border-left: 3px solid #E0A000; border-radius: var(--radius-md); padding: 16px 20px; font-size: 14px; color: #5A4500; margin-bottom: 16px; line-height: 1.6; }
+  .callout-warn strong { color: #3A2E00; }
+
+  .secrets-grid { display: grid; gap: 12px; }
+  .secret-item { display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); align-items: start; }
+  .secret-num { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--accent-ink); background: var(--accent); border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .secret-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .secret-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+  .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .service-card { padding: 18px 20px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .service-name { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .service-tag { display: inline-block; padding: 3px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; margin-bottom: 10px; font-family: var(--font-mono); }
+  .tag-free { background: #E8F8D0; color: #3A6000; }
+  .tag-paid { background: #FFF0D0; color: #7A4000; }
+  .tag-freemium { background: #EEF0FF; color: #3A3080; }
+  .service-desc { font-size: 13px; color: var(--ink-2); line-height: 1.55; }
+
+  .checklist-group { margin-bottom: 24px; }
+  .checklist-group-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .checklist-items { list-style: none; display: grid; gap: 8px; }
+  .checklist-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); cursor: pointer; transition: background .12s; }
+  .checklist-item:hover { background: var(--bg-soft); }
+  .checklist-item.checked { background: #F5FEE0; border-color: #C8F090; }
+  .check-box { flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--ink-3); margin-top: 1px; position: relative; transition: background .12s, border-color .12s; }
+  .checklist-item.checked .check-box { background: var(--accent); border-color: var(--accent); }
+  .checklist-item.checked .check-box::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 10px; border-right: 2px solid var(--accent-ink); border-bottom: 2px solid var(--accent-ink); transform: rotate(45deg); }
+  .check-text { font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--ink); }
+  .checklist-item.checked .check-text { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--ink-3); }
+  .checklist-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .progress-bar-wrap { flex: 1; height: 6px; background: var(--bg-muted); border-radius: var(--radius-pill); overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: var(--radius-pill); transition: width .3s ease; width: 0%; }
+  .progress-label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+
+  .task-dark { background: var(--ink); color: #fff; border-radius: var(--radius-lg); padding: 32px; margin-top: 24px; }
+  .task-dark h3 { font-family: var(--font-display); font-weight: 500; font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .task-dark p { color: #CCC; font-size: 15px; line-height: 1.65; margin-bottom: 12px; }
+  .task-dark p:last-of-type { margin-bottom: 20px; }
+  .task-steps { list-style: none; display: grid; gap: 10px; margin-bottom: 24px; }
+  .task-steps li { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #CCC; line-height: 1.55; }
+  .task-step-num { font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: 600; flex-shrink: 0; padding-top: 2px; }
+  .btn-accent { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-body); font-weight: 700; font-size: 14px; border-radius: var(--radius-pill); border: none; cursor: pointer; text-decoration: none; transition: background .15s; }
+  .btn-accent:hover { background: var(--accent-strong); }
+
+  .hl { background: var(--accent); color: var(--accent-ink); padding: 1px 7px; border-radius: 5px; font-weight: 600; }
+  .hl-line { display: inline; background-image: linear-gradient(transparent 55%, var(--accent) 55%, var(--accent) 92%, transparent 92%); padding: 0 2px; font-weight: 600; }
+
+  .glossary { display: grid; gap: 10px; }
+  .glossary-item { padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .glossary-term { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--ink); }
+  .glossary-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+  .divider { display: flex; align-items: center; gap: 14px; margin: 24px 0; color: var(--ink-3); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+  .stat-card { padding: 18px 20px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .stat-num { font-family: var(--font-display); font-size: 28px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 6px; color: var(--ink); }
+  .stat-label { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+
+  .footnote { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.55; color: var(--ink-3); font-family: var(--font-body); }
+  .footnote p { margin: 0; }
+  .footnote-mark { color: var(--ink-2); font-weight: 700; margin-right: 4px; }
+
+  .section-alt .card,
+  .section-alt .service-card,
+  .section-alt .stat-card { background: var(--bg); }
+  .section-alt .secret-item { background: var(--bg); }
+  .section-alt .glossary-item { background: var(--bg); }
+  .section-alt .checklist-item { background: var(--bg); }
+
+  @media (max-width: 640px) {
+    .hero { padding: 36px 20px 32px; }
+    .page-wrap { padding: 0 20px 80px; }
+    .nav-bar { padding: 0 20px; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .title-block { grid-template-columns: 1fr; gap: 12px; }
+    .stamp { margin-top: 0; }
+    .formula-steps { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Fitstars · Блогер с нуля</span>
+    <div class="title-block">
+      <span class="stamp">Модуль 6 / Урок 3</span>
+      <span class="title-text">Маркировка, реестр и оформление — минимум который нужно знать</span>
+    </div>
+    <p class="hero-lead">Как зарабатывать на блоге легально: что считается рекламой, как её маркировать через ОРД и ERID, кому регистрироваться в реестре 10К, как работает рекламный сбор 3% и что вообще можно после запрета рекламы в Instagram*.</p>
+    <div class="hero-note">
+      <strong style="color: var(--ink);">Преамбула.</strong> Уроки записаны в 2025 году. Закон о запрете рекламы в Instagram* вступил в силу 01.09.2025. Рекламный сбор 3% действует с 01.04.2025. Штрафы и реестр 10К — актуальны.
+    </div>
+    <div class="meta-chips">
+      <span class="chip"><span class="chip-dot accent"></span>Анна Рязанова — Юрист по интеллектуальной собственности и рекламе @it_pravo</span>
+      <span class="chip"><span class="chip-dot"></span>4 признака рекламы</span>
+      <span class="chip"><span class="chip-dot"></span>3 шага маркировки</span>
+      <span class="chip"><span class="chip-dot"></span>Запрет Instagram* и реестр 10К</span>
+    </div>
+  </div>
+</header>
+
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="navTo('intro')"><span class="nav-num">1</span> Главное</button>
+    <button class="nav-btn" onclick="navTo('signs')"><span class="nav-num">2</span> Что реклама</button>
+    <button class="nav-btn" onclick="navTo('markup')"><span class="nav-num">3</span> Маркировка и реестр</button>
+    <button class="nav-btn" onclick="navTo('ig')"><span class="nav-num">4</span> Запрет Instagram*</button>
+    <button class="nav-btn" onclick="navTo('checklist')"><span class="nav-num">5</span> Чек-лист</button>
+    <button class="nav-btn" onclick="navTo('glossary')"><span class="nav-num">6</span> Глоссарий</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- СЕКЦИЯ 01: ГЛАВНОЕ -->
+  <section class="section" id="intro">
+    <div class="section-label"><span class="section-num">01</span>Главное</div>
+    <h2 class="section-title"><span class="section-title-hl">Зачем разбираться: штрафы прилетают и за 500 подписчиков</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Главное</div>
+      <p>Маркировка обязательна вне зависимости от размера блога. Если в нём есть реклама — обязаны маркировать. Минимального порога подписчиков нет.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Что регулируется</div>
+      <h3>Закон о рекламе, статья 18.1</h3>
+      <p>С 1 сентября 2022 года вся интернет-реклама собирается в Едином реестре интернет-рекламы (<span class="hl-line">ЕРИР</span>). Через ОРД — операторов рекламных данных — туда передаются данные о каждой рекламной публикации: креатив, площадка, статистика, договор, цепочка участников.</p>
+      <p style="margin-top: 8px;">Любой пользователь может зайти в ЕРИР через Госуслуги и проверить, были ли рекламные кампании с его участием. Даже если вы лично ничего не маркировали — данные там будут.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">500₽</div>
+        <div class="stat-label">подписчиков уже достаточно — порога по аудитории для обязанности маркировать нет</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100К</div>
+        <div class="stat-label">штраф для физлица за немаркированную рекламу (ст. 14.3 КоАП)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">500К</div>
+        <div class="stat-label">штраф для юрлица — до полумиллиона рублей</div>
+      </div>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Зачем это блогеру лично.</strong> 1) Работаете легально — нет риска внезапного штрафа. 2) Бренды (особенно крупные) выбирают тех, кто прозрачен и юридически корректен. 3) Подписчик видит: «Я честен, это реклама, я не скрываю». Это работает на доверие, а не против.
+    </div>
+
+    <div class="formula">
+      <div class="formula-label">Кто в цепочке</div>
+      <div class="formula-steps">
+        <span class="formula-step">Рекламодатель</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Агентство</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">ОРД</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Блогер</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step" style="background: rgba(196,245,66,0.2); color: var(--accent);">ЕРИР</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 02: ПРИЗНАКИ РЕКЛАМЫ -->
+  <section class="section" id="signs">
+    <div class="section-label"><span class="section-num">02</span>Что реклама</div>
+    <h2 class="section-title"><span class="section-title-hl">Четыре признака рекламы — и что точно ею не является</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Принцип</div>
+      <p>Реклама — это не про деньги. Даже бартер и бесплатные обзоры могут быть рекламой. Закон оценивает не оплату, а содержание публикации.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Четыре признака рекламы — все должны совпасть</div>
+      <ul class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Публичное размещение</div>
+            <div class="step-desc">На платформе, где пост видит кто угодно — подписчик, случайный зритель, любой пользователь. В личных сообщениях с подругой это не реклама, в открытом сторис — реклама.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Чётко обозначен объект рекламы</div>
+            <div class="step-desc">В тексте, видео или сторис ясно виден конкретный товар, услуга, бренд, курс, ресторан, эксперт. Объект назван — это бренд, артикул, аккаунт, ссылка.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Призыв к действию</div>
+            <div class="step-desc">Прямые фразы «купи», «подпишись», «переходи по ссылке», промокоды, скидки. Любое мягкое или явное подталкивание к покупке.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Цель — продвижение</div>
+            <div class="step-desc">Цель публикации — привлечь внимание к товару или услуге. Если совпали все четыре признака — это реклама, и её нужно маркировать.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="divider">Что НЕ считается рекламой</div>
+
+    <div class="card">
+      <div class="card-label">Можно без маркировки</div>
+      <ul class="headlines-list" style="margin-bottom: 0;">
+        <li>Информация о собственной деятельности — курсы, услуги, новости вашего магазина</li>
+        <li>Личный опыт без названия бренда: «купила фен, вот впечатления» (без артикула, ссылки, промокода)</li>
+        <li>Нативное упоминание без коммерческой подоплёки — про мероприятие, ресторан, без оплаты и бартера</li>
+        <li>Информационные подборки и обзоры — «10 крутых пиджаков этой весны» без договорённостей с брендами</li>
+        <li>Распаковка/обзор товара, который вы купили сами, без призыва купить</li>
+        <li>Чашка с логотипом случайно в кадре, без акцента на бренде</li>
+      </ul>
+    </div>
+
+    <div class="divider">Контрастные примеры</div>
+
+    <div class="compare-grid">
+      <div class="compare-card compare-bad">
+        <div class="compare-header">Это реклама — нужна маркировка</div>
+        <p><strong>«Ужинала в @restaurant_lux. Всем советую, покажите эту сторис на входе — будет комплимент»</strong></p>
+        <p>Бренд указан, рекомендация явная, конкретное действие для подписчика, выгода. Все 4 признака на месте.</p>
+      </div>
+      <div class="compare-card compare-good">
+        <div class="compare-header">Это НЕ реклама</div>
+        <p><strong>«Сегодня был отличный ужин в новом ресторане»</strong></p>
+        <p>Фото с места, название не упомянуто, аккаунт не отмечен, нет призыва, нет ссылок. Просто личный опыт. Подписчики могут загуглить по вывеске и сходить — это всё ещё не реклама.</p>
+      </div>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Не маркируйте «на всякий случай».</strong> Как только вы получили токен, вы автоматически подписываетесь на обязанность сдавать отчётность по этому креативу — на весь срок, пока он в интернете. Не сдадите статистику — штраф. За маркировку, которую можно было не делать.
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 03: МАРКИРОВКА И РЕЕСТР -->
+  <section class="section section-alt" id="markup">
+    <div class="section-label"><span class="section-num">03</span>Маркировка и реестр</div>
+    <h2 class="section-title"><span class="section-title-hl">Маркировка по шагам, реестр 10К и сбор 3%</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Главное</div>
+      <p>Правильная маркировка — три обязательных элемента в самом креативе. Реестр Роскомнадзора — для каналов от 10 тыс. подписчиков. Рекламный сбор 3% — за вас рассчитает сам Роскомнадзор.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Шаг 01 · Слово «реклама»</div>
+      <h3>Видно сразу, не спрятано под хэштеги</h3>
+      <p>Должно быть на самом видном месте. Не мелким шрифтом в углу, не полупрозрачным, не сливающимся с фоном. Цель — чтобы человек сразу понял: «это реклама».</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Шаг 02 · Информация о рекламодателе</div>
+      <h3>Название компании + ИНН (или ссылка на сайт)</h3>
+      <p>Чаще указывают ИНН. Например: «Реклама. ООО Ромашка. ИНН 1234567890». Если рекламодатель ИП — ФИО + ОГРНИП. Если самозанятый — ФИО + ИНН. Если юрлицо — наименование, адрес, ОГРН.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Шаг 03 · Токен ERID</div>
+      <h3>Уникальный идентификатор от ОРД</h3>
+      <p>Получают через оператора рекламных данных. Может получить блогер сам, или агентство/бренд за него — обычно так и делают. Один из участников цепочки обязательно регистрирует креатив и отчитывается о статистике.</p>
+      <p style="margin-top: 8px;"><span class="hl-line">Важно про регистр.</span> Token ERID содержит и заглавные, и строчные буквы. Если вы пишете токен шрифтом, где все буквы выглядят одинаково (например, капс) — он становится нечитаемым, и маркировка считается недействительной. Используйте обычный шрифт с разницей между большими и маленькими буквами.</p>
+    </div>
+
+    <div class="callout-warn">
+      <strong>После размещения — отчётность.</strong> Каждый месяц, пока креатив в сети, нужно сдавать статистику показов в ОРД. Для статичных постов в Telegram — раз в месяц. Для рилса/видео на YouTube, который остаётся набирать просмотры, — ежемесячно «вечно». Это называется <strong>вечная отчётность</strong>.
+    </div>
+
+    <div class="divider">7 ОРД на выбор</div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-name">ВКонтакте ОРД</div>
+        <span class="service-tag tag-free">Бесплатно</span>
+        <div class="service-desc">Один из самых популярных ОРД для блогеров. Простой личный кабинет, ясная отчётность. Подходит для большинства типов креативов.</div>
+        <a class="service-link" href="https://ord.vk.com" target="_blank">↗ ord.vk.com</a>
+      </div>
+      <div class="service-card">
+        <div class="service-name">Яндекс ОРД</div>
+        <span class="service-tag tag-free">Бесплатно</span>
+        <div class="service-desc">ОРД от Яндекса. Подходит, если ведёте кампании в Яндекс.Директ или работаете с площадками Яндекса.</div>
+        <a class="service-link" href="https://ord.yandex.ru" target="_blank">↗ ord.yandex.ru</a>
+      </div>
+      <div class="service-card">
+        <div class="service-name">Медиаскаут</div>
+        <span class="service-tag tag-paid">Платно</span>
+        <div class="service-desc">Один из крупнейших ОРД, чаще используется агентствами и крупными рекламодателями. Удобный для частых кампаний.</div>
+        <a class="service-link" href="https://mediascout.ru" target="_blank">↗ mediascout.ru</a>
+      </div>
+      <div class="service-card">
+        <div class="service-name">Озон ОРД</div>
+        <span class="service-tag tag-free">Бесплатно</span>
+        <div class="service-desc">ОРД от Ozon, удобен для тех, кто работает в e-commerce и продвигает товары через маркетплейсы.</div>
+        <a class="service-link" href="https://ozon.ru/business" target="_blank">↗ ozon.ru/business</a>
+      </div>
+    </div>
+
+    <div class="divider">Реестр 10К Роскомнадзора</div>
+
+    <div class="card">
+      <div class="card-label">Кто обязан регистрироваться</div>
+      <h3>Каналы и страницы от 10 000 подписчиков</h3>
+      <p>Регистрирует <strong>владелец</strong> канала через Госуслуги. Касается YouTube, Telegram, ВКонтакте, Дзена, RuTube, Одноклассников, TikTok, Twitch, Likee, Pinterest, Yappi, Pikabu. <span class="hl-line">Не касается Instagram*, Facebook, X, Discord</span> — они либо запрещены, либо заблокированы.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Алгоритм регистрации</div>
+      <ul class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Подать заявление через Госуслуги</div>
+            <div class="step-desc">Контактные данные подтянутся автоматически. Указываете ссылку на канал, к чему он привязан, телефон/почту, контакты администраторов.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Разместить номер заявления в описании канала</div>
+            <div class="step-desc">В течение 3 рабочих дней. Формулировка: «Номер заявления для регистрации в перечне Роскомнадзора: [цифры]». Без этого регистрация откажется.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Дождаться рассмотрения — до 10 рабочих дней</div>
+            <div class="step-desc">Сейчас часто рассматривают дольше из-за нагрузки. Не паниковать. После — Роскомнадзор пришлёт уникальную ссылку для подтверждения.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Заменить временную заметку на постоянную ссылку</div>
+            <div class="step-desc">Размещаете полученную ссылку в описании канала с пометкой «Регистрация в перечне владельцев страниц». ВКонтакте и YouTube ставят галочку «А+» автоматически.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Что будет, если не регистрировать.</strong> Рекламодатели не смогут размещать у вас рекламу по закону. Другие каналы не смогут делать репосты. Нельзя собирать донаты официально. Роскомнадзор может потребовать ограничить доступ к каналу. Плюс штрафы по ст. 14.3 КоАП — до 500 тыс. для юрлиц.
+    </div>
+
+    <div class="divider">Рекламный сбор 3% и новые ОКВЭД</div>
+
+    <div class="card">
+      <div class="card-label">Сбор 3% — действует с 01.04.2025</div>
+      <h3>Платят все участники цепочки распространения интернет-рекламы</h3>
+      <p>Блогеры, рекламные агентства, площадки (Яндекс.Директ, ВК-реклама), рекламодатели — все платят. Самостоятельно рассчитывать ничего не нужно: <span class="hl-line">Роскомнадзор делает расчёт сам</span> на основании данных из ЕРИР.</p>
+      <p style="margin-top: 8px;"><strong>Размер:</strong> 3% от квартального дохода с распространения рекламы. Блогеры платят со всей суммы, агентства — только со своей комиссии. До 15 августа Роскомнадзор размещает расчёт в ЛК ЕРИР, до 25 августа можно оспорить, до 5 сентября — оплатить.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Новые ОКВЭД — с 01.05.2025</div>
+      <h3>Для ИП и юрлиц — обновить коды</h3>
+      <ul class="headlines-list" style="margin-bottom: 0;">
+        <li><strong>73.11.1</strong> — Деятельность по распространению рекламы пользователям соцсети</li>
+        <li><strong>70.21.1</strong> — Деятельность по распространению информации пользователям соцсети</li>
+      </ul>
+      <p style="margin-top: 12px;">Самозанятым ничего делать не нужно. ИП и юрлица — обновляют коды через Госуслуги или в налоговой. При переходе на ИП — добавляют сразу.</p>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 04: ЗАПРЕТ INSTAGRAM -->
+  <section class="section" id="ig">
+    <div class="section-label"><span class="section-num">04</span>Запрет Instagram*</div>
+    <h2 class="section-title"><span class="section-title-hl">С 1 сентября 2025 — реклама в Instagram* запрещена</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Главное</div>
+      <p>Любая реклама в Instagram* теперь — нарушение закона. Бартер, обзоры, партнёрские ссылки, промокоды, реклама у других блогеров, таргет через Meta Ads — всё нельзя.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Что под запретом с 01.09.2025</div>
+      <ul class="headlines-list" style="margin-bottom: 0;">
+        <li>Прямая платная реклама в Instagram* и у других блогеров на этой платформе</li>
+        <li>Бартер: получили платье — показали в сторис, отметили магазин — нарушение</li>
+        <li>Обзоры с упоминанием бренда, артикула или ссылкой</li>
+        <li>Партнёрские ссылки и промокоды в сторис, постах, видео</li>
+        <li>Таргетированная реклама через Meta Ads (это уже финансирование экстремистской организации)</li>
+        <li>Самореклама с яркими «купи», «успей», «уникальное предложение»</li>
+      </ul>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Финансирование экстремистской организации.</strong> Отправка денег напрямую в Meta — через Meta Ads, например — это уже не «нарушение закона о рекламе», а отдельная статья. Серьёзнее обычного штрафа.
+    </div>
+
+    <div class="card">
+      <div class="card-label">Что МОЖНО делать в Instagram* после 01.09.2025</div>
+      <h3>Вести блог — без рекламы — можно</h3>
+      <ul class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Рассказывать о себе и своей деятельности</div>
+            <div class="step-desc">Свои услуги, свои товары, свои курсы. Это информирование о хозяйственной деятельности — не реклама. Делитесь мыслями, фотографиями, историями из жизни.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Давать ссылки на свои другие соцсети</div>
+            <div class="step-desc">«Подробности в моём Telegram-канале», «вся информация на сайте». Это перегон трафика на разрешённые площадки — справочный характер, не реклама.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Делиться личным опытом без брендов и ссылок</div>
+            <div class="step-desc">«Купила фен, вот впечатления» — без артикула, ссылки и промокода. Это ваш честный отзыв, который не продвигает.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Переводить рекламу на разрешённые площадки</div>
+            <div class="step-desc">ВКонтакте, Telegram, Дзен, YouTube, RuTube. Делать рекламные интеграции там — где это разрешено.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="divider">Контрастные примеры — реклама и не-реклама</div>
+
+    <div class="compare-grid">
+      <div class="compare-card compare-bad">
+        <div class="compare-header">После 01.09 — нельзя</div>
+        <p><strong>«Мой фаворит — тон 211 от @brand. Артикул 12345, покупала здесь: ссылка»</strong></p>
+        <p>Бренд + артикул + точка продажи + рекомендация. Прямая реклама. С 1 сентября — нарушение, штраф.</p>
+      </div>
+      <div class="compare-card compare-good">
+        <div class="compare-header">После 01.09 — можно</div>
+        <p><strong>«Попробовала новый тон. Пока непонятно, как на коже — поделюсь позже. А вы какие тоны любите осенью?»</strong></p>
+        <p>Без бренда, без артикула, без ссылки. Личный опыт + вопрос аудитории. Можно публиковать спокойно.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Триггеры внимания Роскомнадзора</div>
+      <h3>Признаки, по которым контент сочтут рекламой</h3>
+      <ul class="headlines-list" style="margin-bottom: 0;">
+        <li>Промокоды, скидки, фразы «только сегодня», «успей»</li>
+        <li>Яркое выделение одного товара цветом, шрифтом, оформлением — выбивается из стиля</li>
+        <li>Закреплённый баннер на сайте, всплывающие окна, фиксированное время показа до закрытия</li>
+        <li>Самореклама — когда сами и рекламодатель, и распространитель — особенно с яркими «купи»</li>
+      </ul>
+    </div>
+
+    <div class="callout-warn">
+      <strong>До 1 сентября удалять старое не нужно.</strong> Закон не имеет обратной силы — старые рекламные публикации до 01.09.2025 нарушением не считаются. Если хотите перестраховаться — можно удалить или скрыть от публичного доступа. Это допустимая мера, но не обязательная.
+    </div>
+
+    <div class="card">
+      <div class="card-label">Что сделать прямо сейчас</div>
+      <ul class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Аудит договоров</div>
+            <div class="step-desc">Если размещение запланировано после 01.09 — обсудите с рекламодателем отмену, замену площадки или подпишите соглашение об изменении.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Перенос активности</div>
+            <div class="step-desc">Готовьте площадки на ВК, Telegram, Дзен, YouTube. Особенно — Telegram: видим высокий рост.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Шаблоны и автопостинг</div>
+            <div class="step-desc">Проверьте все автопосты и отложенные публикации. Чтобы по привычке в сентябре что-то рекламное не улетело в Instagram*.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 05: ЧЕК-ЛИСТ -->
+  <section class="section section-alt" id="checklist">
+    <div class="section-label"><span class="section-num">05</span>Чек-лист</div>
+    <h2 class="section-title"><span class="section-title-hl">Юридический чек-лист блогера 2025</span></h2>
+    <hr class="section-hr">
+
+    <div class="checklist-progress">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <span class="progress-label" id="progress-label">0 / 12</span>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Маркировка</div>
+      <ul class="checklist-items" id="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я знаю 4 признака рекламы и могу отличить её от обычного контента</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я выбрала ОРД и знаю, как получить токен ERID</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">В моих рекламных постах есть слово «реклама», ИНН рекламодателя и читаемый ERID</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я не маркирую «на всякий случай» — иначе придётся пожизненно сдавать отчётность</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Реестр и сборы</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Если у меня от 10 000 подписчиков — я подала заявление в реестр Роскомнадзора через Госуслуги</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Номер заявления / финальная ссылка размещены в описании канала</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я знаю про сбор 3%: за меня его рассчитает Роскомнадзор, я только проверю и оплачу</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Если я ИП или юрлицо — обновила ОКВЭД (73.11.1 / 70.21.1)</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Запрет Instagram*</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я провела аудит договоров — рекламы в Instagram* после 01.09 нет</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я перенесла рекламную активность на ВК, Telegram, Дзен, YouTube или другие разрешённые площадки</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Все автопосты и отложенные публикации проверены — рекламное в Instagram* не улетит</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я зарегистрирована как самозанятая (или ИП) — налог 4–6% через приложение «Мой налог»</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 06: ГЛОССАРИЙ -->
+  <section class="section section-alt" id="glossary">
+    <div class="section-label"><span class="section-num">06</span>Глоссарий</div>
+    <h2 class="section-title"><span class="section-title-hl">Глоссарий урока</span></h2>
+    <hr class="section-hr">
+
+    <div class="glossary">
+      <div class="glossary-item">
+        <div class="glossary-term">ЕРИР</div>
+        <div class="glossary-def">Единый реестр интернет-рекламы. База данных, в которую через ОРД стекаются сведения обо всех рекламных кампаниях в интернете: креативы, площадки, статистика, договоры, цепочка участников. Доступ — через Госуслуги.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">ОРД</div>
+        <div class="glossary-def">Оператор рекламных данных. Посредник между государством и участниками рекламного рынка. Сейчас в России 7 ОРД: ВКонтакте, Яндекс, Медиаскаут, Озон и другие. Получают токен и сдают статистику в ЕРИР.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">ERID (ерид, токен)</div>
+        <div class="glossary-def">Уникальный идентификатор каждой рекламной публикации. Получают через ОРД. Размещают в самом креативе. Содержит и заглавные, и строчные буквы — поэтому шрифт должен показывать разницу регистра.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Рекламораспространитель</div>
+        <div class="glossary-def">Тот, кто публикует рекламу. Это вы, как блогер. Если в вашем блоге есть реклама — даже бартер, даже партнёрская ссылка — вы автоматически рекламораспространитель и обязаны маркировать.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Реестр 10К Роскомнадзора</div>
+        <div class="glossary-def">Перечень владельцев страниц и каналов в соцсетях с аудиторией от 10 тыс. подписчиков. Регистрация — обязательна, через Госуслуги. Без неё нельзя законно размещать рекламу и собирать донаты.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Рекламный сбор 3%</div>
+        <div class="glossary-def">Платёж со всех участников цепочки распространения интернет-рекламы. Действует с 01.04.2025. Рассчитывает Роскомнадзор по данным из ЕРИР, оплачивается раз в квартал. Блогер платит со всей суммы, агентство — только с комиссии.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Закон о запрете рекламы в Instagram*</div>
+        <div class="glossary-def">Федеральный закон, вступивший в силу 01.09.2025. Запрещает любую рекламу на ресурсах организаций, признанных экстремистскими в РФ. Распространяется на бартер, обзоры, партнёрские ссылки, промокоды и таргет через Meta Ads.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Самореклама</div>
+        <div class="glossary-def">Термин из ОРД (в законе его нет). Используется, когда блогер одновременно и рекламодатель, и распространитель собственного продукта — с яркими «купи», «успей», нестандартным оформлением. Тоже считается рекламой и тоже запрещена в Instagram*.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Самозанятость</div>
+        <div class="glossary-def">Налоговый режим для частных авторов и блогеров. Регистрация — за 10 минут через приложение «Мой налог». Налог 4% (с физлиц) и 6% (с юрлиц). Базовый минимум для легальной монетизации блога.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Вечная отчётность</div>
+        <div class="glossary-def">Обязанность сдавать в ОРД статистику показов рекламной публикации каждый месяц, пока креатив остаётся в интернете. Особенно касается рилсов и видео на YouTube, которые продолжают набирать просмотры годами.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЗАДАНИЕ -->
+  <section class="section section-alt" id="task">
+    <div class="task-dark">
+      <h3>Практическое задание</h3>
+      <p>Юридический минимум — за один вечер. Не теория, а реальные действия, которые защитят вас от штрафов.</p>
+      <ul class="task-steps">
+        <li>
+          <span class="task-step-num">01</span>
+          <span>Зарегистрируйтесь как <strong style="color:#fff;">самозанятая</strong> через приложение «Мой налог» — это 10 минут.</span>
+        </li>
+        <li>
+          <span class="task-step-num">02</span>
+          <span>Зарегистрируйтесь в <strong style="color:#fff;">любом ОРД</strong> (например, ВКонтакте ОРД) — пригодится при первой же рекламной интеграции.</span>
+        </li>
+        <li>
+          <span class="task-step-num">03</span>
+          <span>Если у вас более <strong style="color:#fff;">10 000 подписчиков</strong> — подайте заявление в реестр Роскомнадзора через Госуслуги. Разместите номер заявления в описании канала.</span>
+        </li>
+        <li>
+          <span class="task-step-num">04</span>
+          <span>Проверьте все <strong style="color:#fff;">прошлые рекламные посты</strong> — есть ли маркировка. Если что-то рекламное запланировано в Instagram* после 01.09.2025 — отмените или перенесите.</span>
+        </li>
+      </ul>
+      <a class="btn-accent" onclick="navTo('checklist')" style="cursor:pointer;">
+        Открыть чек-лист ↑
+      </a>
+    </div>
+  </section>
+
+  <!-- СНОСКА -->
+  <footer class="footnote">
+    <p><span class="footnote-mark">*</span> Instagram принадлежит компании Meta, признанной экстремистской и запрещённой на территории Российской Федерации.</p>
+  </footer>
+
+</div>
+
+<script>
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (el) { window.scrollTo({ top: el.offsetTop - 60, behavior: 'smooth' }); }
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const sections = ['intro','signs','markup','ig','checklist','glossary'];
+    const idx = sections.indexOf(id);
+    if (idx > -1) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  }
+  function toggleCheck(item) { item.classList.toggle('checked'); updateProgress(); }
+  function updateProgress() {
+    const all = document.querySelectorAll('.checklist-item');
+    const done = document.querySelectorAll('.checklist-item.checked');
+    const pct = all.length ? Math.round((done.length / all.length) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = done.length + ' / ' + all.length;
+  }
+  updateProgress();
+  window.addEventListener('scroll', () => {
+    const sections = ['intro','signs','markup','ig','checklist','glossary','task'];
+    const offset = 120;
+    let current = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY + offset >= el.offsetTop) current = i;
+    });
+    document.querySelectorAll('.nav-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === Math.min(current, 5));
+    });
+  });
+</script>
+
+</body>
+</html>
