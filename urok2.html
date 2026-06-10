@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Модуль 6. Урок 2 — Как работать с рекламодателями: первые деньги за рекламу</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #FFFFFF;
+    --bg-soft:       #F5F6F7;
+    --bg-muted:      #EDEEF0;
+    --ink:           #1A1A1A;
+    --ink-2:         #4A4D52;
+    --ink-3:         #8A8E94;
+    --line:          #E4E6E9;
+    --accent:        #C4F542;
+    --accent-strong: #B8E83D;
+    --accent-ink:    #0F1A00;
+    --font-display:  'Unbounded', ui-sans-serif, system-ui, sans-serif;
+    --font-body:     'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    --radius-sm:     10px;
+    --radius-md:     16px;
+    --radius-lg:     24px;
+    --radius-pill:   999px;
+    --shadow-sm:     0 1px 2px rgba(16,18,20,.04), 0 1px 1px rgba(16,18,20,.03);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--bg); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+
+  /* === HERO === */
+  .hero { background: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 56px 32px 48px; }
+  .hero-inner { max-width: 880px; margin: 0 auto; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; display: block; }
+  .title-block { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-bottom: 24px; }
+  .stamp { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; background: var(--accent); color: var(--accent-ink); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-top: 10px; }
+  .title-text { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; }
+  .hero-lead { font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--ink-2); max-width: 720px; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; color: var(--ink-2); }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
+  .chip-dot.accent { background: var(--accent); }
+
+  /* === НАВИГАЦИЯ === */
+  .nav-bar { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding: 0 32px; }
+  .nav-inner { max-width: 880px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2px; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 7px; padding: 12px 12px; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--ink-2); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; border-radius: 8px 8px 0 0; }
+  .nav-btn:hover { color: var(--ink); background: var(--bg-muted); }
+  .nav-btn.active { color: var(--ink); border-bottom-color: var(--accent); background: transparent; }
+  .nav-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--accent-ink); }
+
+  /* === LAYOUT === */
+  .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 32px 100px; }
+  .section { padding-top: 60px; }
+  .section-alt { margin: 48px -32px 0; padding: 48px 32px 8px; background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .section-alt + .section { padding-top: 60px; }
+  .section-label { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; }
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--ink-3); flex-shrink: 0; letter-spacing: 0; }
+  .section-title { font-family: var(--font-display); font-weight: 500; font-size: 26px; letter-spacing: -0.01em; margin-bottom: 4px; line-height: 1.2; }
+  .section-title-hl { background-image: linear-gradient(transparent 52%, var(--accent) 52%, var(--accent) 94%, transparent 94%); padding: 0 3px; }
+  .section-hr { height: 1px; background: var(--line); border: none; margin: 20px 0 28px; }
+
+  /* === КАРТОЧКИ === */
+  .card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .card-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .card h3 { font-family: var(--font-body); font-weight: 700; font-size: 18px; margin-bottom: 10px; line-height: 1.3; }
+  .card p, .card li { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+  .card p + p { margin-top: 10px; }
+
+  /* === KEY POINT === */
+  .key-point { display: flex; gap: 16px; background: var(--bg-soft); border-radius: var(--radius-md); padding: 18px 22px; border-left: 3px solid var(--accent); margin-bottom: 16px; }
+  .key-point-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; padding-top: 3px; flex-shrink: 0; }
+  .key-point p { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.55; color: var(--ink); }
+
+  /* === FORMULA === */
+  .formula { background: var(--ink); color: #fff; border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 16px; }
+  .formula-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E94; margin-bottom: 10px; }
+  .formula-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+  .formula-step { background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 8px; white-space: nowrap; }
+  .formula-arrow { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
+
+  /* === СРАВНЕНИЕ === */
+  .compare-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
+  @media (max-width: 560px) { .compare-pair { grid-template-columns: 1fr; } }
+  .compare-box { padding: 18px 20px; border-radius: var(--radius-md); }
+  .compare-box-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+  .compare-box-desc { font-size: 14px; line-height: 1.6; }
+  .compare-box.pink { background: #FFF0F0; border: 1px solid #F5C5C5; }
+  .compare-box.pink .compare-box-title { color: var(--ink); }
+  .compare-box.pink .compare-box-desc { color: var(--ink-2); }
+  .compare-box.green { background: #F2FAE8; border: 1px solid #C0E890; }
+  .compare-box.green .compare-box-title { color: var(--ink); }
+  .compare-box.green .compare-box-desc { color: var(--ink-2); }
+
+  /* === ШАГИ === */
+  .steps-list { list-style: none; counter-reset: step; display: grid; gap: 0; }
+  .steps-list li { counter-increment: step; display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .steps-list li:last-child { border-bottom: none; }
+  .steps-list li::before { content: counter(step, decimal-leading-zero); font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+  .step-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .step-desc { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+
+  /* === ЧЕКЛИСТ === */
+  .checklist-group { margin-bottom: 24px; }
+  .checklist-group-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .checklist-items { list-style: none; display: grid; gap: 8px; }
+  .checklist-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); cursor: pointer; transition: background .12s; }
+  .checklist-item:hover { background: var(--bg-soft); }
+  .checklist-item.checked { background: #F5FEE0; border-color: #C8F090; }
+  .check-box { flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--ink-3); margin-top: 1px; position: relative; transition: background .12s, border-color .12s; }
+  .checklist-item.checked .check-box { background: var(--accent); border-color: var(--accent); }
+  .checklist-item.checked .check-box::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 10px; border-right: 2px solid var(--accent-ink); border-bottom: 2px solid var(--accent-ink); transform: rotate(45deg); }
+  .check-text { font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--ink); }
+  .checklist-item.checked .check-text { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--ink-3); }
+  .checklist-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .progress-bar-wrap { flex: 1; height: 6px; background: var(--bg-muted); border-radius: var(--radius-pill); overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: var(--radius-pill); transition: width .3s ease; width: 0%; }
+  .progress-label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+
+  /* === ГЛОССАРИЙ === */
+  .glossary { display: grid; gap: 10px; }
+  .glossary-item { padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .glossary-term { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--ink); }
+  .glossary-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+  /* === ЗАДАНИЕ === */
+  .task-dark { background: var(--ink); color: #fff; border-radius: var(--radius-lg); padding: 32px; margin-top: 24px; }
+  .task-dark h3 { font-family: var(--font-display); font-weight: 500; font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .task-dark p { color: #CCC; font-size: 15px; line-height: 1.65; margin-bottom: 12px; }
+  .task-steps { list-style: none; display: grid; gap: 10px; margin-bottom: 24px; }
+  .task-steps li { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #CCC; line-height: 1.55; }
+  .task-step-num { font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: 600; flex-shrink: 0; padding-top: 2px; }
+  .btn-accent { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-body); font-weight: 700; font-size: 14px; border-radius: var(--radius-pill); border: none; cursor: pointer; text-decoration: none; transition: background .15s; }
+  .btn-accent:hover { background: var(--accent-strong); }
+
+  /* === ШАБЛОН ПИСЬМА === */
+  .template-block {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .template-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .template-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: var(--bg-muted);
+    border: none;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .copy-btn:hover { background: var(--accent); color: var(--accent-ink); }
+  .copy-btn.copied { background: var(--accent); color: var(--accent-ink); }
+  .template-body {
+    padding: 24px 24px 28px;
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--ink);
+    white-space: pre-wrap;
+    font-family: var(--font-body);
+  }
+  .template-placeholder {
+    display: inline;
+    background: rgba(196, 245, 66, 0.3);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-weight: 600;
+    color: #2E5000;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+
+  /* === БИРЖИ === */
+  .exchange-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  @media (max-width: 600px) { .exchange-grid { grid-template-columns: 1fr; } }
+  .exchange-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    background: var(--bg);
+  }
+  .exchange-name {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 4px;
+    color: var(--ink);
+  }
+  .exchange-type {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 12px;
+  }
+  .exchange-pros { list-style: none; display: grid; gap: 5px; }
+  .exchange-pros li {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.5;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .exchange-pros li::before {
+    content: '→';
+    font-family: var(--font-mono);
+    color: var(--accent-strong);
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* === ПРЕДУПРЕЖДЕНИЕ === */
+  .callout-warn { background: #FFFBEB; border: 1px solid #F0D080; border-left: 3px solid #E0A000; border-radius: var(--radius-md); padding: 16px 20px; font-size: 14px; color: #5A4500; margin-bottom: 16px; line-height: 1.6; }
+  .callout-warn strong { color: #3A2E00; }
+
+  /* === ДИАПАЗОНЫ ЦЕН === */
+  .price-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  .price-table th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    background: var(--bg-soft);
+    font-weight: 600;
+  }
+  .price-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--ink-2);
+    vertical-align: top;
+  }
+  .price-table tr:last-child td { border-bottom: none; }
+  .price-table .price-val { font-weight: 700; color: var(--ink); font-family: var(--font-mono); font-size: 13px; }
+
+  /* === HL === */
+  .hl-line { display: inline; background-image: linear-gradient(transparent 55%, var(--accent) 55%, var(--accent) 92%, transparent 92%); padding: 0 2px; font-weight: 600; }
+
+  /* === ХЕЛП-ТЕКСТ === */
+  .helper { font-size: 13px; color: var(--ink-3); line-height: 1.5; margin-top: 8px; }
+
+  /* === section-alt .card fix === */
+  .section-alt .card, .section-alt .checklist-item, .section-alt .glossary-item { background: var(--bg); }
+
+  @media (max-width: 640px) {
+    .hero { padding: 36px 20px 32px; }
+    .page-wrap { padding: 0 20px 80px; }
+    .nav-bar { padding: 0 20px; }
+    .title-block { grid-template-columns: 1fr; gap: 12px; }
+    .stamp { margin-top: 0; }
+    .section-alt { margin: 48px -20px 0; padding: 40px 20px 8px; }
+    .template-body { padding: 16px 16px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ШАПКА -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Fitstars · Блогер с нуля</span>
+    <div class="title-block">
+      <span class="stamp">Модуль 6 / Урок 2</span>
+      <span class="title-text">Как работать с рекламодателями: первые деньги за рекламу</span>
+    </div>
+    <p class="hero-lead">FitStars — это база. Но параллельно вы можете монетизировать блог через прямую рекламу: писать брендам, выбирать партнёров под свою аудиторию и правильно выходить на первую сделку. Разбираем каждый шаг — от выбора рекламодателя до шаблона письма.</p>
+    <div class="meta-chips">
+      <span class="chip"><span class="chip-dot accent"></span>Прямая реклама — шаг за шагом</span>
+      <span class="chip"><span class="chip-dot"></span>Как выбрать рекламодателя</span>
+      <span class="chip"><span class="chip-dot"></span>Биржи и самостоятельный поиск</span>
+      <span class="chip"><span class="chip-dot"></span>Шаблон письма</span>
+    </div>
+  </div>
+</header>
+
+<!-- НАВИГАЦИЯ -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="navTo('intro')"><span class="nav-num">1</span> Главное</button>
+    <button class="nav-btn" onclick="navTo('choose')"><span class="nav-num">2</span> Выбор партнёра</button>
+    <button class="nav-btn" onclick="navTo('exchanges')"><span class="nav-num">3</span> Биржи</button>
+    <button class="nav-btn" onclick="navTo('letter')"><span class="nav-num">4</span> Письмо бренду</button>
+    <button class="nav-btn" onclick="navTo('price')"><span class="nav-num">5</span> Цена и условия</button>
+    <button class="nav-btn" onclick="navTo('checklist')"><span class="nav-num">6</span> Чек-лист</button>
+    <button class="nav-btn" onclick="navTo('glossary')"><span class="nav-num">7</span> Глоссарий</button>
+  </div>
+</nav>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="page-wrap">
+
+  <!-- СЕКЦИЯ 01: ГЛАВНОЕ -->
+  <section class="section" id="intro">
+    <div class="section-label"><span class="section-num">01</span>Главное</div>
+    <h2 class="section-title"><span class="section-title-hl">Прямая реклама — не враг нативной</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Суть урока</div>
+      <p>Прямая реклама — честная договорённость с брендом. Она не убивает доверие, если рекламодатель выбран под аудиторию, а не под ценник. Разбираем, как найти своих партнёров и выйти на первую сделку.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Две логики монетизации</div>
+      <h3>Нативные продажи и прямая реклама — как они работают вместе</h3>
+      <p>В уроке 1 вы разобрали нативные продажи через FitStars — когда продукт становится частью вашей жизни и контента. Это долгосрочная механика: аудитория привыкает к продукту через ваш опыт.</p>
+      <p>Прямая реклама работает иначе: вы берёте оплату за публикацию и открыто говорите, что это реклама. Это не плохо — это честно. Главное — чтобы рекламируемый продукт не разрушал то, что вы строили нативно.</p>
+      <div class="compare-pair" style="margin-top: 16px;">
+        <div class="compare-box pink">
+          <div class="compare-box-title">Конфликт интересов</div>
+          <div class="compare-box-desc">Вы нативно продвигаете FitStars, а в рекламе берёте другой фитнес-сервис — конкурента. Аудитория замечает, доверие падает.</div>
+        </div>
+        <div class="compare-box green">
+          <div class="compare-box-title">Синергия</div>
+          <div class="compare-box-desc">Вы нативно продвигаете FitStars, а в рекламе берёте спортивное питание, форму или коврик для йоги. Тема одна — доверие растёт.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="formula">
+      <div class="formula-label">Правило первого рекламодателя</div>
+      <div class="formula-steps">
+        <span class="formula-step">Близко к теме блога</span>
+        <span class="formula-arrow">+</span>
+        <span class="formula-step">Продукт, который вы сами попробовали</span>
+        <span class="formula-arrow">+</span>
+        <span class="formula-step">Честная маркировка</span>
+        <span class="formula-arrow">=</span>
+        <span class="formula-step">Реклама, которая не портит репутацию</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 02: ВЫБОР ПАРТНЁРА -->
+  <section class="section section-alt" id="choose">
+    <div class="section-label"><span class="section-num">02</span>Выбор партнёра</div>
+    <h2 class="section-title"><span class="section-title-hl">На что смотреть, прежде чем соглашаться</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Принцип</div>
+      <p>Не каждый рубль стоит репутации. Первый фильтр — не деньги, а совпадение продукта с интересами вашей аудитории.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Три вопроса перед ответом рекламодателю</div>
+      <ol class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Моя ли это аудитория?</div>
+            <div class="step-desc">Если ваши подписчики — мамы в декрете, а рекламодатель предлагает профессиональный боксёрский экипировщик — скорее всего, не сработает. Задайте себе: «Хотя бы треть моих подписчиков захочет это купить?»</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Я бы сам(а) это купил(а)?</div>
+            <div class="step-desc">Не нужно пользоваться продуктом годами. Достаточно честно его попробовать до публикации. Если продукт вас разочаровал — лучше отказать.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Это не конкурент FitStars?</div>
+            <div class="step-desc">Другие фитнес-приложения и онлайн-тренировочные платформы — прямые конкуренты. Реклама такого продукта разрушает нативную историю, которую вы строите через FitStars.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Что хорошо сочетается с фитнес-блогом</div>
+      <h3>Смежные ниши, которые не конфликтуют с FitStars</h3>
+      <div style="display: grid; gap: 8px; margin-top: 4px;">
+        <div style="display: flex; gap: 12px; padding: 12px 16px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-sm); align-items: flex-start;">
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-strong); font-weight: 700; flex-shrink: 0; padding-top: 1px;">→</span>
+          <div>
+            <div style="font-weight: 600; font-size: 14px; margin-bottom: 2px;">Спортивное питание и добавки</div>
+            <div style="font-size: 13px; color: var(--ink-3);">Протеин, витамины, спортивное питание — логичный выбор для спортивной аудитории</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; padding: 12px 16px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-sm); align-items: flex-start;">
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-strong); font-weight: 700; flex-shrink: 0; padding-top: 1px;">→</span>
+          <div>
+            <div style="font-weight: 600; font-size: 14px; margin-bottom: 2px;">Одежда и аксессуары для спорта</div>
+            <div style="font-size: 13px; color: var(--ink-3);">Леггинсы, кроссовки, коврики, резинки, тренировочные пояса</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; padding: 12px 16px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-sm); align-items: flex-start;">
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-strong); font-weight: 700; flex-shrink: 0; padding-top: 1px;">→</span>
+          <div>
+            <div style="font-weight: 600; font-size: 14px; margin-bottom: 2px;">Здоровое питание и доставка</div>
+            <div style="font-size: 13px; color: var(--ink-3);">Пп-рационы, ЗОЖ-продукты, доставка правильного питания</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; padding: 12px 16px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-sm); align-items: flex-start;">
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-strong); font-weight: 700; flex-shrink: 0; padding-top: 1px;">→</span>
+          <div>
+            <div style="font-weight: 600; font-size: 14px; margin-bottom: 2px;">Уход, восстановление, wellbeing</div>
+            <div style="font-size: 13px; color: var(--ink-3);">Массажёры, гаджеты для восстановления, витамины, уход за телом</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; padding: 12px 16px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-sm); align-items: flex-start;">
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-strong); font-weight: 700; flex-shrink: 0; padding-top: 1px;">→</span>
+          <div>
+            <div style="font-weight: 600; font-size: 14px; margin-bottom: 2px;">Нишевые сервисы для образа жизни</div>
+            <div style="font-size: 13px; color: var(--ink-3);">Книжные сервисы, онлайн-курсы по смежным темам (психология, питание, медитации)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 03: БИРЖИ -->
+  <section class="section" id="exchanges">
+    <div class="section-label"><span class="section-num">03</span>Биржи</div>
+    <h2 class="section-title"><span class="section-title-hl">Где искать рекламодателей</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Два пути</div>
+      <p>Биржи удобны на старте — там можно получить первые заявки даже с маленькой аудиторией. Прямой поиск даёт лучший ценник, но требует больше времени и навыка переговоров.</p>
+    </div>
+
+    <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 12px;">Биржи рекламы — для старта</h3>
+    <div class="exchange-grid">
+      <div class="exchange-card">
+        <div class="exchange-name">Telegram Ads / TGStat</div>
+        <div class="exchange-type">Telegram-каналы</div>
+        <ul class="exchange-pros">
+          <li>Биржа внутри экосистемы Telegram</li>
+          <li>Много фитнес- и ЗОЖ-брендов</li>
+          <li>Минимальный порог входа — от 1 000 подписчиков</li>
+          <li>Удобная статистика для рекламодателя</li>
+        </ul>
+      </div>
+      <div class="exchange-card">
+        <div class="exchange-name">Telega.in</div>
+        <div class="exchange-type">Telegram-каналы</div>
+        <ul class="exchange-pros">
+          <li>Крупнейшая биржа Telegram-рекламы в РФ</li>
+          <li>Заявки приходят сами — канал просто размещается в каталоге</li>
+          <li>Можно выставить свою цену</li>
+          <li>Работают с каналами от 500 подписчиков</li>
+        </ul>
+      </div>
+      <div class="exchange-card">
+        <div class="exchange-name">ВКонтакте Маркет</div>
+        <div class="exchange-type">ВКонтакте</div>
+        <ul class="exchange-pros">
+          <li>Встроенный инструмент ВК для рекламных интеграций</li>
+          <li>Фильтрация по тематике — бренды сами ищут блогеров</li>
+          <li>Подходит для небольших сообществ</li>
+          <li>Прозрачная статистика для сделок</li>
+        </ul>
+      </div>
+      <div class="exchange-card">
+        <div class="exchange-name">EasyPR / Plakhatova</div>
+        <div class="exchange-type">Мультиплатформа</div>
+        <ul class="exchange-pros">
+          <li>Работают с блогерами на разных платформах</li>
+          <li>Подходят новичкам: помогают с переговорами</li>
+          <li>Бренды сами пишут заявки по каталогу</li>
+          <li>Берут комиссию — зато снимают организационную работу</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout-warn" style="margin-top: 8px;">
+      <strong>Важно про биржи:</strong> Разместив канал на бирже, внимательно читайте предложения. Часть брендов — казино, МФО, сомнительные БАДы. Отклоняйте всё, что противоречит вашей теме или ценностям, даже если предлагают хороший ценник.
+    </div>
+
+    <h3 style="font-size: 17px; font-weight: 700; margin: 28px 0 12px;">Прямой поиск — когда растёте</h3>
+    <div class="card">
+      <div class="card-label">Как найти рекламодателя самостоятельно</div>
+      <ol class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Составьте список брендов, которые вам нравятся</div>
+            <div class="step-desc">10–15 компаний из смежных ниш, чьи продукты вы реально используете или хотели бы попробовать. Именно с них начинайте — в письме это сразу чувствуется.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Найдите контакт для сотрудничества</div>
+            <div class="step-desc">У большинства брендов есть email или форма на сайте в разделе «Сотрудничество» / «Для блогеров». Ищите именно там, а не через общий support@. В Telegram многие бренды ведут каналы — пишите в личку администратору.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Посмотрите, с кем уже работает бренд</div>
+            <div class="step-desc">Найдите блогеров, которые уже рекламировали этот бренд. Если они похожи на вас по аудитории и размеру — бренд, скорее всего, открыт к предложениям такого уровня.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Напишите первым — не ждите заявки</div>
+            <div class="step-desc">Большинство начинающих блогеров ждут, пока их найдут. Это ошибка. Первое письмо с хорошим предложением открывает 80% сделок на старте. Шаблон — в следующем разделе.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 04: ПИСЬМО БРЕНДУ -->
+  <section class="section section-alt" id="letter">
+    <div class="section-label"><span class="section-num">04</span>Письмо бренду</div>
+    <h2 class="section-title"><span class="section-title-hl">Как писать, чтобы ответили</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Принцип</div>
+      <p>Рекламодателю не нужна ваша биография. Ему нужны три вещи: кто ваша аудитория, почему она купит его продукт, и сколько это стоит.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Структура хорошего письма</div>
+      <ol class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Кто вы и про что ваш канал</div>
+            <div class="step-desc">Одно предложение. «Веду Telegram-канал [название] о домашних тренировках для мам с детьми — N подписчиков, охват поста X.»</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Почему вы выбрали именно этот бренд</div>
+            <div class="step-desc">Конкретно — не «мне нравится ваш продукт», а «я сам(а) использую [продукт] уже три месяца» или «моя аудитория регулярно спрашивает про спортивное питание, и ваш продукт идеально подходит». Это сразу выделяет вас среди сотни стандартных запросов.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Что конкретно вы предлагаете</div>
+            <div class="step-desc">Формат: пост + сторис, обзорный пост, упоминание в подборке. Сроки: когда выйдет. Цена: укажите сразу — это экономит время обеим сторонам.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Краткая статистика</div>
+            <div class="step-desc">Скриншот охватов из статистики + ER (процент вовлечённости). Не нужно длинный медиакит — достаточно двух-трёх цифр прямо в тексте.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Призыв к действию</div>
+            <div class="step-desc">«Готов(а) обсудить детали — напишите, если интересно» или «Могу прислать медиакит, если нужно больше данных». Без навязывания, но с чётким следующим шагом.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Шаблон письма 1 -->
+    <div class="template-block">
+      <div class="template-header">
+        <span class="template-title">Шаблон — первое письмо бренду</span>
+        <button class="copy-btn" onclick="copyTemplate('tpl1', this)">Скопировать</button>
+      </div>
+      <div class="template-body" id="tpl1">Добрый день!
+
+Меня зовут <span class="template-placeholder">[Имя]</span>, я веду Telegram-канал <span class="template-placeholder">[название канала]</span> о <span class="template-placeholder">[тема: домашних тренировках / питании / ЗОЖ с детьми]</span>. Сейчас <span class="template-placeholder">[N]</span> подписчиков, средний охват поста — <span class="template-placeholder">[X]</span>.
+
+Пишу, потому что сам(а) пользуюсь <span class="template-placeholder">[продукт или бренд]</span> уже <span class="template-placeholder">[срок]</span> — <span class="template-placeholder">[одно предложение: что именно нравится или как используете]</span>. Моя аудитория — <span class="template-placeholder">[описание: активные мамы 25–35 лет / люди, которые тренируются дома и следят за питанием]</span> — часто спрашивает рекомендации именно в этой теме.
+
+Предлагаю интеграцию: <span class="template-placeholder">[формат: пост с личным отзывом + 2 сторис / обзорный пост]</span>. Выход — <span class="template-placeholder">[примерная дата или «в течение недели после согласования»]</span>. Стоимость размещения — <span class="template-placeholder">[сумма]</span> рублей.
+
+Готов(а) прислать статистику, если нужно. Напишите, если интересно — обсудим детали.
+
+С уважением,
+<span class="template-placeholder">[Имя]</span></div>
+    </div>
+
+    <!-- Шаблон письма 2 -->
+    <div class="template-block">
+      <div class="template-header">
+        <span class="template-title">Шаблон — ответ на входящую заявку от бренда</span>
+        <button class="copy-btn" onclick="copyTemplate('tpl2', this)">Скопировать</button>
+      </div>
+      <div class="template-body" id="tpl2">Здравствуйте!
+
+Спасибо за интерес к моему каналу. Расскажу подробнее.
+
+Канал: <span class="template-placeholder">[название]</span> — <span class="template-placeholder">[тема]</span>. Аудитория: <span class="template-placeholder">[N]</span> подписчиков, охват одного поста — <span class="template-placeholder">[X]</span>, ER — <span class="template-placeholder">[%]</span>.
+
+Форматы, с которыми работаю:
+— Нативный пост с личным опытом — <span class="template-placeholder">[цена]</span> руб.
+— Пост + сторис (3 шт.) — <span class="template-placeholder">[цена]</span> руб.
+— Упоминание в подборке — <span class="template-placeholder">[цена]</span> руб.
+
+Важно: я рекламирую только продукты, которые сам(а) попробовал(а) или готов(а) попробовать. Прошу прислать продукт на тест перед публикацией — либо учесть это в условиях.
+
+Готов(а) предоставить полный медиакит по запросу. Жду ваших условий и деталей по продукту.
+
+С уважением,
+<span class="template-placeholder">[Имя]</span></div>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Что не надо писать:</strong> Длинный рассказ о себе на три абзаца. Фразы «хочу с вами сотрудничать» без конкретики. Размытые «давайте что-нибудь придумаем». Чем конкретнее предложение — тем выше процент ответов.
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 05: ЦЕНА И УСЛОВИЯ -->
+  <section class="section" id="price">
+    <div class="section-label"><span class="section-num">05</span>Цена и условия</div>
+    <h2 class="section-title"><span class="section-title-hl">Сколько просить и как договариваться</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Главное</div>
+      <p>Нет единого прайса. Цена зависит от охватов, вовлечённости и темы. Но занижать стоимость «лишь бы взяли» — ошибка: это задаёт ценовую планку на будущее.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Ориентировочные диапазоны цен на Telegram — 2025–2026</div>
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Размер канала</th>
+            <th>Охват поста</th>
+            <th>Диапазон цены</th>
+            <th>Примечание</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>500–2 000 подпис.</td>
+            <td>100–400</td>
+            <td class="price-val">1 000–5 000 ₽</td>
+            <td>Нишевые каналы с высоким ER стоят дороже крупных с низким</td>
+          </tr>
+          <tr>
+            <td>2 000–10 000 подпис.</td>
+            <td>400–2 000</td>
+            <td class="price-val">5 000–25 000 ₽</td>
+            <td>Фитнес-тематика ценится выше среднего — аудитория платёжеспособная</td>
+          </tr>
+          <tr>
+            <td>10 000–50 000 подпис.</td>
+            <td>2 000–10 000</td>
+            <td class="price-val">25 000–100 000 ₽</td>
+            <td>На этом уровне начинают предлагать бартер + доплату</td>
+          </tr>
+          <tr>
+            <td>50 000+ подпис.</td>
+            <td>10 000+</td>
+            <td class="price-val">от 100 000 ₽</td>
+            <td>Переговоры индивидуально, часто через менеджеров</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="helper">Данные ориентировочные — цифры сильно зависят от ниши, вовлечённости и конкретного бренда. Здоровый питание, спорт и ЗОЖ — одни из самых ценных ниш в Telegram.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Как назначать цену, если вы не знаете рынок</div>
+      <ol class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Найдите 3–5 похожих каналов на TGStat</div>
+            <div class="step-desc">Введите в поиск TGStat тематику «фитнес» или «ЗОЖ». Посмотрите каналы похожего размера — у некоторых указана цена рекламы в карточке. Это ваш ориентир.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Считайте от охватов, а не от подписчиков</div>
+            <div class="step-desc">Универсальная формула: охват одного поста × 1–2 рубля = минимальная цена для начала. Если ER высокий — смело умножайте на 1,5–2.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Закладывайте запас на торг</div>
+            <div class="step-desc">Называйте цену на 20–30% выше, чем готовы принять. Большинство брендов попросят скидку — пусть это будет ваш запас, а не уступка.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Условия, о которых важно договориться заранее</div>
+      <ol class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Сроки согласования</div>
+            <div class="step-desc">Сколько раз бренд может просить правки? Оптимально — не более двух итераций. Это важно прописать сразу, иначе согласование может растянуться на недели.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Срок нахождения поста в канале</div>
+            <div class="step-desc">Стандарт — пост не удаляется минимум 72 часа, чаще 7 дней. Если бренд просит «оставить навсегда» — это можно учесть в цене.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Предоплата</div>
+            <div class="step-desc">Для новых рекламодателей — 50–100% предоплата. Это нормально и принято на рынке. Работа без предоплаты с незнакомым брендом — риск.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Маркировка</div>
+            <div class="step-desc">С 2023 года реклама в интернете обязательно маркируется. Это не страшно и не сложно — подробно разбираем в следующем уроке.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 06: ЧЕК-ЛИСТ -->
+  <section class="section section-alt" id="checklist">
+    <div class="section-label"><span class="section-num">06</span>Чек-лист</div>
+    <h2 class="section-title"><span class="section-title-hl">Перед первой рекламной сделкой</span></h2>
+    <hr class="section-hr">
+
+    <div class="checklist-progress">
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill"></div></div>
+      <span class="progress-label" id="progress-label">0 / 10</span>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Подготовка</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">У меня есть список из 10 брендов, близких к теме моего блога</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я знаю охваты своего канала и могу назвать их рекламодателю</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я разместил(а) канал хотя бы на одной бирже (Telega.in или аналог)</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Выбор рекламодателя</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Продукт не конкурирует с FitStars и не противоречит теме блога</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я готов(а) попробовать продукт перед публикацией или уже пробовал(а)</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Хотя бы треть моей аудитории потенциально заинтересована в этом продукте</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Письмо и переговоры</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Письмо содержит: кто я, почему этот бренд, конкретный формат, цена</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я договорился(ась) о сроках, количестве правок и формате оплаты</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Предоплата получена (или условия зафиксированы письменно)</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Итоговое задание</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Первое письмо рекламодателю написано и отправлено</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 07: ГЛОССАРИЙ -->
+  <section class="section section-alt" id="glossary">
+    <div class="section-label"><span class="section-num">07</span>Глоссарий</div>
+    <h2 class="section-title"><span class="section-title-hl">Глоссарий урока</span></h2>
+    <hr class="section-hr">
+
+    <div class="glossary">
+      <div class="glossary-item">
+        <div class="glossary-term">ER (Engagement Rate)</div>
+        <div class="glossary-def">Процент вовлечённости — отношение реакций и комментариев к количеству просмотров. Хороший ER в Telegram для фитнес-ниши — от 5%. Рекламодатели смотрят на ER, а не только на число подписчиков.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Охват поста</div>
+        <div class="glossary-def">Сколько уникальных человек увидели публикацию. Именно охват, а не подписчики — реальный показатель для рекламодателя. Охват обычно составляет 20–60% от числа подписчиков в зависимости от канала.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Медиакит</div>
+        <div class="glossary-def">Документ или файл с описанием вашего канала: тематика, аудитория, охваты, ER, форматы сотрудничества и цены. На старте достаточно простого листа в PDF или скриншота статистики — без дизайна.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Биржа рекламы</div>
+        <div class="glossary-def">Платформа, где рекламодатели находят блогеров, а блогеры — заявки от брендов. Биржа берёт комиссию с каждой сделки, но снимает часть переговорной работы.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Бартер</div>
+        <div class="glossary-def">Оплата рекламы продуктом вместо денег. Уместен на старте при условии, что продукт действительно ценен. Не соглашайтесь на бартер вместо денег, если уже знаете рыночную цену своей аудитории.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Нативная интеграция (в контексте прямой рекламы)</div>
+        <div class="glossary-def">Рекламный пост, написанный в стиле обычного контента блогера — через личный опыт и историю, а не через рекламные клише. Обязательно маркируется как реклама, но по формату неотличим от обычного поста.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПРАКТИЧЕСКОЕ ЗАДАНИЕ -->
+  <section class="section section-alt" id="task">
+    <div class="task-dark">
+      <h3>Практическое задание</h3>
+      <p>Написать первое письмо рекламодателю. Не «когда появится аудитория» — а прямо сейчас, пока канал растёт. Отказ — это тоже результат: вы учитесь формулировать предложение.</p>
+      <ul class="task-steps">
+        <li>
+          <span class="task-step-num">01</span>
+          <span>Выберите один бренд из смежной ниши — желательно тот, чьим продуктом вы уже пользуетесь. Найдите контакт для сотрудничества на их сайте или в Telegram.</span>
+        </li>
+        <li>
+          <span class="task-step-num">02</span>
+          <span>Используйте шаблон письма из этого урока. Заполните все поля <strong style="color:#fff;">конкретными данными</strong> — не оставляйте пустых мест и общих фраз.</span>
+        </li>
+        <li>
+          <span class="task-step-num">03</span>
+          <span>Отправьте письмо. Если получили ответ — зафиксируйте все договорённости письменно, прежде чем начинать работу над постом.</span>
+        </li>
+      </ul>
+      <a class="btn-accent" onclick="navTo('checklist')" style="cursor:pointer;">Открыть чек-лист ↑</a>
+    </div>
+
+    <div class="key-point" style="margin-top: 20px;">
+      <div class="key-point-label">Следующий урок</div>
+      <p>Урок 3 — маркировка рекламы: что нужно указывать по закону, как регистрировать рекламу в ЕРИР и как не получить штраф. Это обязательно знать до первой публикации рекламы.</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const sectionIds = ['intro', 'choose', 'exchanges', 'letter', 'price', 'checklist', 'glossary'];
+
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (el) { window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 64, behavior: 'smooth' }); }
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const idx = sectionIds.indexOf(id);
+    if (idx > -1) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  }
+
+  function toggleCheck(item) {
+    item.classList.toggle('checked');
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('.checklist-item');
+    const done = document.querySelectorAll('.checklist-item.checked');
+    const pct = all.length ? Math.round((done.length / all.length) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = done.length + ' / ' + all.length;
+  }
+  updateProgress();
+
+  function copyTemplate(id, btn) {
+    const el = document.getElementById(id);
+    // Get plain text from element (strip HTML tags)
+    const text = el.innerText || el.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'Скопировано ✓';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(() => {
+      // Fallback for older browsers
+      const range = document.createRange();
+      range.selectNode(el);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+      btn.textContent = 'Скопировано ✓';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Скопировать'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  window.addEventListener('scroll', () => {
+    const offset = 120;
+    let current = 0;
+    sectionIds.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY + offset >= el.offsetTop) current = i;
+    });
+    document.querySelectorAll('.nav-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === Math.min(current, sectionIds.length - 2));
+    });
+  });
+</script>
+
+</body>
+</html>
