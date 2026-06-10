@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Гайд: Как оформить себя официально — самозанятость или ИП</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #FFFFFF;
+    --bg-soft:       #F5F6F7;
+    --bg-muted:      #EDEEF0;
+    --ink:           #1A1A1A;
+    --ink-2:         #4A4D52;
+    --ink-3:         #8A8E94;
+    --line:          #E4E6E9;
+    --accent:        #C4F542;
+    --accent-strong: #B8E83D;
+    --accent-ink:    #0F1A00;
+    --font-display:  'Unbounded', ui-sans-serif, system-ui, sans-serif;
+    --font-body:     'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    --radius-sm:     10px;
+    --radius-md:     16px;
+    --radius-lg:     24px;
+    --radius-pill:   999px;
+    --shadow-sm:     0 1px 2px rgba(16,18,20,.04), 0 1px 1px rgba(16,18,20,.03);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--bg); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+
+  /* === HERO === */
+  .hero { background: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 56px 32px 48px; }
+  .hero-inner { max-width: 880px; margin: 0 auto; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; display: block; }
+  .title-block { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-bottom: 24px; }
+  .stamp { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; background: var(--accent); color: var(--accent-ink); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-top: 10px; }
+  .title-text { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; }
+  .hero-lead { font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--ink-2); max-width: 720px; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; color: var(--ink-2); }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
+  .chip-dot.accent { background: var(--accent); }
+
+  /* === NAV === */
+  .nav-bar { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding: 0 32px; }
+  .nav-inner { max-width: 880px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2px; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 7px; padding: 12px 12px; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--ink-2); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; border-radius: 8px 8px 0 0; }
+  .nav-btn:hover { color: var(--ink); background: var(--bg-muted); }
+  .nav-btn.active { color: var(--ink); border-bottom-color: var(--accent); background: transparent; }
+  .nav-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--accent-ink); }
+
+  /* === LAYOUT === */
+  .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 32px 100px; }
+  .section { padding-top: 60px; }
+  .section-alt { margin: 48px -32px 0; padding: 48px 32px 8px; background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .section-alt + .section { padding-top: 60px; }
+  .section-label { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; }
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--ink-3); flex-shrink: 0; }
+  .section-title { font-family: var(--font-display); font-weight: 500; font-size: 26px; letter-spacing: -0.01em; margin-bottom: 4px; line-height: 1.2; }
+  .section-title-hl { background-image: linear-gradient(transparent 52%, var(--accent) 52%, var(--accent) 94%, transparent 94%); padding: 0 3px; }
+  .section-hr { height: 1px; background: var(--line); border: none; margin: 20px 0 28px; }
+
+  /* === CARDS === */
+  .card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .card-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .card h3 { font-family: var(--font-body); font-weight: 700; font-size: 18px; margin-bottom: 10px; line-height: 1.3; }
+  .card p { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+  .card p + p { margin-top: 10px; }
+
+  /* === KEY POINT === */
+  .key-point { display: flex; gap: 16px; background: var(--bg-soft); border-radius: var(--radius-md); padding: 18px 22px; border-left: 3px solid var(--accent); margin-bottom: 16px; }
+  .key-point-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; padding-top: 3px; flex-shrink: 0; }
+  .key-point p { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.55; color: var(--ink); }
+
+  /* === STEPS === */
+  .steps-list { list-style: none; counter-reset: step; display: grid; gap: 0; }
+  .steps-list li { counter-increment: step; display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .steps-list li:last-child { border-bottom: none; }
+  .steps-list li::before { content: counter(step, decimal-leading-zero); font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+  .step-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .step-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .step-tip { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; font-weight: 600; color: #4A8000; background: #F2FAE8; border: 1px solid #C0E890; border-radius: 6px; padding: 4px 10px; }
+
+  /* === COMPARE === */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  @media (max-width: 600px) { .compare-grid { grid-template-columns: 1fr; } }
+  .compare-card { border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--line); }
+  .compare-card.highlight { border-color: var(--accent); border-width: 2px; }
+  .compare-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .compare-title { font-family: var(--font-display); font-weight: 600; font-size: 18px; letter-spacing: -0.01em; }
+  .compare-badge { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: var(--radius-pill); }
+  .badge-green { background: var(--accent); color: var(--accent-ink); }
+  .badge-gray { background: var(--bg-muted); color: var(--ink-3); }
+  .compare-rows { display: grid; gap: 0; }
+  .compare-row { display: grid; grid-template-columns: 110px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; align-items: start; }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-key { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.05em; padding-top: 1px; line-height: 1.4; }
+  .compare-val { color: var(--ink-2); line-height: 1.5; font-weight: 500; }
+  .compare-val strong { color: var(--ink); }
+
+  /* === TABLE === */
+  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 14px; }
+  .data-table th { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); padding: 10px 14px; border-bottom: 1px solid var(--line); text-align: left; background: var(--bg-soft); font-weight: 600; }
+  .data-table td { padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--ink-2); vertical-align: top; line-height: 1.55; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table td:first-child { font-weight: 600; color: var(--ink); }
+
+  /* === WARN / CALLOUTS === */
+  .callout-warn { background: #FFFBEB; border: 1px solid #F0D080; border-left: 3px solid #E0A000; border-radius: var(--radius-md); padding: 16px 20px; font-size: 14px; color: #5A4500; margin-bottom: 16px; line-height: 1.6; }
+  .callout-warn strong { color: #3A2E00; }
+  .callout-dark { background: var(--ink); color: #fff; border-radius: var(--radius-lg); padding: 28px 32px; margin-bottom: 16px; }
+  .callout-dark h3 { font-family: var(--font-display); font-weight: 500; font-size: 20px; margin-bottom: 10px; letter-spacing: -0.01em; }
+  .callout-dark p { color: #CCC; font-size: 15px; line-height: 1.65; margin-bottom: 8px; }
+  .callout-dark p:last-child { margin-bottom: 0; }
+
+  /* === TAGS LIST === */
+  .tag-list { display: grid; gap: 8px; margin-bottom: 16px; }
+  .tag-item { display: flex; gap: 14px; padding: 14px 18px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); align-items: flex-start; }
+  .tag-icon { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--accent-strong); flex-shrink: 0; padding-top: 2px; }
+  .tag-content { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+  .tag-content strong { color: var(--ink); display: block; margin-bottom: 2px; }
+
+  /* === FORMULA === */
+  .formula { background: var(--ink); color: #fff; border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 16px; }
+  .formula-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E94; margin-bottom: 10px; }
+  .formula-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+  .formula-step { background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 8px; white-space: nowrap; }
+  .formula-arrow { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
+
+  /* === APP BLOCK === */
+  .app-block { display: flex; gap: 20px; align-items: flex-start; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px; }
+  .app-icon { width: 56px; height: 56px; border-radius: 14px; background: var(--ink); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .app-icon svg { width: 28px; height: 28px; fill: var(--accent); }
+  .app-info h3 { font-weight: 700; font-size: 17px; margin-bottom: 4px; }
+  .app-info p { font-size: 14px; color: var(--ink-2); line-height: 1.55; margin-bottom: 10px; }
+  .app-link { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-body); font-weight: 700; font-size: 13px; border-radius: var(--radius-pill); text-decoration: none; transition: background .15s; }
+  .app-link:hover { background: var(--accent-strong); }
+
+  /* section-alt fixes */
+  .section-alt .card, .section-alt .tag-item, .section-alt .compare-card { background: var(--bg); }
+
+  @media (max-width: 640px) {
+    .hero { padding: 36px 20px 32px; }
+    .page-wrap { padding: 0 20px 80px; }
+    .nav-bar { padding: 0 20px; }
+    .title-block { grid-template-columns: 1fr; gap: 12px; }
+    .stamp { margin-top: 0; }
+    .section-alt { margin: 48px -20px 0; padding: 40px 20px 8px; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .app-block { flex-direction: column; gap: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Fitstars · Блогер с нуля · Модуль 6 / Урок 3</span>
+    <div class="title-block">
+      <span class="stamp">Гайд</span>
+      <span class="title-text">Как оформить себя официально: самозанятость или ИП</span>
+    </div>
+    <p class="hero-lead">Чтобы легально получать деньги от рекламодателей, нужен статус. Без него нет договора, нет чека, нет защиты. Это не страшно — самозанятость оформляется за 15 минут в телефоне. Разбираем, что выбрать и как сделать всё правильно с первого раза.</p>
+    <div class="meta-chips">
+      <span class="chip"><span class="chip-dot accent"></span>Самозанятость за 15 минут</span>
+      <span class="chip"><span class="chip-dot"></span>Самозанятый vs ИП</span>
+      <span class="chip"><span class="chip-dot"></span>Чек, договор, акт</span>
+      <span class="chip"><span class="chip-dot"></span>Формулировки услуг</span>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="navTo('why')"><span class="nav-num">1</span> Зачем это нужно</button>
+    <button class="nav-btn" onclick="navTo('compare')"><span class="nav-num">2</span> Статусы</button>
+    <button class="nav-btn" onclick="navTo('naloghpd')"><span class="nav-num">3</span> Самозанятость</button>
+    <button class="nav-btn" onclick="navTo('ip')"><span class="nav-num">4</span> ИП</button>
+    <button class="nav-btn" onclick="navTo('docs')"><span class="nav-num">5</span> Документы</button>
+    <button class="nav-btn" onclick="navTo('start')"><span class="nav-num">6</span> Старт</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- 01. ЗАЧЕМ -->
+  <section class="section" id="why">
+    <div class="section-label"><span class="section-num">01</span>Зачем это нужно</div>
+    <h2 class="section-title"><span class="section-title-hl">Официальный статус — это не про налоги, это про деньги</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Главное</div>
+      <p>Большинство нормальных рекламодателей не могут заплатить «просто на карту» — им нужен чек или договор. Без официального статуса вы теряете часть сделок ещё до переговоров о цене.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Что меняется с официальным статусом</div>
+      <div class="tag-list" style="margin-bottom: 0;">
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Можете работать с брендами официально</strong>Компании и агентства платят только по договору с чеком или актом. Без статуса — только физлица и бартер.</div>
+        </div>
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Вы защищены юридически</strong>Договор фиксирует: что вы делаете, сколько стоит, когда платят. Без него — только на доверии, а доверие не взыскать в суде.</div>
+        </div>
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Налоговая не задаёт вопросов</strong>Регулярные поступления на карту без статуса — это риск. С самозанятостью вы платите небольшой налог и спите спокойно.</div>
+        </div>
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Маркировка рекламы становится проще</strong>Часть рекламодателей берёт маркировку на себя — но только если у вас есть статус и договор. Без них этот вопрос ложится целиком на вас.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Важно про формулировки.</strong> Когда вы работаете с брендами как блогер — вы оказываете услуги, а не «работаете». Это юридически важное различие. В договоре, чеке и переписке всегда пишите «услуги по размещению рекламы», а не «работа» или «сотрудничество».
+    </div>
+  </section>
+
+  <!-- 02. СРАВНЕНИЕ СТАТУСОВ -->
+  <section class="section section-alt" id="compare">
+    <div class="section-label"><span class="section-num">02</span>Статусы</div>
+    <h2 class="section-title"><span class="section-title-hl">Самозанятый или ИП — что выбрать</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Короткий ответ</div>
+      <p>Если вы только начинаете — оформляйте самозанятость прямо сейчас. Это займёт 15 минут. ИП понадобится, когда доход превысит 2,4 млн рублей в год или вы захотите нанять помощника.</p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card highlight">
+        <div class="compare-head">
+          <div class="compare-title">Самозанятость</div>
+          <span class="compare-badge badge-green">Для старта</span>
+        </div>
+        <div class="compare-rows">
+          <div class="compare-row">
+            <div class="compare-key">Регистрация</div>
+            <div class="compare-val"><strong>15 минут</strong> в приложении «Мой налог»</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-key">Налог</div>
+            <div class="compare-val"><strong>4%</strong> с физлиц · <strong>6%</strong> с компаний и ИП</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-key">Отчётность</div>
+            <div class="compare-val">Нет. Налог считается автоматически</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-key">Лимит дохода</div>
+            <div class="compare-val">До <strong>2,4 млн ₽</strong> в год (~200 000 ₽/мес)</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-key">Взносы</div>
+            <div class="compare-val">Нет обязательных взносов</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-key">Помощники</div>
+            <div class="compare-val">Нельзя нанимать по трудовому договору</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-key">Документ</div>
+            <div class="compare-val">Чек из приложения «Мой налог»</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-card">
+        <div class="compare-head">
+          <div class="compare-title">ИП</div>
+          <span class="compare-badge badge-gray">Когда вырастете</span>
+        </div>
+        <div class="compare-rows">
+          <div class="compare-row">
+            <div class="compare-key">Регистрация</div>
+            <div class="compare-val">Через банк онлайн или лично в ФНС</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-key">Налог</div>
+            <div class="compare-val">УСН: <strong>6%</strong> с доходов или <strong>15%</strong> с прибыли</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-key">Отчётность</div>
+            <div class="compare-val">Декларация раз в год, даже при нулевом доходе</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-key">Лимит дохода</div>
+            <div class="compare-val">Существенно выше (зависит от системы)</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-key">Взносы</div>
+            <div class="compare-val">Обязательные фиксированные взносы — даже без дохода</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-key">Помощники</div>
+            <div class="compare-val">Можно нанимать сотрудников</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-key">Документы</div>
+            <div class="compare-val">Договор, счёт, акт выполненных работ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="formula">
+      <div class="formula-label">Правило перехода</div>
+      <div class="formula-steps">
+        <span class="formula-step">Старт → самозанятость</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Доход близко к 2,4 млн/год</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Переходите на ИП</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Хотите нанять помощника → тоже ИП</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03. САМОЗАНЯТОСТЬ — КАК ОФОРМИТЬ -->
+  <section class="section" id="naloghpd">
+    <div class="section-label"><span class="section-num">03</span>Самозанятость</div>
+    <h2 class="section-title"><span class="section-title-hl">Как зарегистрироваться за 15 минут</span></h2>
+    <hr class="section-hr">
+
+    <div class="app-block">
+      <div class="app-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 2H7C5.9 2 5 2.9 5 4v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-5 18c-.83 0-1.5-.67-1.5-1.5S11.17 17 12 17s1.5.67 1.5 1.5S12.83 20 12 20zm5-4H7V4h10v12z"/></svg>
+      </div>
+      <div class="app-info">
+        <h3>Приложение «Мой налог»</h3>
+        <p>Единственный официальный способ оформить самозанятость и выдавать чеки. Разработано ФНС России. Доступно для iOS и Android.</p>
+        <a class="app-link" href="https://npd.nalog.ru/app/" target="_blank" rel="noopener">Скачать приложение ↗</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Пошаговая регистрация</div>
+      <ol class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Скачайте приложение «Мой налог»</div>
+            <div class="step-desc">Доступно в App Store и Google Play. Разработано ФНС — никаких сторонних сервисов не нужно.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Войдите через Госуслуги или по паспорту</div>
+            <div class="step-desc">Проще всего — через Госуслуги: нажимаете «Войти», выбираете «Через Госуслуги», подтверждаете. Если аккаунта нет — регистрация по паспорту с фото через камеру телефона.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Укажите регион</div>
+            <div class="step-desc">Выберите регион, в котором вы ведёте деятельность. Если работаете онлайн — регион проживания. Это влияет на ставку налога в некоторых регионах.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Подтвердите заявление</div>
+            <div class="step-desc">Приложение сформирует и отправит заявление в ФНС автоматически. Регистрация занимает от нескольких минут до одного рабочего дня.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Готово — получите уведомление</div>
+            <div class="step-desc">Придёт уведомление в приложении и на email. С этого момента вы можете выдавать чеки и официально принимать оплату от брендов.</div>
+            <span class="step-tip">✓ Сохраните справку о постановке на учёт — некоторые рекламодатели её запрашивают</span>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Как выдавать чек — после каждой оплаты</div>
+      <h3>Чек — обязательный документ для рекламодателя</h3>
+      <p>После получения оплаты вы открываете «Мой налог», нажимаете «Новая продажа», вводите сумму и описание услуги, выбираете тип клиента (физлицо или компания) и отправляете чек заказчику. Без чека компания не может списать расходы в бухгалтерии — это важно для неё так же, как для вас.</p>
+
+      <div style="margin-top: 20px;">
+        <div class="card-label">Формулировки услуг для чека — как писать</div>
+        <table class="data-table" style="margin-bottom: 0; margin-top: 8px;">
+          <thead>
+            <tr>
+              <th>Что вы делаете</th>
+              <th>Как написать в чеке</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Рекламный пост или сторис</td>
+              <td>Услуги по размещению рекламных материалов в социальных сетях</td>
+            </tr>
+            <tr>
+              <td>Нативная интеграция</td>
+              <td>Услуги по созданию и публикации рекламного контента</td>
+            </tr>
+            <tr>
+              <td>Продвижение бренда</td>
+              <td>Услуги по продвижению бренда в социальных сетях</td>
+            </tr>
+            <tr>
+              <td>Реклама по партнёрской программе</td>
+              <td>Услуги по привлечению клиентов через партнёрскую программу</td>
+            </tr>
+            <tr>
+              <td>Долгосрочное сотрудничество с брендом</td>
+              <td>Услуги амбассадора по продвижению бренда в социальных сетях</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Никогда не пишите «работа» или «зарплата».</strong> В чеке, договоре и переписке — только «услуги». Это не придирка к словам: «работа» — это трудовые отношения с другой системой налогообложения и обязательствами. «Услуги» — это фриланс и ваша защита.
+    </div>
+  </section>
+
+  <!-- 04. ИП -->
+  <section class="section section-alt" id="ip">
+    <div class="section-label"><span class="section-num">04</span>ИП</div>
+    <h2 class="section-title"><span class="section-title-hl">Когда и как переходить на ИП</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Когда нужен ИП</div>
+      <p>Доход приближается к 2,4 млн рублей в год, вы хотите нанять ассистента или начинаете работать со сложными долгосрочными контрактами с крупными брендами.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Как зарегистрировать ИП</div>
+      <ol class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Выберите способ регистрации</div>
+            <div class="step-desc">Проще всего — через мобильное приложение вашего банка (Сбер, Тинькофф, ВТБ и другие крупные банки регистрируют ИП бесплатно прямо в приложении). Альтернатива — лично в отделении ФНС или через сайт ФНС.</div>
+            <span class="step-tip">✓ Через банк — бесплатно и без визита в налоговую</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Выберите систему налогообложения</div>
+            <div class="step-desc">Для блогера чаще всего подходит <strong>УСН 6% («доходы»)</strong> — платите 6% с каждого поступления. Это проще, чем УСН 15% («доходы минус расходы»), который требует учёта расходов. Уведомление о выборе УСН подайте сразу при регистрации или в течение 30 дней.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Укажите коды ОКВЭД</div>
+            <div class="step-desc">Это коды видов деятельности. Для блогера подходят:</div>
+          </div>
+        </li>
+      </ol>
+
+      <table class="data-table" style="margin-top: 4px;">
+        <thead>
+          <tr>
+            <th>Код</th>
+            <th>Название</th>
+            <th>Когда использовать</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>73.11</td>
+            <td>Деятельность рекламных агентств</td>
+            <td>Основной код — покрывает размещение рекламы и интеграции</td>
+          </tr>
+          <tr>
+            <td>73.12</td>
+            <td>Представление в СМИ</td>
+            <td>Если продвигаете бренды в своих каналах и соцсетях</td>
+          </tr>
+          <tr>
+            <td>90.01</td>
+            <td>Деятельность в области исполнительских искусств</td>
+            <td>Если ведёте блог как творческую деятельность</td>
+          </tr>
+          <tr>
+            <td>74.90</td>
+            <td>Деятельность профессиональная прочая</td>
+            <td>Запасной универсальный код</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size: 13px; color: var(--ink-3); margin-top: -8px;">Можно указать несколько кодов. Один из них будет основным — выбирайте тот, что описывает главную деятельность.</p>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Обязательные взносы у ИП есть всегда</strong> — даже если в этом месяце не было ни одной сделки. Фиксированная сумма меняется каждый год: уточняйте актуальный размер на сайте ФНС. Учитывайте это при расчёте дохода.
+    </div>
+  </section>
+
+  <!-- 05. ДОКУМЕНТЫ В РАБОТЕ -->
+  <section class="section" id="docs">
+    <div class="section-label"><span class="section-num">05</span>Документы</div>
+    <h2 class="section-title"><span class="section-title-hl">Договор, чек, акт — зачем каждый документ</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Золотое правило</div>
+      <p>Всегда берите предоплату и всегда фиксируйте договорённости письменно. Отсутствие договора при получении денег — это ваш риск, не рекламодателя.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Три ключевых документа</div>
+      <ol class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Договор оказания услуг</div>
+            <div class="step-desc">Подписывается до начала работы. Фиксирует: что именно вы делаете, сколько стоит, когда выходит публикация, сколько правок включено, кто занимается маркировкой. Шаблон обычно присылает рекламодатель — это нормально. Если его нет — попросите или составьте свой у юриста.</div>
+            <span class="step-tip">✓ Подписывается до получения оплаты</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Чек (самозанятые) или счёт + акт (ИП)</div>
+            <div class="step-desc">Самозанятые выдают чек через «Мой налог» после каждой оплаты. ИП выставляют счёт до оплаты и подписывают акт выполненных работ после публикации. Без этих документов компания не сможет легально учесть расходы.</div>
+            <span class="step-tip">✓ Чек самозанятому — сразу после поступления денег</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Акт выполненных работ (для ИП и крупных сделок)</div>
+            <div class="step-desc">Подтверждает, что услуга выполнена и принята. Обычно подписывается после выхода публикации и предоставления скриншота со статистикой охватов. Для небольших сделок часто достаточно переписки — но для серьёзных контрактов акт обязателен.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Что рекламодатель может запросить у вас</div>
+      <div class="tag-list" style="margin-bottom: 0;">
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>ФИО и ИНН</strong>Нужны для составления договора и проверки вашего статуса в базе ФНС.</div>
+        </div>
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Справка о постановке на учёт (самозанятые)</strong>Формируется в «Мой налог» за секунду. Подтверждает, что вы законно применяете пониженную ставку и что компании не нужно платить за вас НДФЛ.</div>
+        </div>
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Банковские реквизиты</strong>Номер карты или расчётного счёта. Счёт и карта должны быть оформлены на вас лично.</div>
+        </div>
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Скриншот статистики после публикации</strong>Охваты, просмотры, реакции — подтверждение, что реклама вышла. Обычно запрашивают через 24–72 часа после публикации.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout-dark">
+      <h3>Про маркировку рекламы</h3>
+      <p>С 2023 года каждый рекламный пост обязательно маркируется и передаётся в ЕРИР. Хорошая новость: у FitStars маркировку берёт на себя сам бренд. С другими рекламодателями этот вопрос нужно уточнять до публикации — подробно разбираем в основном уроке.</p>
+    </div>
+  </section>
+
+  <!-- 06. БЫСТРЫЙ СТАРТ -->
+  <section class="section section-alt" id="start">
+    <div class="section-label"><span class="section-num">06</span>Старт</div>
+    <h2 class="section-title"><span class="section-title-hl">Три шага, которые нужно сделать сейчас</span></h2>
+    <hr class="section-hr">
+
+    <div class="card">
+      <ol class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Оформите самозанятость</div>
+            <div class="step-desc">Скачайте «Мой налог», войдите через Госуслуги или по паспорту, выберите регион, подтвердите. Займёт 15 минут. После этого вы можете официально принимать оплату от брендов.</div>
+            <span class="step-tip">✓ Ссылка на приложение: npd.nalog.ru/app</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Сохраните справку о постановке на учёт</div>
+            <div class="step-desc">В «Мой налог» → «Прочее» → «Справки» → «Справка о постановке на учёт». Сохраните PDF — некоторые рекламодатели запрашивают её при первой сделке.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Выдайте первый чек при следующей оплате</div>
+            <div class="step-desc">Как только получите деньги от рекламодателя — откройте «Мой налог», нажмите «Новая продажа», введите сумму и описание услуги (например, «Услуги по размещению рекламных материалов»), отправьте чек заказчику. Это занимает две минуты.</div>
+            <span class="step-tip">✓ Чек — сразу после поступления денег, не откладывать</span>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="key-point">
+      <div class="key-point-label">Если пока нет рекламодателей</div>
+      <p>Оформляйте самозанятость всё равно — сейчас, пока есть время разобраться без спешки. Когда появится первая сделка, вы уже будете готовы и не потеряете её из-за отсутствия статуса.</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const sectionIds = ['why','compare','naloghpd','ip','docs','start'];
+
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 64, behavior: 'smooth' });
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const idx = sectionIds.indexOf(id);
+    if (idx > -1) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  }
+
+  window.addEventListener('scroll', () => {
+    const offset = 120;
+    let current = 0;
+    sectionIds.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY + offset >= el.offsetTop) current = i;
+    });
+    document.querySelectorAll('.nav-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === current);
+    });
+  });
+</script>
+</body>
+</html>
