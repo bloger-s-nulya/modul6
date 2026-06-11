@@ -46,8 +46,8 @@ body {
 
 /* ── Shell ── */
 .shell {
-  width: 100%; max-width: 680px;
-  padding: 40px 24px 80px;
+  width: 100%; max-width: 820px;
+  padding: 32px 32px 60px;
 }
 
 /* ── Header ── */
@@ -86,8 +86,8 @@ body {
   background: var(--bg);
   border: 1.5px solid var(--line);
   border-radius: 24px;
-  padding: 32px 32px 28px;
-  margin-bottom: 16px;
+  padding: 24px 28px 20px;
+  margin-bottom: 12px;
   animation: fadeSlide .35s ease;
 }
 @keyframes fadeSlide {
@@ -106,10 +106,10 @@ body {
 }
 
 /* ── Options ── */
-.options { display: flex; flex-direction: column; gap: 10px; }
+.options { display: flex; flex-direction: column; gap: 8px; }
 .option {
   display: flex; align-items: flex-start; gap: 14px;
-  padding: 14px 18px; border-radius: 14px;
+  padding: 11px 16px; border-radius: 12px;
   border: 1.5px solid var(--line);
   background: var(--bg);
   cursor: pointer;
@@ -438,19 +438,19 @@ const questions = [
     ]
   },
   {
-    q: "Блогер из смежной ниши предлагает взаимный пиар. У него 50К подписчиков, у тебя 800.",
+    q: "Блогер из смежной ниши предлагает взаимный пиар. У него примерно столько же подписчиков — около 300, у тебя 800.",
     opts: [
-      { l:"А", t:"Отказываюсь — аудитории несопоставимы, это невыгодно мне" },
-      { l:"Б", t:"Соглашаюсь — главное, что тематика совпадает" },
-      { l:"В", t:"Прошу деньги за упоминание" },
-      { l:"Г", t:"Соглашаюсь, но прошу его упомянуть меня дважды" }
+      { l:"А", t:"Соглашаюсь — даже небольшая, но релевантная аудитория ценна" },
+      { l:"Б", t:"Отказываюсь — у него слишком мало подписчиков, смысла нет" },
+      { l:"В", t:"Прошу деньги за упоминание — у меня аудитория больше" },
+      { l:"Г", t:"Жду, пока найдётся кто-то покрупнее" }
     ],
-    correct: 1,
+    correct: 0,
     fb: [
-      "Зря. Для маленького блога ВП с большим — это лифт, а не невыгодная сделка.",
-      "Верно! Совпадение тематики и аудитории важнее цифр. Это шанс — бери.",
-      "За ВП деньги не просят. Это обмен, а не коммерческое размещение.",
-      "Условия ВП не торгуются таким образом. Соглашайся или нет — без дополнительных требований."
+      "Верно! Рекомендация от живого человека своим 300 знакомым часто работает лучше, чем охват у миллионника. Доверие важнее масштаба.",
+      "Зря. Небольшая, но тематически близкая аудитория — это именно те люди, которые нужны. Цифры здесь не главное.",
+      "За взаимный пиар деньги не просят — это обмен, а не коммерческое размещение.",
+      "Идеальный партнёр появится нескоро. А этот — уже здесь, с живой аудиторией по теме."
     ]
   },
   {
@@ -486,19 +486,19 @@ const questions = [
     ]
   },
   {
-    q: "Ты заработал первые деньги на рекламе. Самозанятым не являешься.",
+    q: "Ты заработала первые деньги на рекламе. Самозанятой пока не являешься.",
     opts: [
-      { l:"А", t:"Небольшие суммы можно не оформлять — до меня не дойдут" },
-      { l:"Б", t:"Работаю через друга с ИП — так проще" },
-      { l:"В", t:"Регистрируюсь как самозанятый до следующего заказа" },
-      { l:"Г", t:"Открываю ИП — самозанятость несерьёзно" }
+      { l:"А", t:"Регистрируюсь как самозанятая — это быстро и легально" },
+      { l:"Б", t:"Небольшие суммы можно не оформлять, пока их мало" },
+      { l:"В", t:"Работаю через подругу с ИП — так проще" },
+      { l:"Г", t:"Открою ИП — самозанятость несерьёзно" }
     ],
-    correct: 2,
+    correct: 0,
     fb: [
-      "Налоговая не спрашивает про «небольшие». Легальная работа начинается с первого рубля.",
-      "Схема через третьих лиц создаёт юридические риски для обеих сторон. Не стоит.",
-      "Правильно! Самозанятость оформляется за 10 минут в приложении «Мой налог». Это основа легального блогерства.",
-      "Самозанятость — отличный старт. ИП когда понадобится — перейдёшь. Не усложняй начало."
+      "Отлично! Самозанятость оформляется за 10 минут в приложении «Мой налог». Это основа легальной работы с рекламодателями.",
+      "Налоговая не спрашивает про «небольшие». Легальная работа начинается с первого рубля — оформляйся.",
+      "Схема через третьих лиц создаёт юридические риски для обеих сторон. Самозанятость — твой собственный чистый статус.",
+      "Самозанятость — отличный и достаточный старт. ИП когда реально понадобится — перейдёшь. Не усложняй начало."
     ]
   }
 ];
@@ -573,45 +573,61 @@ function render() {
 }
 
 function choose(idx) {
-  if (answered) return;
-  answered = true;
-
   const q = questions[current];
   const isCorrect = idx === q.correct;
   const opts = document.querySelectorAll('.option');
   const feedback = document.getElementById('feedback');
+  const btn = opts[idx];
 
-  opts.forEach((btn, i) => {
-    btn.classList.add('locked');
-    if (i === q.correct) btn.classList.add('correct');
-    else if (i === idx && !isCorrect) btn.classList.add('wrong');
-    else if (i !== q.correct) btn.classList.add('dimmed');
-  });
+  if (btn.classList.contains('locked') || btn.classList.contains('correct') || btn.classList.contains('wrong-locked')) return;
 
   if (isCorrect) {
-    score++;
-    answers.push(true);
+    // Lock everything, mark correct
+    opts.forEach(b => b.classList.add('locked'));
+    btn.classList.add('correct');
+    opts.forEach((b, i) => { if (i !== idx) b.classList.add('dimmed'); });
+
+    if (!answered) {
+      score++;
+      answers.push(true);
+    } else {
+      // already pushed false earlier — keep that
+    }
+    answered = true;
+
     feedback.className = 'feedback show correct-fb';
     feedback.innerHTML = `<span class="feedback-icon">✅</span> ${q.fb[idx]}`;
-    spawnBurst(opts[idx]);
+    spawnBurst(btn);
     launchConfetti();
+    document.getElementById('progressScore').textContent = `${score} правильных`;
+    document.getElementById('nextBtn').classList.add('show');
   } else {
-    answers.push(false);
-    feedback.className = 'feedback show wrong-fb';
-    feedback.innerHTML = `<span class="feedback-icon">🤔</span> ${q.fb[idx]}`;
-  }
+    // Wrong — show feedback, lock just this button, let them retry
+    if (!answered) {
+      answers.push(false);
+      answered = 'wrong'; // mark that first attempt was wrong (no score)
+    }
+    btn.classList.add('wrong');
+    // brief shake then lock this option
+    setTimeout(() => {
+      btn.classList.add('wrong-locked');
+      btn.classList.remove('wrong');
+      btn.style.opacity = '0.35';
+      btn.classList.add('locked');
+    }, 500);
 
-  document.getElementById('progressScore').textContent = `${score} правильных`;
-  document.getElementById('nextBtn').classList.add('show');
+    feedback.className = 'feedback show wrong-fb';
+    feedback.innerHTML = `<span class="feedback-icon">🤔</span> ${q.fb[idx]} <em style="display:block;margin-top:6px;opacity:.7;font-size:12px;">Попробуй другой вариант →</em>`;
+  }
 }
 
 function next() {
   current++;
+  answered = false;
   if (current >= questions.length) {
     showResult();
   } else {
     render();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
@@ -665,7 +681,6 @@ function showResult() {
   `;
 
   if (score >= 9) launchConfetti(true);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function restart() {
@@ -675,7 +690,6 @@ function restart() {
   document.getElementById('resultScreen').classList.remove('show');
   document.getElementById('resultScreen').innerHTML = '';
   render();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ══════════════════════════════════════════
