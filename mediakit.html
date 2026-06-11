@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Медиакит с нуля — Гайд для начинающих блогеров</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #FFFFFF;
+    --bg-soft:       #F5F6F7;
+    --bg-muted:      #EDEEF0;
+    --ink:           #1A1A1A;
+    --ink-2:         #4A4D52;
+    --ink-3:         #8A8E94;
+    --line:          #E4E6E9;
+    --accent:        #C4F542;
+    --accent-strong: #B8E83D;
+    --accent-ink:    #0F1A00;
+    --font-display: 'Unbounded', ui-sans-serif, system-ui, sans-serif;
+    --font-body:    'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-pill: 999px;
+    --shadow-sm: 0 1px 2px rgba(16,18,20,.04), 0 1px 1px rgba(16,18,20,.03);
+    --shadow-md: 0 4px 16px rgba(16,18,20,.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--bg);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 780px; margin: 0 auto; padding: 64px 32px 120px; }
+
+  /* Header */
+  .guide-header { margin-bottom: 64px; }
+  .guide-header .eyebrow {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-3); margin-bottom: 16px;
+    display: block;
+  }
+  .guide-header h1 {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: clamp(28px, 4vw, 44px); line-height: 1.1; letter-spacing: -0.02em;
+    margin: 0 0 20px;
+  }
+  .guide-header .lead {
+    font-size: 18px; line-height: 1.6; color: var(--ink-2);
+    max-width: 640px; margin: 0 0 28px;
+  }
+  .chips-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    background: var(--bg-soft); border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    font-size: 13px; font-weight: 500; color: var(--ink-2);
+  }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
+  .chip-dot.green { background: var(--accent); }
+  .btn-template {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 24px;
+    background: var(--accent); color: var(--accent-ink);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body); font-weight: 700; font-size: 15px;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background .15s ease, transform .08s ease;
+    margin-top: 8px;
+  }
+  .btn-template:hover { background: var(--accent-strong); }
+  .btn-template:active { transform: translateY(1px); }
+  .btn-template-icon { font-size: 18px; line-height: 1; }
+
+  /* TOC */
+  .toc {
+    background: var(--bg-soft);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    margin-bottom: 64px;
+  }
+  .toc-label {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3); margin-bottom: 16px;
+  }
+  .toc ol { margin: 0; padding: 0 0 0 20px; display: grid; gap: 6px; }
+  .toc li { font-size: 15px; font-weight: 500; color: var(--ink); }
+  .toc a { color: var(--ink); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* Section */
+  .section {
+    margin-bottom: 72px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+  }
+  .section-title-block {
+    display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start;
+    margin-bottom: 24px;
+  }
+  .stamp {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 7px 13px;
+    background: var(--accent); color: var(--accent-ink);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    white-space: nowrap; margin-top: 8px;
+  }
+  .stamp.muted {
+    background: var(--bg-muted); color: var(--ink-3);
+  }
+  .section h2 {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: clamp(20px, 3vw, 28px); line-height: 1.15; letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .section-intro { color: var(--ink-2); margin: 0 0 32px; font-size: 15px; line-height: 1.65; }
+
+  /* Key point */
+  .key-point {
+    display: flex; gap: 16px;
+    background: var(--bg-soft);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+    border-left: 3px solid var(--accent);
+    margin: 24px 0;
+  }
+  .key-point-label {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3);
+    white-space: nowrap; padding-top: 3px; flex-shrink: 0;
+  }
+  .key-point p { margin: 0; font-weight: 500; font-size: 15px; }
+
+  /* Block card */
+  .card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    box-shadow: var(--shadow-sm);
+    margin: 16px 0;
+  }
+  .card-label {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px;
+  }
+  .card h3 {
+    font-family: var(--font-body); font-weight: 700;
+    font-size: 17px; margin: 0 0 10px;
+  }
+  .card p { margin: 0 0 8px; color: var(--ink-2); font-size: 14px; }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* Steps */
+  .steps { counter-reset: step; display: grid; gap: 0; padding: 0; margin: 0; list-style: none; }
+  .steps li {
+    counter-increment: step;
+    display: grid; grid-template-columns: 36px 1fr; gap: 16px; align-items: start;
+    padding: 16px 0; border-bottom: 1px solid var(--line);
+  }
+  .steps li:last-child { border-bottom: none; }
+  .steps li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    color: var(--ink-3); padding-top: 2px;
+  }
+  .step-title { font-weight: 700; margin-bottom: 4px; font-size: 15px; }
+  .step-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+  /* Highlight */
+  .hl {
+    background: var(--accent); color: var(--accent-ink);
+    padding: 1px 7px; border-radius: 5px; font-weight: 600;
+    box-decoration-break: clone; -webkit-box-decoration-break: clone;
+  }
+
+  /* Block: newbie tip */
+  .newbie-tip {
+    background: var(--bg-soft);
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    margin: 20px 0;
+    position: relative;
+  }
+  .newbie-tip-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent-ink);
+    background: var(--accent); border-radius: var(--radius-sm);
+    padding: 4px 10px; margin-bottom: 10px;
+  }
+  .newbie-tip p { margin: 0; font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .newbie-tip p + p { margin-top: 8px; }
+  .newbie-tip strong { color: var(--ink); font-weight: 600; }
+
+  /* Example box */
+  .example-box {
+    background: var(--ink);
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .example-box-label {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #6B7280; margin-bottom: 10px;
+  }
+  .example-box p {
+    margin: 0; color: #E5E7EB; font-size: 14px; line-height: 1.65;
+    font-style: italic;
+  }
+  .example-box p + p { margin-top: 8px; }
+
+  /* Prompt block */
+  .prompt-block {
+    background: #0F1A00;
+    border: 1px solid rgba(196,245,66,.25);
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .prompt-block-label {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #7B9A2A; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .prompt-block-label::before {
+    content: '▶'; font-size: 9px; color: var(--accent);
+  }
+  .prompt-block p {
+    margin: 0; color: #D4F58A; font-family: var(--font-mono);
+    font-size: 13px; line-height: 1.7;
+  }
+  .prompt-block p + p { margin-top: 10px; color: #8A8E94; font-style: italic; font-family: var(--font-body); font-size: 13px; }
+
+  /* Section blocks list */
+  .blocks-grid { display: grid; gap: 12px; }
+  .block-row {
+    display: grid; grid-template-columns: 120px 1fr; gap: 16px;
+    padding: 16px 20px;
+    background: var(--bg); border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    align-items: start;
+  }
+  .block-row.required { border-left: 3px solid var(--accent); }
+  .block-row.optional { border-left: 3px solid var(--bg-muted); }
+  .block-tag {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 4px 8px; border-radius: 6px; width: fit-content; margin-top: 2px;
+  }
+  .tag-required { background: var(--accent); color: var(--accent-ink); }
+  .tag-optional { background: var(--bg-muted); color: var(--ink-3); }
+  .block-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .block-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+
+  /* Checklist */
+  .checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .checklist li {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 12px 16px;
+    background: var(--bg); border: 1px solid var(--line);
+    border-radius: var(--radius-md); font-size: 14px;
+  }
+  .check-box {
+    flex: 0 0 20px; width: 20px; height: 20px; border-radius: 6px;
+    border: 1.5px solid var(--line); margin-top: 1px; background: var(--bg-soft);
+  }
+
+  /* Dark callout */
+  .callout-dark {
+    background: var(--ink); color: #fff;
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    margin: 32px 0;
+  }
+  .callout-dark h3 {
+    font-family: var(--font-display); font-weight: 500;
+    margin: 0 0 8px; font-size: 20px;
+  }
+  .callout-dark p { margin: 0; color: #CFD1D4; font-size: 14px; line-height: 1.65; }
+
+  /* Divider */
+  .divider {
+    display: flex; align-items: center; gap: 16px;
+    margin: 32px 0; color: var(--ink-3);
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+
+  /* Tools row */
+  .tools-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 20px 0; }
+  .tool-card {
+    background: var(--bg-soft); border: 1px solid var(--line);
+    border-radius: var(--radius-md); padding: 18px 20px;
+  }
+  .tool-name { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .tool-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; margin-bottom: 8px; }
+  .tool-badge {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 4px;
+  }
+  .badge-free { background: rgba(196,245,66,0.2); color: #3D6600; }
+  .badge-paid { background: var(--bg-muted); color: var(--ink-3); }
+
+  /* Footer */
+  .guide-footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .guide-footer p {
+    font-family: var(--font-mono); font-size: 11px; color: var(--ink-3);
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 40px 20px 80px; }
+    .section-title-block { grid-template-columns: 1fr; gap: 10px; }
+    .stamp { margin-top: 0; }
+    .block-row { grid-template-columns: 1fr; gap: 8px; }
+    .toc { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header class="guide-header">
+    <span class="eyebrow">Гайд · Блогер с нуля · 2026</span>
+    <h1>Медиакит для блогера,<br>у которого ещё нет кейсов</h1>
+    <p class="lead">Пошаговый разбор: что писать, когда нечего показать. Как собрать документ, который убедит рекламодателя — даже если вы только начинаете.</p>
+    <div class="chips-row">
+      <span class="chip"><span class="chip-dot green"></span> Для новичков</span>
+      <span class="chip"><span class="chip-dot"></span> ~20 минут чтения</span>
+      <span class="chip"><span class="chip-dot"></span> С примерами текстов</span>
+      <span class="chip"><span class="chip-dot"></span> Промпты для ИИ</span>
+    </div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:4px;">
+      <a class="btn-template" href="https://docs.google.com/presentation/d/1R1kSikChgCONJSk6e1oXS7Jo0AiMc5Wf/edit?usp=sharing&ouid=115198297137637116586&rtpof=true&sd=true" target="_blank" rel="noopener">
+        <span class="btn-template-icon">↗</span> Открыть шаблон в Google Slides
+      </a>
+      <a class="btn-template" href="https://docs.google.com/presentation/d/1R1kSikChgCONJSk6e1oXS7Jo0AiMc5Wf/export/pptx" style="background:var(--bg-muted); color:var(--ink);">
+        <span class="btn-template-icon">⬇</span> Скачать .pptx
+      </a>
+    </div>
+  </header>
+
+  <!-- ===== TOC ===== -->
+  <nav class="toc">
+    <div class="toc-label">Содержание</div>
+    <ol>
+      <li><a href="#what">Что такое медиакит и зачем он вам прямо сейчас</a></li>
+      <li><a href="#structure">Структура: что должно быть, что можно пропустить</a></li>
+      <li><a href="#no-cases">Как заполнить блоки, когда кейсов нет</a></li>
+      <li><a href="#text">Что писать в каждом блоке: примеры текстов</a></li>
+      <li><a href="#tech">Как собрать медиакит технически</a></li>
+      <li><a href="#ai">Промпты для ChatGPT и Claude</a></li>
+      <li><a href="#update">Когда и как обновлять</a></li>
+      <li><a href="#checklist">Финальный чек-лист перед отправкой</a></li>
+    </ol>
+  </nav>
+
+  <!-- ===== 01. ЧТО И ЗАЧЕМ ===== -->
+  <section class="section" id="what">
+    <div class="section-title-block">
+      <span class="stamp">01</span>
+      <h2>Что такое медиакит и зачем он вам прямо сейчас</h2>
+    </div>
+    <p class="section-intro">Медиакит — это ваше рекламное резюме. Один документ, который отвечает на все вопросы потенциального рекламодателя до первого звонка.</p>
+
+    <div class="key-point">
+      <div class="key-point-label">Главное</div>
+      <p>Медиакит не доказывает, что вы большой. Он доказывает, что вы серьёзный. Рекламодатель выбирает между «профессионал с маленькой аудиторией» и «любитель с большой» — и часто побеждает первый.</p>
+    </div>
+
+    <p>Рекламодатель получает десятки запросов в неделю. Без медиакита вы заставляете его задавать уточняющие вопросы — и это раздражает. С медиакитом вы сразу выглядите как человек, которому можно доверить деньги.</p>
+
+    <p><strong>Когда делать медиакит?</strong> Сразу. Не после первой тысячи подписчиков, не после первого кейса. Наличие медиакита — это само по себе сигнал зрелости. Заполните то, что есть, и оставьте место для того, чего пока нет.</p>
+
+    <div class="callout-dark">
+      <h3>Медиакит — живой документ</h3>
+      <p>Не пытайтесь сделать его идеальным с первого раза. Версия 1.0 с честными данными лучше, чем версия 2.0, которую вы так и не отправили.</p>
+    </div>
+  </section>
+
+  <!-- ===== 02. СТРУКТУРА ===== -->
+  <section class="section" id="structure">
+    <div class="section-title-block">
+      <span class="stamp">02</span>
+      <h2>Структура: что обязательно, что можно пропустить</h2>
+    </div>
+    <p class="section-intro">Медиакит не должен быть длиннее 1–2 страниц. Рекламодатель читает его за 90 секунд. Держите только то, что помогает принять решение.</p>
+
+    <div class="blocks-grid">
+      <div class="block-row required">
+        <div><span class="block-tag tag-required">Обязательно</span></div>
+        <div>
+          <div class="block-title">О вас и блоге</div>
+          <div class="block-desc">2–3 предложения: кто вы, о чём пишете, для кого. Не биография, а позиционирование.</div>
+        </div>
+      </div>
+      <div class="block-row required">
+        <div><span class="block-tag tag-required">Обязательно</span></div>
+        <div>
+          <div class="block-title">Статистика аудитории</div>
+          <div class="block-desc">Подписчики, охваты, вовлечённость. Демография — пол, возраст, география. Данные из скриншотов аналитики, не на глаз.</div>
+        </div>
+      </div>
+      <div class="block-row required">
+        <div><span class="block-tag tag-required">Обязательно</span></div>
+        <div>
+          <div class="block-title">Форматы рекламы и условия</div>
+          <div class="block-desc">Что вы предлагаете: обзор, интеграция, сторис, пост. Стоимость или диапазон. Что не берёте.</div>
+        </div>
+      </div>
+      <div class="block-row required">
+        <div><span class="block-tag tag-required">Обязательно</span></div>
+        <div>
+          <div class="block-title">Контакты</div>
+          <div class="block-desc">Email, мессенджер, ссылка на основной канал. Коротко и кликабельно.</div>
+        </div>
+      </div>
+      <div class="block-row optional">
+        <div><span class="block-tag tag-optional">Если есть</span></div>
+        <div>
+          <div class="block-title">Кейсы и примеры работ</div>
+          <div class="block-desc">Скриншоты интеграций, цифры результатов. Если кейсов нет — замените разделом «Примеры контента».</div>
+        </div>
+      </div>
+      <div class="block-row optional">
+        <div><span class="block-tag tag-optional">Если есть</span></div>
+        <div>
+          <div class="block-title">Отзывы и логотипы партнёров</div>
+          <div class="block-desc">Даже 1–2 цитаты от довольных рекламодателей работают лучше, чем пустой раздел.</div>
+        </div>
+      </div>
+      <div class="block-row optional">
+        <div><span class="block-tag tag-optional">Если есть</span></div>
+        <div>
+          <div class="block-title">Упоминания в СМИ / достижения</div>
+          <div class="block-desc">Публикации, награды, интервью. Если нет — пропустите, не нужно придумывать.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 03. КАК ЗАПОЛНИТЬ БЕЗ КЕЙСОВ ===== -->
+  <section class="section" id="no-cases">
+    <div class="section-title-block">
+      <span class="stamp">03</span>
+      <h2>Как заполнить медиакит, когда кейсов нет</h2>
+    </div>
+    <p class="section-intro">У каждого начинающего блогера одна и та же проблема: нет опыта сотрудничества — нечего показать. Вот как это решить честно.</p>
+
+    <div class="card">
+      <div class="card-label">Замена кейсам #1</div>
+      <h3>Примеры вашего контента</h3>
+      <p>Сделайте раздел «Как выглядит моя реклама» — покажите 2–3 поста, которые могли бы быть рекламными. Напишите нативный обзор любимого продукта сами, как образец стиля. Подпишите: «Пример нативной интеграции в моём формате».</p>
+      <p>Рекламодатель видит не то, что вы сделали, а то, <em>как</em> вы умеете делать. Этого достаточно для первого решения.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Замена кейсам #2</div>
+      <h3>Динамика роста вместо абсолютных цифр</h3>
+      <p>Если подписчиков мало, делайте акцент на темпе: «Канал вырос с 0 до 800 подписчиков за 3 месяца без платного продвижения», «Вовлечённость 14% при среднем по нише 3–5%».</p>
+      <p>Растущая аудитория интереснее застывшей большой — рекламодатели это знают.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Замена кейсам #3</div>
+      <h3>Бесплатное сотрудничество как первый кейс</h3>
+      <p>Напишите 2–3 небольшим брендам в вашей нише и предложите сделать бесплатный обзор в обмен на продукт и право использовать результат в портфолио. После — у вас есть кейс с реальными цифрами.</p>
+    </div>
+
+    <div class="newbie-tip">
+      <div class="newbie-tip-badge">Лайфхак для новичков</div>
+      <p>Никогда не пишите «кейсов пока нет» или «мы только начинаем». Вместо этого — <strong>уберите этот блок полностью</strong> и добавьте раздел «Мой контент» с лучшими примерами постов. Пустое место хуже честного отсутствия раздела.</p>
+    </div>
+
+    <div class="key-point">
+      <div class="key-point-label">Правило</div>
+      <p>Честность работает лучше преувеличения. Рекламодатель проверит цифры. Завышенные данные уничтожают доверие навсегда — скромные, но реальные его строят.</p>
+    </div>
+  </section>
+
+  <!-- ===== 04. ЧТО ПИСАТЬ ===== -->
+  <section class="section" id="text">
+    <div class="section-title-block">
+      <span class="stamp">04</span>
+      <h2>Что писать в каждом блоке: примеры текстов</h2>
+    </div>
+    <p class="section-intro">Конкретные формулировки для каждого раздела — с примером «плохо» и «хорошо».</p>
+
+    <div class="card">
+      <div class="card-label">Блок «О вас»</div>
+      <h3>Позиционирование за 2–3 предложения</h3>
+      <p>Не биография, а ответ на вопрос: «Почему рекламодателю выгодно работать именно с вами?»</p>
+    </div>
+
+    <div class="example-box">
+      <div class="example-box-label">❌ Слабо</div>
+      <p>«Меня зовут Аня, я веду Telegram-канал о красоте и косметике. Пишу обзоры на разные продукты.»</p>
+    </div>
+
+    <div class="example-box" style="background: #0F2A00; border: 1px solid rgba(196,245,66,.2);">
+      <div class="example-box-label" style="color: #7B9A2A;">✓ Сильно</div>
+      <p style="color: #D4F58A; font-style: normal;">«Веду Telegram-канал "Честная косметика" для женщин 25–35 лет, которые устали от рекламных обзоров. Тестирую продукты лично, публикую реальные фото до/после. Аудитория ценит честность: вовлечённость 12%, 60% читателей — из Москвы и Петербурга.»</p>
+    </div>
+
+    <div class="divider">Статистика</div>
+
+    <div class="card">
+      <div class="card-label">Блок «Статистика»</div>
+      <h3>Какие цифры указывать и как их подать</h3>
+      <p>Скриншот аналитики из личного кабинета — обязательно. Без скрина цифры не убеждают.</p>
+      <p>Если аудитория небольшая, выносите в заголовок самый сильный показатель — например, вовлечённость или прирост.</p>
+    </div>
+
+    <div class="newbie-tip">
+      <div class="newbie-tip-badge">Что брать из аналитики</div>
+      <p><strong>Telegram:</strong> охват публикаций (не подписчики), ERR, число репостов.</p>
+      <p><strong>ВКонтакте:</strong> среднее число просмотров поста, реакции, ER.</p>
+      <p><strong>YouTube:</strong> среднее время просмотра, CTR превью, число подписчиков.</p>
+      <p><strong>Instagram/Reels:</strong> охват, сохранения, просмотры видео.</p>
+    </div>
+
+    <div class="divider">Форматы и цены</div>
+
+    <div class="card">
+      <div class="card-label">Блок «Форматы и цены»</div>
+      <h3>Как описать услуги</h3>
+      <p>Перечислите 3–4 конкретных формата с ценой или диапазоном. Если не уверены в цене — поставьте «от» и добавьте строчку «Финальная стоимость обсуждается индивидуально».</p>
+    </div>
+
+    <div class="example-box" style="background: #0F2A00; border: 1px solid rgba(196,245,66,.2);">
+      <div class="example-box-label" style="color: #7B9A2A;">✓ Пример структуры</div>
+      <p style="color: #D4F58A; font-style: normal;">
+        Нативный пост — от 3 000 ₽<br>
+        Обзорный пост с фото — от 5 000 ₽<br>
+        Серия из 3 постов — от 12 000 ₽<br>
+        Вечный пост (без удаления) — +30% к стоимости
+      </p>
+      <p>Не берусь за: казино, МФО, средства для похудения с недоказанным составом.</p>
+    </div>
+  </section>
+
+  <!-- ===== 05. ТЕХНИЧЕСКИ ===== -->
+  <section class="section" id="tech">
+    <div class="section-title-block">
+      <span class="stamp">05</span>
+      <h2>Как собрать медиакит технически</h2>
+    </div>
+    <p class="section-intro">Три способа — выберите тот, который запустите сегодня, а не тот, который сделаете идеально потом.</p>
+
+    <div class="tools-row" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="tool-card" style="border: 2px solid var(--accent); position: relative;">
+        <div style="position: absolute; top: -10px; left: 16px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 4px;">РЕКОМЕНДУЕМ</div>
+        <div class="tool-name">Способ 1 — Наш шаблон</div>
+        <div class="tool-desc">Скачайте готовый .pptx, вставьте свои данные и скриншоты. Быстрее всего — структура и дизайн уже готовы.</div>
+        <span class="tool-badge badge-free">Бесплатно</span>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Способ 2 — Canva</div>
+        <div class="tool-desc">Готовые шаблоны, перетаскивание блоков, выгрузка в PDF. 30–60 минут с нуля. Ищите «Media Kit» или «Press Kit».</div>
+        <span class="tool-badge badge-free">Бесплатно</span>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Способ 3 — ChatGPT → PPTX</div>
+        <div class="tool-desc">ChatGPT Plus генерирует .pptx по промпту. Вы получаете файл — остаётся вставить скриншоты и фото.</div>
+        <span class="tool-badge badge-paid">ChatGPT Plus</span>
+      </div>
+    </div>
+
+    <div class="divider">Способ 1 — Наш шаблон</div>
+
+    <div class="card">
+      <div class="card-label">Самый быстрый старт</div>
+      <h3>Скачайте готовый шаблон и заполните своими данными</h3>
+      <p>Мы уже сделали структуру, дизайн и все нужные блоки: обложка, о блоге, статистика, форматы рекламы, примеры контента, контакты. Вам нужно только заменить тексты-заглушки своими данными и вставить скриншоты аналитики.</p>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <div>
+          <div class="step-title">Скачайте шаблон по кнопке ниже</div>
+          <div class="step-desc">Файл .pptx — открывается в PowerPoint, Google Slides или Keynote. Выберите удобную программу.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Замените все тексты-заглушки своими</div>
+          <div class="step-desc">Идите по слайдам по порядку: обложка → о блоге → статистика → форматы → контент → контакты. На каждом слайде подсказки прямо в тексте — что сюда написать.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Вставьте своё фото и скриншоты аналитики</div>
+          <div class="step-desc">Фото на обложке — в круглую рамку. Скриншоты из Telegram Stats / VK / YouTube Analytics — на слайд «Примеры контента» вместо карточки с подсказкой.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Скройте лишние платформы на обложке</div>
+          <div class="step-desc">Если у вас нет YouTube или Instagram — просто удалите иконку и подпись. Оставьте только те платформы, где реально ведёте блог.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Сохраните как PDF и проверьте на телефоне</div>
+          <div class="step-desc">Файл → Сохранить как → PDF. Откройте на телефоне — именно так рекламодатель скорее всего прочитает ваш медиакит. Убедитесь, что всё читается и ничего не съехало.</div>
+        </div>
+      </li>
+    </ol>
+
+    <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:8px;">
+      <a class="btn-template" href="https://docs.google.com/presentation/d/1R1kSikChgCONJSk6e1oXS7Jo0AiMc5Wf/edit?usp=sharing&ouid=115198297137637116586&rtpof=true&sd=true" target="_blank" rel="noopener">
+        <span class="btn-template-icon">↗</span> Открыть шаблон в Google Slides
+      </a>
+      <a class="btn-template" href="https://docs.google.com/presentation/d/1R1kSikChgCONJSk6e1oXS7Jo0AiMc5Wf/export/pptx" style="background:var(--bg-muted); color:var(--ink);">
+        <span class="btn-template-icon">⬇</span> Скачать .pptx
+      </a>
+    </div>
+
+    <div class="divider">Способ 2 — Canva</div>
+
+    <ol class="steps">
+      <li>
+        <div>
+          <div class="step-title">Откройте Canva и найдите шаблон</div>
+          <div class="step-desc">Поиск «media kit» или «медиакит». Выбирайте шаблоны с чистым макетом — 1–2 полосы, без перегруза декором. Лучше взять простой и заполнить хорошим текстом, чем яркий с пустыми блоками.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Замените placeholder-тексты своими</div>
+          <div class="step-desc">Идите по разделам: о себе, статистика, форматы, контакты. Вставьте скриншоты аналитики вместо стоковых иллюстраций — это главное доказательство ваших слов.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Добавьте своё фото и логотип канала</div>
+          <div class="step-desc">Лицо автора повышает доверие. Подойдёт качественное фото с телефона на нейтральном фоне.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Выгрузите в PDF и проверьте на телефоне</div>
+          <div class="step-desc">Все тексты видны, ссылки кликабельны, фото не пикселятся.</div>
+        </div>
+      </li>
+    </ol>
+
+    <div class="divider">Способ 3 — ChatGPT в PPTX</div>
+
+    <div class="card">
+      <div class="card-label">Для тех, кто не хочет возиться с дизайном</div>
+      <h3>Попросите ChatGPT сгенерировать файл .pptx</h3>
+      <p>ChatGPT Plus умеет создавать PowerPoint-файлы напрямую. Вы описываете содержание — он собирает структуру слайдов и отдаёт готовый файл для скачивания. После нужно вставить свои скриншоты и фото вручную.</p>
+    </div>
+
+    <div class="prompt-block">
+      <div class="prompt-block-label">Промпт для генерации PPTX в ChatGPT</div>
+      <p>Создай файл PowerPoint (.pptx) — медиакит для блогера. Оформление: светлый фон, минималистичный стиль, без лишнего декора.
+
+Структура слайдов:
+1. Титульный — имя блога, платформа, слоган
+2. О блоге — 2–3 предложения о нише и аудитории
+3. Статистика — подписчики, охваты, ER, демография
+4. Форматы рекламы — таблица или список: формат / описание / цена
+5. Примеры контента — 2–3 описания лучших постов (без картинок, добавлю сам)
+6. Контакты — email, мессенджер, ссылка на канал
+
+Мои данные:
+[вставьте свои данные из блоков выше]
+
+Сгенерируй файл и дай ссылку на скачивание.</p>
+    </div>
+
+    <div class="newbie-tip">
+      <div class="newbie-tip-badge">После генерации PPTX</div>
+      <p>ChatGPT сделает структуру и тексты, но не вставит ваши реальные скриншоты и фото. Откройте файл в PowerPoint или Google Slides и добавьте изображения вручную — это занимает 10–15 минут.</p>
+      <p><strong>Выгрузите в PDF</strong> перед отправкой рекламодателю: универсальный формат, открывается на любом устройстве без смещения блоков.</p>
+    </div>
+
+    <div class="newbie-tip">
+      <div class="newbie-tip-badge">Как отправлять — для всех способов</div>
+      <p><strong>PDF по ссылке</strong> — стандарт. Загрузите на Google Drive или Яндекс.Диск, отправьте ссылку. Не прикрепляйте файл к письму напрямую — корпоративные почты режут вложения.</p>
+    </div>
+  </section>
+
+  <!-- ===== 06. ПРОМПТЫ ===== -->
+  <section class="section" id="ai">
+    <div class="section-title-block">
+      <span class="stamp">06</span>
+      <h2>Промпты для ИИ: как написать медиакит с помощью ChatGPT или Claude</h2>
+    </div>
+    <p class="section-intro">ИИ не напишет медиакит за вас — но поможет превратить ваши сырые факты в убедительные тексты. Ниже готовые промпты под каждый блок.</p>
+
+    <div class="key-point">
+      <div class="key-point-label">Как работать</div>
+      <p>Сначала соберите факты о себе в заметках — цифры, ниша, форматы, ценности. Потом вставьте их в промпт. Чем больше реальных данных вы дадите ИИ, тем точнее получится результат.</p>
+    </div>
+
+    <div class="card" style="margin-top: 24px;">
+      <div class="card-label">Промпт #1 — Блок «О себе»</div>
+      <h3>Написать позиционирование блога</h3>
+    </div>
+    <div class="prompt-block">
+      <div class="prompt-block-label">Вставьте в ChatGPT или Claude</div>
+      <p>Я начинающий блогер. Мне нужен короткий текст для блока «О себе» в медиаките (2–3 предложения).
+
+Вот мои данные:
+— Платформа: [Telegram / ВКонтакте / YouTube]
+— Тема блога: [напишите свою тему]
+— Аудитория: [кто ваши читатели]
+— Главная ценность для читателей: [что они получают от вашего контента]
+— Уникальность: [чем вы отличаетесь от других блогеров в нише]
+
+Напиши профессиональный, но живой текст. Не начинай с «Меня зовут». Сделай акцент на пользе для рекламодателя: почему его аудитория пересекается с моей.</p>
+    </div>
+
+    <div class="card" style="margin-top: 24px;">
+      <div class="card-label">Промпт #2 — Статистика без цифр</div>
+      <h3>Подать скромные показатели убедительно</h3>
+    </div>
+    <div class="prompt-block">
+      <div class="prompt-block-label">Вставьте в ChatGPT или Claude</div>
+      <p>Помоги мне написать блок «Статистика» для медиакита, когда показатели пока скромные.
+
+Мои цифры:
+— Подписчиков: [число]
+— Среднее охваты постов: [число]
+— Вовлечённость (ER): [%]
+— Прирост за последний месяц: [число или %]
+— Демография: [пол, возраст, география — если знаете]
+
+Задача: написать текст, который честно представляет эти данные в выгодном свете. Упор не на абсолютные числа, а на качество аудитории и динамику роста. Максимум 5–6 строк.</p>
+    </div>
+
+    <div class="card" style="margin-top: 24px;">
+      <div class="card-label">Промпт #3 — Кейсов нет</div>
+      <h3>Заменить раздел с кейсами</h3>
+    </div>
+    <div class="prompt-block">
+      <div class="prompt-block-label">Вставьте в ChatGPT или Claude</div>
+      <p>У меня нет опыта платных рекламных интеграций. Помоги написать раздел медиакита, который заменит блок с кейсами и не выглядит пустым.
+
+Я могу предложить:
+— Примеры моих лучших постов (опишу темы)
+— Один-два органических обзора продуктов, которые я делал сам
+— Отзыв от подписчиков или знакомых, если есть
+
+Контекст:
+— Тема блога: [ваша тема]
+— Самый популярный пост: [опишите коротко]
+— Почему ваши читатели доверяют вашим рекомендациям: [ваш ответ]
+
+Напиши раздел «Мой контент» вместо «Кейсы». Тон: уверенный, без извинений за отсутствие опыта.</p>
+    </div>
+
+    <div class="card" style="margin-top: 24px;">
+      <div class="card-label">Промпт #4 — Весь медиакит сразу</div>
+      <h3>Черновик всего документа за один запрос</h3>
+    </div>
+    <div class="prompt-block">
+      <div class="prompt-block-label">Вставьте в ChatGPT или Claude</div>
+      <p>Напиши черновик медиакита для начинающего блогера. Кейсов рекламного сотрудничества нет. Нужны все блоки: о блоге, статистика, форматы рекламы с ценами, контакты.
+
+Мои данные:
+— Имя / псевдоним: [ваше]
+— Платформа: [ваша]
+— Тема: [ваша]
+— Аудитория: [описание]
+— Подписчиков: [число], охваты: [число], ER: [%]
+— Форматы, которые предлагаю: [перечислите]
+— Примерные цены: [укажите]
+— Что не рекламирую: [ваш список]
+— Контакты: [email / Telegram]
+
+Структура: короткий заголовок для каждого блока, текст без воды. Объём — уместится на 1 странице A4. Стиль: профессиональный, без пафоса.</p>
+    </div>
+
+    <div class="newbie-tip">
+      <div class="newbie-tip-badge">После работы с ИИ</div>
+      <p>Обязательно перечитайте результат вслух. ИИ иногда делает текст слишком формальным или вставляет обороты, которые звучат не по-русски. Исправьте всё, что не ваш голос — рекламодатель почувствует разницу.</p>
+    </div>
+  </section>
+
+  <!-- ===== 07. ОБНОВЛЕНИЕ ===== -->
+  <section class="section" id="update">
+    <div class="section-title-block">
+      <span class="stamp">07</span>
+      <h2>Когда и как обновлять медиакит</h2>
+    </div>
+    <p class="section-intro">Устаревший медиакит хуже его отсутствия. Рекламодатель видит цифры полугодовой давности — и сомневается во всём остальном.</p>
+
+    <ol class="steps">
+      <li>
+        <div>
+          <div class="step-title">Раз в месяц — статистика</div>
+          <div class="step-desc">Обновите число подписчиков, охваты, ER. Занимает 5 минут. Поставьте себе напоминание на первое число каждого месяца.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">После каждой интеграции — кейсы</div>
+          <div class="step-desc">Сразу после выхода рекламного поста зафиксируйте цифры: охват, переходы по ссылке, комментарии. Через месяц вы их забудете.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">При изменении цен — прайс</div>
+          <div class="step-desc">Повышаете цены? Обновите медиакит до того, как начнёте называть новые цифры в переписке. Расхождение между документом и словами — красный флаг для рекламодателя.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Раз в квартал — общий аудит</div>
+          <div class="step-desc">Перечитайте медиакит целиком. Убедитесь, что позиционирование по-прежнему актуально, фото не устарело, ссылки работают.</div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ===== 08. ЧЕК-ЛИСТ ===== -->
+  <section class="section" id="checklist">
+    <div class="section-title-block">
+      <span class="stamp">08</span>
+      <h2>Финальный чек-лист перед отправкой</h2>
+    </div>
+    <p class="section-intro">Пройдите этот список перед тем, как отправить медиакит рекламодателю. Каждый пункт — реальная причина отказа.</p>
+
+    <ul class="checklist">
+      <li>
+        <div class="check-box"></div>
+        <div>Все цифры — из скриншотов аналитики, не из памяти</div>
+      </li>
+      <li>
+        <div class="check-box"></div>
+        <div>Есть моё фото или аватарка блога — не стоковая картинка</div>
+      </li>
+      <li>
+        <div class="check-box"></div>
+        <div>Позиционирование написано для рекламодателя, а не для читателей</div>
+      </li>
+      <li>
+        <div class="check-box"></div>
+        <div>Есть конкретные форматы рекламы с ценами или диапазонами</div>
+      </li>
+      <li>
+        <div class="check-box"></div>
+        <div>Указано, что я <em>не</em> рекламирую — это повышает доверие</div>
+      </li>
+      <li>
+        <div class="check-box"></div>
+        <div>Контакты — в конце документа, не только в начале</div>
+      </li>
+      <li>
+        <div class="check-box"></div>
+        <div>PDF открывается без ошибок на телефоне</div>
+      </li>
+      <li>
+        <div class="check-box"></div>
+        <div>Весь текст прочитан вслух — нет канцеляризмов и «воды»</div>
+      </li>
+      <li>
+        <div class="check-box"></div>
+        <div>Объём — не больше 2 страниц A4 или 1 разворота</div>
+      </li>
+      <li>
+        <div class="check-box"></div>
+        <div>Дата последнего обновления указана внизу документа</div>
+      </li>
+    </ul>
+
+    <div class="callout-dark" style="margin-top: 40px;">
+      <h3>Главное правило</h3>
+      <p>Отправить несовершенный медиакит сегодня лучше, чем идеальный — никогда. Первая версия — это инструмент. Она начнёт работать, только когда окажется в руках рекламодателя.</p>
+    </div>
+  </section>
+
+  <footer class="guide-footer">
+    <p>Медиакит с нуля · Гайд для начинающих блогеров · 2026</p>
+    <p>На основе материалов Perfluence и Bloggers.Tools</p>
+  </footer>
+
+</div>
+</body>
+</html>
