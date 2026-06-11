@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Бонус — Как зарабатывать на своих продуктах в блоге</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #FFFFFF;
+    --bg-soft:       #F5F6F7;
+    --bg-muted:      #EDEEF0;
+    --ink:           #1A1A1A;
+    --ink-2:         #4A4D52;
+    --ink-3:         #8A8E94;
+    --line:          #E4E6E9;
+    --accent:        #C4F542;
+    --accent-strong: #B8E83D;
+    --accent-ink:    #0F1A00;
+    --font-display:  'Unbounded', ui-sans-serif, system-ui, sans-serif;
+    --font-body:     'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    --radius-sm:     10px;
+    --radius-md:     16px;
+    --radius-lg:     24px;
+    --radius-pill:   999px;
+    --shadow-sm:     0 1px 2px rgba(16,18,20,.04), 0 1px 1px rgba(16,18,20,.03);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--bg); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+
+  /* HERO */
+  .hero { background: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 56px 32px 48px; }
+  .hero-inner { max-width: 880px; margin: 0 auto; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; display: block; }
+  .title-block { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-bottom: 24px; }
+  .stamp { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; background: var(--accent); color: var(--accent-ink); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-top: 10px; }
+  .title-text { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; }
+  .hero-lead { font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--ink-2); max-width: 720px; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; color: var(--ink-2); }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
+  .chip-dot.accent { background: var(--accent); }
+
+  /* NAV */
+  .nav-bar { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding: 0 32px; }
+  .nav-inner { max-width: 880px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2px; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 7px; padding: 12px 12px; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--ink-2); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; border-radius: 8px 8px 0 0; }
+  .nav-btn:hover { color: var(--ink); background: var(--bg-muted); }
+  .nav-btn.active { color: var(--ink); border-bottom-color: var(--accent); }
+  .nav-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--accent-ink); }
+
+  /* LAYOUT */
+  .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 32px 100px; }
+  .section { padding-top: 60px; }
+  .section-alt { margin: 48px -32px 0; padding: 48px 32px 8px; background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .section-label { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; }
+  .section-num { font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--ink-3); }
+  .section-title { font-family: var(--font-display); font-weight: 500; font-size: 26px; letter-spacing: -0.01em; margin-bottom: 4px; line-height: 1.2; }
+  .section-title-hl { background-image: linear-gradient(transparent 52%, var(--accent) 52%, var(--accent) 94%, transparent 94%); padding: 0 3px; }
+  .section-hr { height: 1px; background: var(--line); border: none; margin: 20px 0 28px; }
+
+  /* CARDS */
+  .card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .card-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .card h3 { font-family: var(--font-body); font-weight: 700; font-size: 18px; margin-bottom: 10px; line-height: 1.3; }
+  .card p { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+  .card p + p { margin-top: 10px; }
+
+  /* KEY POINT */
+  .key-point { display: flex; gap: 16px; background: var(--bg-soft); border-radius: var(--radius-md); padding: 18px 22px; border-left: 3px solid var(--accent); margin-bottom: 16px; }
+  .key-point-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; padding-top: 3px; flex-shrink: 0; }
+  .key-point p { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.55; color: var(--ink); }
+
+  /* STEPS */
+  .steps-list { list-style: none; counter-reset: step; display: grid; gap: 0; }
+  .steps-list li { counter-increment: step; display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .steps-list li:last-child { border-bottom: none; }
+  .steps-list li::before { content: counter(step, decimal-leading-zero); font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+  .step-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .step-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .step-tip { display: inline-flex; align-items: flex-start; gap: 6px; margin-top: 8px; font-size: 12px; font-weight: 600; color: #4A8000; background: #F2FAE8; border: 1px solid #C0E890; border-radius: 6px; padding: 5px 10px; line-height: 1.5; }
+
+  /* TAG LIST */
+  .tag-list { display: grid; gap: 8px; margin-bottom: 16px; }
+  .tag-item { display: flex; gap: 14px; padding: 14px 18px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); align-items: flex-start; }
+  .tag-icon { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--accent-strong); flex-shrink: 0; padding-top: 2px; }
+  .tag-content { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+  .tag-content strong { color: var(--ink); display: block; margin-bottom: 2px; font-size: 15px; }
+
+  /* FORMULA */
+  .formula { background: var(--ink); color: #fff; border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 16px; }
+  .formula-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E94; margin-bottom: 10px; }
+  .formula-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+  .formula-step { background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 8px; white-space: nowrap; }
+  .formula-arrow { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
+
+  /* CALLOUTS */
+  .callout-warn { background: #FFFBEB; border: 1px solid #F0D080; border-left: 3px solid #E0A000; border-radius: var(--radius-md); padding: 16px 20px; font-size: 14px; color: #5A4500; margin-bottom: 16px; line-height: 1.6; }
+  .callout-warn strong { color: #3A2E00; }
+  .callout-dark { background: var(--ink); color: #fff; border-radius: var(--radius-lg); padding: 28px 32px; margin-bottom: 16px; }
+  .callout-dark h3 { font-family: var(--font-display); font-weight: 500; font-size: 20px; margin-bottom: 12px; letter-spacing: -0.01em; }
+  .callout-dark p { color: #CCC; font-size: 15px; line-height: 1.65; margin-bottom: 8px; }
+  .callout-dark p:last-child { margin-bottom: 0; }
+
+  /* PRODUCT CARDS */
+  .product-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  @media (max-width: 700px) { .product-grid { grid-template-columns: 1fr; } }
+  .product-card { border: 1px solid var(--line); border-radius: var(--radius-md); padding: 20px; background: var(--bg); }
+  .product-card.featured { border-color: var(--accent); border-width: 2px; }
+  .product-icon { font-size: 24px; margin-bottom: 10px; }
+  .product-name { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--ink); }
+  .product-desc { font-size: 13px; color: var(--ink-2); line-height: 1.55; margin-bottom: 10px; }
+  .product-badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .badge-start { background: var(--accent); color: var(--accent-ink); }
+  .badge-mid { background: var(--bg-muted); color: var(--ink-3); }
+  .badge-adv { background: var(--ink); color: #fff; }
+
+  /* FLOW */
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 16px; }
+  .flow-step { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 16px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); font-size: 13px; font-weight: 600; color: var(--ink); text-align: center; min-width: 90px; flex: 1; }
+  .flow-step small { font-size: 11px; font-weight: 400; color: var(--ink-3); font-family: var(--font-mono); }
+  .flow-step.accent { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .flow-arrow { font-family: var(--font-mono); color: var(--accent-strong); font-size: 18px; font-weight: 700; flex-shrink: 0; }
+
+  /* TOOLS */
+  .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  @media (max-width: 560px) { .tool-grid { grid-template-columns: 1fr; } }
+  .tool-card { border: 1px solid var(--line); border-radius: var(--radius-md); padding: 16px 18px; background: var(--bg); }
+  .tool-name { font-weight: 700; font-size: 14px; margin-bottom: 3px; color: var(--ink); }
+  .tool-name a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--accent); }
+  .tool-name a:hover { color: var(--accent-strong); }
+  .tool-role { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; }
+  .tool-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+  .tool-card.recommended { border-color: var(--accent); border-width: 2px; }
+  .tool-rec-label { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent); border-radius: 4px; padding: 2px 7px; margin-bottom: 6px; }
+
+  /* LIFEHACKS */
+  .hack-list { display: grid; gap: 12px; }
+  .hack-item { display: grid; grid-template-columns: 44px 1fr; gap: 16px; padding: 18px 20px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); align-items: start; }
+  .hack-num { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: var(--accent); font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--accent-ink); flex-shrink: 0; }
+  .hack-title { font-weight: 700; font-size: 15px; margin-bottom: 5px; color: var(--ink); }
+  .hack-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .hack-example { margin-top: 8px; padding: 10px 14px; background: var(--bg-soft); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; font-size: 13px; color: var(--ink-2); font-style: italic; line-height: 1.55; }
+
+  /* ANNOUNCE */
+  .announce-steps { display: grid; gap: 10px; }
+  .announce-item { display: flex; gap: 14px; padding: 14px 18px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); align-items: flex-start; }
+  .announce-num { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--accent-ink); background: var(--accent); padding: 3px 8px; border-radius: 5px; flex-shrink: 0; white-space: nowrap; margin-top: 1px; }
+  .announce-content strong { display: block; font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+  .announce-content p { font-size: 14px; color: var(--ink-2); line-height: 1.55; margin: 0; }
+
+  .helper { font-size: 13px; color: var(--ink-3); line-height: 1.5; margin-top: 8px; }
+  .hl { background-image: linear-gradient(transparent 55%, var(--accent) 55%, var(--accent) 92%, transparent 92%); padding: 0 2px; font-weight: 600; }
+
+  .section-alt .card, .section-alt .tag-item, .section-alt .tool-card, .section-alt .hack-item, .section-alt .announce-item { background: var(--bg); }
+
+  @media (max-width: 640px) {
+    .hero { padding: 36px 20px 32px; }
+    .page-wrap { padding: 0 20px 80px; }
+    .nav-bar { padding: 0 20px; }
+    .title-block { grid-template-columns: 1fr; gap: 12px; }
+    .stamp { margin-top: 0; }
+    .section-alt { margin: 48px -20px 0; padding: 40px 20px 8px; }
+    .flow { flex-direction: column; align-items: stretch; }
+    .flow-arrow { transform: rotate(90deg); align-self: center; }
+  }
+
+  /* EXAMPLES BLOCK */
+  .examples-block { margin-bottom: 16px; }
+  .examples-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .examples-label::before { content: ''; display: block; width: 20px; height: 1px; background: var(--line); }
+  .examples-label::after { content: ''; display: block; flex: 1; height: 1px; background: var(--line); }
+  .examples-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 580px) { .examples-grid { grid-template-columns: 1fr; } }
+  .example-card { border-radius: var(--radius-md); padding: 16px 18px; border: 1px solid var(--line); background: var(--bg); }
+  .example-card.teacher { border-left: 3px solid #7B68EE; }
+  .example-card.mom { border-left: 3px solid #FF8C69; }
+  .example-who { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .example-who-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .example-who-dot.teacher { background: #7B68EE; }
+  .example-who-dot.mom { background: #FF8C69; }
+  .example-who span { color: var(--ink-3); }
+  .example-text { font-size: 13px; color: var(--ink-2); line-height: 1.6; }
+  .example-text strong { color: var(--ink); display: block; margin-bottom: 3px; font-size: 13px; }
+  .section-alt .example-card { background: var(--bg); }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Fitstars · Блогер с нуля · Бонусный гайд</span>
+    <div class="title-block">
+      <span class="stamp">Бонус</span>
+      <span class="title-text">Как зарабатывать на своих продуктах в блоге</span>
+    </div>
+    <p class="hero-lead">Реклама — не единственный способ монетизировать блог. Свой продукт даёт вам независимость: вы не ждёте заявок от брендов, вы продаёте то, что сами создали. Разбираем — с чего начать, как упаковать и как продать своей аудитории.</p>
+    <div class="meta-chips">
+      <span class="chip"><span class="chip-dot accent"></span>Какой продукт выбрать</span>
+      <span class="chip"><span class="chip-dot"></span>Форматы и упаковка</span>
+      <span class="chip"><span class="chip-dot"></span>Как принимать оплату</span>
+      <span class="chip"><span class="chip-dot"></span>5 лайфхаков по содержанию</span>
+      <span class="chip"><span class="chip-dot"></span>Как анонсировать</span>
+    </div>
+  </div>
+</header>
+
+<div style="background: #FFFBEB; border-bottom: 1px solid #F0D080;">
+  <div style="max-width: 880px; margin: 0 auto; padding: 14px 32px; display: flex; gap: 14px; align-items: flex-start;">
+    <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #E0A000; flex-shrink: 0; padding-top: 1px;">!</span>
+    <p style="font-size: 13px; color: #5A4500; line-height: 1.6; margin: 0;">
+      <strong style="color: #3A2E00;">Прежде чем продавать — закройте юридический минимум.</strong>
+      Для легальной продажи продуктов нужны: статус самозанятого или ИП (разбираем в уроке 3), публичная оферта на странице продукта и политика конфиденциальности, если собираете данные покупателей. Без этого вы рискуете штрафами — особенно когда продажи начнут расти. Это не повод откладывать запуск, но повод разобраться параллельно.
+    </p>
+  </div>
+</div>
+
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="navTo('what')"><span class="nav-num">1</span> С чего начать</button>
+    <button class="nav-btn" onclick="navTo('format')"><span class="nav-num">2</span> Форматы</button>
+    <button class="nav-btn" onclick="navTo('sell')"><span class="nav-num">3</span> Как продавать</button>
+    <button class="nav-btn" onclick="navTo('content')"><span class="nav-num">4</span> Содержание</button>
+    <button class="nav-btn" onclick="navTo('announce')"><span class="nav-num">5</span> Анонс</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- 01. С ЧЕГО НАЧАТЬ -->
+  <section class="section" id="what">
+    <div class="section-label"><span class="section-num">01</span>С чего начать</div>
+    <h2 class="section-title"><span class="section-title-hl">Первый продукт — это ответ на боль аудитории</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Главное</div>
+      <p>Не придумывайте продукт из головы. Первый продукт всегда рождается из вопросов, которые вам уже задают подписчики. Если вам три раза задали один вопрос — это уже тема для продукта.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Как найти тему первого продукта</div>
+      <ol class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Соберите вопросы, которые вам задают чаще всего</div>
+            <div class="step-desc">Пролистайте комментарии, личку, ответы на сторис за последние 1–2 месяца. Выпишите вопросы, которые повторяются. Это и есть боли аудитории — то, за решение чего люди готовы платить.</div>
+            <span class="step-tip">✓ Нет комментариев? Спросите напрямую: «С чем вам сейчас сложнее всего?» — опрос в сторис или пост с вопросом</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Сформулируйте боль — одним предложением</div>
+            <div class="step-desc">Не «расскажу про питание», а «как есть вкусно и не набирать вес, когда нет времени готовить». Чем конкретнее боль — тем лучше продаётся решение. Проверьте себя: если подписчик прочитает название — он должен сказать «это про меня».</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Убедитесь, что у вас есть ответ на эту боль</div>
+            <div class="step-desc">Ваш продукт — это упакованный личный опыт или знания. Не нужно быть экспертом с дипломами. Нужно знать решение лучше, чем большинство ваших подписчиков, и уметь объяснить его понятно.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Начните с самого простого продукта</div>
+            <div class="step-desc">Первый продукт — не флагман и не курс на полгода. Это небольшое конкретное решение одной конкретной проблемы. Чем меньше объём — тем быстрее сделаете, тем быстрее получите первые деньги и обратную связь.</div>
+            <span class="step-tip">✓ Правило первого продукта: одна проблема → одно решение → один понятный результат</span>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="formula">
+      <div class="formula-label">Формула темы продукта</div>
+      <div class="formula-steps">
+        <span class="formula-step">Боль аудитории</span>
+        <span class="formula-arrow">+</span>
+        <span class="formula-step">Ваш опыт / знания</span>
+        <span class="formula-arrow">+</span>
+        <span class="formula-step">Конкретный результат</span>
+        <span class="formula-arrow">=</span>
+        <span class="formula-step">Тема первого продукта</span>
+      </div>
+    </div>
+
+    <div class="examples-block">
+      <div class="examples-label">Примеры</div>
+      <div class="examples-grid">
+        <div class="example-card teacher">
+          <div class="example-who"><span class="example-who-dot teacher"></span><span>Учитель русского языка</span></div>
+          <div class="example-text">
+            <strong>Боль аудитории:</strong> «Как объяснить ребёнку правила так, чтобы он не забыл их через час?» — этот вопрос в личке каждый день.<br><br>
+            <strong>Первый продукт:</strong> PDF-гайд «15 правил русского языка через мемы и истории» — для родителей, которые помогают детям с домашним заданием.
+          </div>
+        </div>
+        <div class="example-card mom">
+          <div class="example-who"><span class="example-who-dot mom"></span><span>Мама в декрете, готовит</span></div>
+          <div class="example-text">
+            <strong>Боль аудитории:</strong> «Как готовить быстро и без лишней посуды, когда ребёнок не даёт больше 20 минут?» — топ-вопрос в комментариях.<br><br>
+            <strong>Первый продукт:</strong> Мини-гайд «10 ужинов за 20 минут» с пошаговыми рецептами и списком продуктов на неделю.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02. ФОРМАТЫ -->
+  <section class="section section-alt" id="format">
+    <div class="section-label"><span class="section-num">02</span>Форматы</div>
+    <h2 class="section-title"><span class="section-title-hl">Какой формат выбрать</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Принцип</div>
+      <p>Выбирайте формат, который вам комфортно создавать — а не тот, который кажется «правильным». Плохо записанный видеокурс хуже, чем хорошо написанный текстовый гайд.</p>
+    </div>
+
+    <div class="product-grid">
+      <div class="product-card featured">
+        <div class="product-icon">📝</div>
+        <div class="product-name">Текстовый гайд / PDF</div>
+        <div class="product-desc">Структурированный документ с пошаговыми инструкциями, примерами, шаблонами. Можно сделать в Google Docs и скачать как PDF.</div>
+        <span class="product-badge badge-start">Самый простой старт</span>
+      </div>
+      <div class="product-card">
+        <div class="product-icon">🎥</div>
+        <div class="product-name">Видеоурок / мини-курс</div>
+        <div class="product-desc">Одно или несколько видео с экраном или в кадре. Записывается на телефон, монтируется в простом редакторе или без монтажа совсем.</div>
+        <span class="product-badge badge-mid">Нужна камера или экран</span>
+      </div>
+      <div class="product-card">
+        <div class="product-icon">🎙</div>
+        <div class="product-name">Аудиоурок</div>
+        <div class="product-desc">Запись голосом — объяснение, разбор, инструкция. Подходит, если тема не требует визуала. Самый быстрый в производстве.</div>
+        <span class="product-badge badge-mid">Голос + телефон</span>
+      </div>
+      <div class="product-card">
+        <div class="product-icon">📋</div>
+        <div class="product-name">Шаблон / чек-лист</div>
+        <div class="product-desc">Готовая структура, которую покупатель заполняет под себя. Таблица, документ, канбан-доска. Высокая ценность при минимальном объёме.</div>
+        <span class="product-badge badge-start">Быстро сделать</span>
+      </div>
+      <div class="product-card">
+        <div class="product-icon">🗓</div>
+        <div class="product-name">Марафон / интенсив</div>
+        <div class="product-desc">Серия заданий или уроков в течение нескольких дней. Высокая вовлечённость участников, живое общение. Требует больше организации.</div>
+        <span class="product-badge badge-mid">Живой формат</span>
+      </div>
+      <div class="product-card">
+        <div class="product-icon">💬</div>
+        <div class="product-name">Консультация</div>
+        <div class="product-desc">Личный созвон — разбор ситуации участника. Самый высокий средний чек. Не требует создания контента заранее. Отличный первый продукт.</div>
+        <span class="product-badge badge-adv">Высокий чек</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Рекомендация для старта</div>
+      <h3>Начните с текстового гайда или консультации</h3>
+      <p>Текстовый гайд: пишется за 1–3 дня, не нужно оборудование, легко обновлять. Консультация: никакой подготовки контента, сразу живые деньги и понимание, что нужно аудитории. После первых продаж станет понятно, стоит ли делать видеокурс.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Если выбираете видеоурок — минимальный набор</div>
+      <div class="tag-list" style="margin-bottom: 0;">
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Запись</strong>Телефон на штативе или запись экрана (Loom, OBS, встроенный QuickTime на Mac). Качество звука важнее качества картинки — запишите в тихом месте.</div>
+        </div>
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Монтаж (или без него)</strong>Для простых уроков монтаж не обязателен — снимайте одним дублем. Если нужна нарезка: CapCut (бесплатно), iMovie, Shotcut.</div>
+        </div>
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Где хранить</strong>Google Drive, Яндекс Диск, YouTube (скрытая ссылка) или платформа для курсов. Участники получают ссылку после оплаты.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="examples-block">
+      <div class="examples-label">Примеры</div>
+      <div class="examples-grid">
+        <div class="example-card teacher">
+          <div class="example-who"><span class="example-who-dot teacher"></span><span>Учитель русского языка</span></div>
+          <div class="example-text">
+            <strong>Выбранный формат:</strong> Текстовый PDF + карточки-шпаргалки.<br><br>
+            Учителю комфортно писать — это её стихия. Карточки можно распечатать и повесить над столом. Никаких камер и монтажа — сделала за выходные.
+          </div>
+        </div>
+        <div class="example-card mom">
+          <div class="example-who"><span class="example-who-dot mom"></span><span>Мама в декрете, готовит</span></div>
+          <div class="example-text">
+            <strong>Выбранный формат:</strong> Короткие видеоуроки (3–5 минут) + PDF с рецептами.<br><br>
+            Аудитория готовит вместе с ней — видео нагляднее текста. Снимает на телефон прямо на кухне, без монтажа. Рецепты в PDF — чтобы не пересматривать видео каждый раз.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03. КАК ПРОДАВАТЬ -->
+  <section class="section" id="sell">
+    <div class="section-label"><span class="section-num">03</span>Как продавать</div>
+    <h2 class="section-title"><span class="section-title-hl">Приём оплаты и выдача продукта</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Два пути</div>
+      <p>Ручной способ — проще запустить, подходит для первых продаж. Автоматизированный — масштабируется без вашего участия, стоит настроить после первых 10–20 продаж.</p>
+    </div>
+
+    <!-- РУЧНОЙ -->
+    <div class="card">
+      <div class="card-label">Способ 1 — Ручной (идеально для первых продаж)</div>
+      <h3>Заявка → оплата → выдача вручную</h3>
+      <p>Самый быстрый способ проверить, покупают ли вообще. Не нужно ничего настраивать технически.</p>
+
+      <div class="flow" style="margin-top: 20px;">
+        <div class="flow-step">Пост / сторис с анонсом<small>В вашем блоге</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Заявка в личку<small>«Хочу купить»</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step accent">Оплата на карту<small>СБП / реквизиты</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Вы присылаете продукт<small>Ссылка / файл</small></div>
+      </div>
+
+      <p style="margin-top: 16px; font-size: 14px; color: var(--ink-2);">Минус: требует вашего участия при каждой продаже. Плюс: можно запустить за один день и сразу получить первые деньги и обратную связь.</p>
+      <span class="step-tip" style="margin-top: 10px; display: inline-flex;">✓ Не забудьте выдать чек через «Мой налог» после каждой оплаты</span>
+    </div>
+
+    <!-- АВТОМАТИЗИРОВАННЫЙ -->
+    <div class="card">
+      <div class="card-label">Способ 2 — Автоматизированный (когда готовы масштабироваться)</div>
+      <h3>Таплинк → оплата → автовыдача</h3>
+      <p>Покупатель проходит весь путь самостоятельно — без вашего участия. Вы настраиваете один раз, дальше система работает сама.</p>
+
+      <div class="flow" style="margin-top: 20px;">
+        <div class="flow-step">Ссылка на Таплинк<small>Из поста / bio</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Страница продукта<small>Описание + цена</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step accent">Оплата онлайн<small>Продамус / ЮКасса</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Автовыдача<small>Ссылка на канал / файл</small></div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <div class="card-label">Инструменты — примеры, можно выбрать альтернативы</div>
+        <div class="tool-grid">
+          <div class="tool-card recommended">
+            <div class="tool-rec-label">✓ Рекомендуем для старта</div>
+            <div class="tool-name"><a href="https://taplink.cc" target="_blank" rel="noopener">Таплинк ↗</a></div>
+            <div class="tool-role">Страница-витрина</div>
+            <div class="tool-desc">Ссылка в bio, страница с описанием продукта, кнопка оплаты. Есть бесплатный тариф. Встроенный приём оплаты.</div>
+          </div>
+          <div class="tool-card recommended">
+            <div class="tool-rec-label">✓ Рекомендуем для старта</div>
+            <div class="tool-name"><a href="https://prodamus.ru" target="_blank" rel="noopener">Продамус ↗</a></div>
+            <div class="tool-role">Приём оплаты</div>
+            <div class="tool-desc">Российский сервис оплаты для самозанятых и ИП. Автовыдача ссылки после покупки. Низкая комиссия.</div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name"><a href="https://getcourse.ru" target="_blank" rel="noopener">GetCourse ↗</a></div>
+            <div class="tool-role">Платформа для курсов</div>
+            <div class="tool-desc">Полноценная LMS: уроки, задания, рассылки, оплата. Для серьёзных курсов. Платный тариф.</div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name"><a href="https://yukassa.ru" target="_blank" rel="noopener">ЮКасса ↗</a></div>
+            <div class="tool-role">Приём оплаты</div>
+            <div class="tool-desc">Альтернатива Продамусу от Яндекса. Широкие возможности интеграции. Подходит для ИП и ООО.</div>
+          </div>
+        </div>
+        <p class="helper">Это примеры — не единственные варианты. Выбирайте то, что удобно именно вам. Главное: инструмент не должен тормозить запуск. Сначала — продайте хоть как, потом — автоматизируйте.</p>
+      </div>
+    </div>
+
+    <!-- Где выдавать -->
+    <div class="card">
+      <div class="card-label">Где хранить и выдавать продукт</div>
+      <div class="tag-list" style="margin-bottom: 0;">
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Закрытый Telegram-канал</strong>Создаёте канал, добавляете туда материалы. После оплаты — даёте ссылку-приглашение. Просто и удобно для покупателя.</div>
+        </div>
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Закрытая группа ВКонтакте</strong>Аналогично: закрытое сообщество с материалами. Удобно, если ваша аудитория живёт в ВКонтакте.</div>
+        </div>
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Закрытая группа MAX</strong>Закрытое сообщество на платформе MAX — подходит, если основная площадка там.</div>
+        </div>
+        <div class="tag-item">
+          <span class="tag-icon">→</span>
+          <div class="tag-content"><strong>Ссылка на файл</strong>Google Drive, Яндекс Диск — ссылка на папку с материалами. Самый простой вариант для PDF и текстовых гайдов.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="examples-block">
+      <div class="examples-label">Примеры</div>
+      <div class="examples-grid">
+        <div class="example-card teacher">
+          <div class="example-who"><span class="example-who-dot teacher"></span><span>Учитель русского языка</span></div>
+          <div class="example-text">
+            <strong>Первые продажи — ручным способом:</strong><br><br>
+            Написала пост в канале, попросила написать «хочу» в личку. Получила 12 заявок, скинула реквизиты, после оплаты отправила PDF вручную. Продала за два дня, без единой технической настройки.
+          </div>
+        </div>
+        <div class="example-card mom">
+          <div class="example-who"><span class="example-who-dot mom"></span><span>Мама в декрете, готовит</span></div>
+          <div class="example-text">
+            <strong>Автоматизация после первых продаж:</strong><br><br>
+            После 20 ручных продаж настроила Таплинк: страница с описанием, кнопка оплаты через Продамус. После покупки — автоматическая ссылка на закрытый Telegram-канал с видео и рецептами.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04. СОДЕРЖАНИЕ ПРОДУКТА -->
+  <section class="section section-alt" id="content">
+    <div class="section-label"><span class="section-num">04</span>Содержание</div>
+    <h2 class="section-title"><span class="section-title-hl">5 лайфхаков как сделать продукт, который работает</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Про андрагогику простыми словами</div>
+      <p>Взрослые учатся иначе, чем дети. Им не нужна теория ради теории — им нужно решить конкретную задачу прямо сейчас. Хороший продукт для взрослых — это не лекция, а инструмент.</p>
+    </div>
+
+    <div class="hack-list">
+      <div class="hack-item">
+        <div class="hack-num">1</div>
+        <div>
+          <div class="hack-title">Начните с результата, а не с предисловия</div>
+          <div class="hack-desc">Взрослый человек открывает ваш продукт с одним вопросом: «Что я получу и когда?» Скажите об этом в самом начале — ещё до первого урока или первой страницы. Не «сегодня мы поговорим о...», а «после этого урока вы сможете...».</div>
+          <div class="hack-example">«После этого гайда у вас будет готовый контент-план на месяц — даже если сейчас не знаете, о чём писать»</div>
+        </div>
+      </div>
+
+      <div class="hack-item">
+        <div class="hack-num">2</div>
+        <div>
+          <div class="hack-title">Один урок — одно действие</div>
+          <div class="hack-desc">Не пытайтесь вложить всё в один блок. Каждый урок, каждый раздел должен заканчиваться одним конкретным действием, которое участник может сделать прямо сейчас. Это держит вовлечённость и даёт ощущение прогресса.</div>
+          <div class="hack-example">Вместо «Урок про тексты» → «Напишите первое предложение своего поста по этой формуле»</div>
+        </div>
+      </div>
+
+      <div class="hack-item">
+        <div class="hack-num">3</div>
+        <div>
+          <div class="hack-title">Опирайтесь на их опыт, а не только на свой</div>
+          <div class="hack-desc">Взрослые приходят к вам уже с опытом — пусть и другим. Задавайте вопросы: «А как вы делаете сейчас?», «Что уже пробовали?». Это помогает участнику применить новое к своей ситуации, а не просто запомнить чужую.</div>
+          <div class="hack-example">«Вспомните момент, когда вы что-то купили в интернете. Что вас убедило? Именно это работает и в вашем контенте»</div>
+        </div>
+      </div>
+
+      <div class="hack-item">
+        <div class="hack-num">4</div>
+        <div>
+          <div class="hack-title">Меньше теории — больше примеров и шаблонов</div>
+          <div class="hack-desc">Взрослый учится через практику, а не через объяснение принципов. Дайте шаблон, пример, образец — пусть возьмёт и сделает. Теорию оставьте только там, где без неё не обойтись, и объясняйте её через конкретную ситуацию.</div>
+          <div class="hack-example">Вместо «Существует несколько типов заголовков...» → «Вот три заголовка к одному посту — возьмите тот, что подходит вам»</div>
+        </div>
+      </div>
+
+      <div class="hack-item">
+        <div class="hack-num">5</div>
+        <div>
+          <div class="hack-title">Короткие блоки лучше, чем длинные лекции</div>
+          <div class="hack-desc">Ваши покупатели — занятые люди. Они смотрят курс между делами, в транспорте, во время обеда. Идеальная длина одного видеоурока — 5–12 минут. Текстовый блок — не больше экрана. Лучше больше коротких частей, чем одна большая и неподъёмная.</div>
+          <div class="hack-example">Курс из 10 уроков по 7 минут купят и пройдут до конца. Курс из 3 уроков по 40 минут купят — и бросят на втором.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="examples-block">
+      <div class="examples-label">Примеры — как лайфхаки работают на практике</div>
+      <div class="examples-grid">
+        <div class="example-card teacher">
+          <div class="example-who"><span class="example-who-dot teacher"></span><span>Учитель русского языка</span></div>
+          <div class="example-text">
+            <strong>Начало гайда:</strong> «После этого гайда вы сможете объяснить ребёнку правило -тся/-ться за 3 минуты — и он запомнит его навсегда».<br><br>
+            <strong>Структура:</strong> каждое правило = одна страница, один мем, один пример из жизни, одно задание. Никакой теории ради теории.<br><br>
+            <strong>Блоки по 1–2 страницы</strong> — можно читать по одному правилу в день, не перегружаясь.
+          </div>
+        </div>
+        <div class="example-card mom">
+          <div class="example-who"><span class="example-who-dot mom"></span><span>Мама в декрете, готовит</span></div>
+          <div class="example-text">
+            <strong>Начало видео:</strong> «За следующие 4 минуты вы приготовите ужин, пока малыш спит. Я покажу только руки и плиту — без вступлений».<br><br>
+            <strong>Каждое видео заканчивается действием:</strong> «Сфотографируйте результат и пришлите мне».<br><br>
+            <strong>Видео по 3–5 минут</strong> — можно смотреть одной рукой, пока держишь ребёнка.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05. АНОНС И ПРОДАЖА -->
+  <section class="section" id="announce">
+    <div class="section-label"><span class="section-num">05</span>Анонс</div>
+    <h2 class="section-title"><span class="section-title-hl">Как анонсировать и продавать своей аудитории</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Принцип</div>
+      <p>Один пост «я выпустила курс» не продаёт. Продажа — это цепочка из нескольких касаний, где каждый шаг усиливает интерес и доверие.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Цепочка анонса — минимальная версия</div>
+      <div class="announce-steps">
+        <div class="announce-item">
+          <div class="announce-num">За 5–7 дней</div>
+          <div class="announce-content">
+            <strong>Пост про боль</strong>
+            <p>Напишите о проблеме, которую решает продукт — без упоминания продукта. «Мне часто пишут: не знаю, о чём писать каждый день...». Аудитория узнаёт себя и начинает ждать продолжения.</p>
+          </div>
+        </div>
+        <div class="announce-item">
+          <div class="announce-num">За 3–4 дня</div>
+          <div class="announce-content">
+            <strong>Пост про вашу историю</strong>
+            <p>Как вы сами столкнулись с этой проблемой и что помогло. Это строит доверие: вы не просто теоретик, вы прошли через это.</p>
+          </div>
+        </div>
+        <div class="announce-item">
+          <div class="announce-num">За 1–2 дня</div>
+          <div class="announce-content">
+            <strong>Сторис-тизер</strong>
+            <p>«Готовлю кое-что для тех, кто [боль]. Скоро расскажу.» Никаких деталей — только интрига. Можно добавить опрос: «Актуальна ли для вас тема [тема]?»</p>
+          </div>
+        </div>
+        <div class="announce-item">
+          <div class="announce-num">День X</div>
+          <div class="announce-content">
+            <strong>Пост-продажа</strong>
+            <p>Название → боль → что получит покупатель → формат → цена → как купить. Без воды и длинных предисловий. В конце — чёткий призыв к действию: «Напишите [слово] в личку» или «Ссылка на покупку в bio».</p>
+          </div>
+        </div>
+        <div class="announce-item">
+          <div class="announce-num">+1–2 дня</div>
+          <div class="announce-content">
+            <strong>Сторис с отзывом или вопросом</strong>
+            <p>Если уже есть первые покупатели — скриншот отзыва (с разрешения). Если нет — сторис «Осталось N мест» или ответ на частый вопрос о продукте.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Структура продающего поста — простая формула</div>
+      <ol class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Заголовок — боль или результат</div>
+            <div class="step-desc">«Не знаете, о чём писать каждый день?» или «Как составить контент-план за 30 минут». Первые две строки — самое важное: с них решается, читать дальше или нет.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Узнавание — «это про тебя»</div>
+            <div class="step-desc">Опишите ситуацию, в которой находится покупатель. Конкретно и без пафоса. Человек должен подумать: «Откуда они знают?»</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Что получит — результат, не процесс</div>
+            <div class="step-desc">Не «мы изучим методы», а «вы выйдете с готовым планом на месяц». Покупают результат, а не содержание.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Детали — формат, объём, цена</div>
+            <div class="step-desc">Коротко: что внутри, сколько времени займёт, сколько стоит. Не прячьте цену — это отпугивает больше, чем сама цифра.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Призыв к действию — одно конкретное</div>
+            <div class="step-desc">«Напишите "хочу" в личку», «Ссылка в bio», «Жмите кнопку ниже». Одно действие — не пять вариантов. Чем проще шаг — тем больше сделают.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+
+    <div class="examples-block">
+      <div class="examples-label">Примеры — цепочка анонса</div>
+      <div class="examples-grid">
+        <div class="example-card teacher">
+          <div class="example-who"><span class="example-who-dot teacher"></span><span>Учитель русского языка</span></div>
+          <div class="example-text">
+            <strong>За 5 дней:</strong> «Мне написала мама: "Мы три раза прочли правило — ребёнок всё равно делает ошибки. Это вообще лечится?" Да, лечится. Расскажу как.»<br><br>
+            <strong>За 2 дня:</strong> Сторис-опрос: «Ваш ребёнок путает -тся/-ться?» — 87% ответили «да».<br><br>
+            <strong>День X:</strong> «Выпустила гайд: 15 правил через мемы. PDF, 20 страниц, 390 рублей. Напишите "мемы" в личку.»
+          </div>
+        </div>
+        <div class="example-card mom">
+          <div class="example-who"><span class="example-who-dot mom"></span><span>Мама в декрете, готовит</span></div>
+          <div class="example-text">
+            <strong>За 5 дней:</strong> «Вчера снова стояла над плитой в 19:00 с орущим ребёнком на руках. Думала — всё, заказываю пиццу. Но не заказала. Расскажу почему.»<br><br>
+            <strong>За 2 дня:</strong> Сторис: «Снимаю кое-что для тех, кто хочет готовить нормальную еду, но времени нет совсем».<br><br>
+            <strong>День X:</strong> «10 ужинов за 20 минут — видео + рецепты. 590 рублей. Ссылка в bio.»
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="callout-dark">
+      <h3>Главное про первый запуск</h3>
+      <p>Не ждите идеального продукта, идеальной страницы и идеального момента. Первый продукт всегда выходит сырым — и это нормально. Продайте пяти людям, соберите обратную связь, доработайте. Второй запуск будет лучше первого, третий — лучше второго.</p>
+      <p>Сделанное и запущенное всегда лучше продуманного и лежащего в черновиках.</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const sectionIds = ['what','format','sell','content','announce'];
+
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 64, behavior: 'smooth' });
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const idx = sectionIds.indexOf(id);
+    if (idx > -1) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  }
+
+  window.addEventListener('scroll', () => {
+    const offset = 120;
+    let current = 0;
+    sectionIds.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY + offset >= el.offsetTop) current = i;
+    });
+    document.querySelectorAll('.nav-btn').forEach((b, i) => b.classList.toggle('active', i === current));
+  });
+</script>
+</body>
+</html>
