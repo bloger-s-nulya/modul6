@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Квиз — Блогер с нуля</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FFFFFF;
+  --bg-soft: #F5F6F7;
+  --bg-muted: #EDEEF0;
+  --ink: #1A1A1A;
+  --ink-2: #4A4D52;
+  --ink-3: #8A8E94;
+  --line: #E4E6E9;
+  --accent: #C4F542;
+  --accent-h: #B8E83D;
+  --acc-ink: #0F1A00;
+  --correct: #C4F542;
+  --wrong: #FF5A5A;
+  --fd: 'Unbounded', sans-serif;
+  --fb: 'Manrope', sans-serif;
+  --fm: 'JetBrains Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--fb);
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Canvas for confetti ── */
+#confetti-canvas {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 999;
+}
+
+/* ── Shell ── */
+.shell {
+  width: 100%; max-width: 680px;
+  padding: 40px 24px 80px;
+}
+
+/* ── Header ── */
+.quiz-header { text-align: center; margin-bottom: 40px; }
+.quiz-eyebrow {
+  font-family: var(--fm); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px;
+}
+.quiz-title {
+  font-family: var(--fd); font-weight: 700;
+  font-size: clamp(22px, 4vw, 34px);
+  line-height: 1.1; letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+.quiz-title span { color: var(--acc-ink); background: var(--accent); padding: 0 6px; border-radius: 6px; }
+.quiz-sub { color: var(--ink-2); font-size: 15px; line-height: 1.6; max-width: 480px; margin: 0 auto; }
+
+/* ── Progress ── */
+.progress-wrap { margin-bottom: 28px; }
+.progress-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.progress-label { font-family: var(--fm); font-size: 11px; color: var(--ink-3); letter-spacing: 0.05em; }
+.progress-score { font-family: var(--fm); font-size: 11px; color: var(--ink-3); }
+.progress-track {
+  height: 6px; background: var(--bg-muted); border-radius: 99px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: var(--accent); border-radius: 99px;
+  transition: width .4s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Question card ── */
+.question-card {
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  border-radius: 24px;
+  padding: 32px 32px 28px;
+  margin-bottom: 16px;
+  animation: fadeSlide .35s ease;
+}
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.q-num {
+  font-family: var(--fm); font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px;
+}
+.q-text {
+  font-family: var(--fd); font-weight: 600;
+  font-size: clamp(16px, 2.5vw, 20px);
+  line-height: 1.35; letter-spacing: -0.01em;
+  margin-bottom: 24px;
+}
+
+/* ── Options ── */
+.options { display: flex; flex-direction: column; gap: 10px; }
+.option {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 18px; border-radius: 14px;
+  border: 1.5px solid var(--line);
+  background: var(--bg);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, transform .1s;
+  user-select: none;
+  font-size: 14px; line-height: 1.5; color: var(--ink);
+  text-align: left; font-family: var(--fb);
+  width: 100%;
+}
+.option:hover:not(.locked) { border-color: var(--ink); background: var(--bg-soft); }
+.option:active:not(.locked) { transform: scale(.99); }
+
+.option-letter {
+  font-family: var(--fm); font-size: 12px; font-weight: 500;
+  color: var(--ink-3); flex-shrink: 0; min-width: 20px; padding-top: 1px;
+}
+
+/* States */
+.option.correct {
+  border-color: var(--accent);
+  background: #F0FDD0;
+  animation: correctPop .4s cubic-bezier(.17,.67,.3,1.4);
+}
+.option.correct .option-letter { color: var(--acc-ink); }
+
+@keyframes correctPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.025); }
+  100% { transform: scale(1); }
+}
+
+.option.wrong {
+  border-color: var(--wrong);
+  background: #FFF0F0;
+  animation: shake .4s ease;
+}
+.option.wrong .option-letter { color: var(--wrong); }
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px); }
+  40%      { transform: translateX(5px); }
+  60%      { transform: translateX(-4px); }
+  80%      { transform: translateX(3px); }
+}
+
+.option.dimmed { opacity: .4; }
+.option.locked { cursor: default; }
+
+/* ── Feedback bubble ── */
+.feedback {
+  margin-top: 16px; padding: 14px 18px;
+  border-radius: 14px; font-size: 14px; line-height: 1.6;
+  animation: fadeSlide .25s ease;
+  display: none;
+}
+.feedback.show { display: block; }
+.feedback.correct-fb { background: #F0FDD0; border: 1px solid #A8E040; color: var(--acc-ink); }
+.feedback.wrong-fb   { background: #FFF0F0; border: 1px solid #FFB3B3; color: #8B0000; }
+.feedback-icon { font-size: 18px; margin-right: 6px; }
+
+/* ── Next button ── */
+.next-btn {
+  display: none; width: 100%; margin-top: 16px;
+  padding: 16px; border-radius: 14px;
+  background: var(--ink); color: #fff;
+  border: none; cursor: pointer;
+  font-family: var(--fd); font-size: 14px; font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: background .15s, transform .08s;
+}
+.next-btn:hover { background: #2d2d2d; }
+.next-btn:active { transform: scale(.99); }
+.next-btn.show { display: block; animation: fadeSlide .2s ease; }
+
+/* ── Result screen ── */
+.result-screen { display: none; animation: fadeSlide .4s ease; }
+.result-screen.show { display: block; }
+
+.result-card {
+  border-radius: 28px; overflow: hidden;
+  border: 1.5px solid var(--line);
+  margin-bottom: 20px;
+}
+.result-top {
+  padding: 40px 36px 32px;
+  background: var(--ink); color: #fff; text-align: center;
+}
+.result-emoji { font-size: 56px; margin-bottom: 16px; }
+.result-badge {
+  display: inline-block;
+  background: var(--accent); color: var(--acc-ink);
+  font-family: var(--fm); font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 4px 12px; border-radius: 99px;
+  margin-bottom: 14px;
+}
+.result-title {
+  font-family: var(--fd); font-weight: 700;
+  font-size: clamp(22px, 4vw, 30px);
+  line-height: 1.2; letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.result-score-line {
+  font-family: var(--fm); font-size: 13px;
+  color: rgba(255,255,255,.55); letter-spacing: 0.05em;
+}
+.result-score-line strong { color: var(--accent); font-size: 20px; }
+
+.result-bottom { padding: 32px 36px; background: var(--bg-soft); }
+.result-message {
+  font-size: 16px; line-height: 1.75; color: var(--ink); margin-bottom: 24px;
+}
+.result-message p + p { margin-top: 14px; }
+
+.result-mantra {
+  background: var(--ink); color: #fff;
+  border-radius: 16px; padding: 22px 24px;
+  font-family: var(--fd); font-size: 15px;
+  font-weight: 500; line-height: 1.5; letter-spacing: -0.01em;
+  margin-bottom: 24px;
+}
+.result-mantra .mantra-accent { color: var(--accent); }
+
+.restart-btn {
+  width: 100%; padding: 16px;
+  border-radius: 14px; border: none;
+  background: var(--accent); color: var(--acc-ink);
+  font-family: var(--fd); font-size: 14px; font-weight: 700;
+  letter-spacing: -0.01em; cursor: pointer;
+  transition: background .15s;
+}
+.restart-btn:hover { background: var(--accent-h); }
+
+/* ── Score dots ── */
+.score-dots {
+  display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+  margin-top: 16px;
+}
+.score-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: rgba(255,255,255,.2);
+  transition: background .3s;
+}
+.score-dot.got { background: var(--accent); }
+.score-dot.miss { background: var(--wrong); }
+
+/* ── Floating emoji burst ── */
+.burst {
+  position: fixed; pointer-events: none; z-index: 998;
+  font-size: 28px; animation: burst .8s ease forwards;
+}
+@keyframes burst {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-90px) scale(1.4); }
+}
+
+@media (max-width: 480px) {
+  .shell { padding: 24px 16px 60px; }
+  .question-card { padding: 22px 18px 20px; }
+  .result-top { padding: 28px 20px 24px; }
+  .result-bottom { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="shell">
+  <!-- Header -->
+  <div class="quiz-header">
+    <div class="quiz-eyebrow">Финальный квиз · Блогер с нуля</div>
+    <h1 class="quiz-title">Ты <span>готов(а)</span> вести блог?</h1>
+    <p class="quiz-sub">12 реальных ситуаций из жизни блогера. Без воды — только практика. Ну и немного веселья.</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-meta">
+      <span class="progress-label" id="progressLabel">Вопрос 1 из 12</span>
+      <span class="progress-score" id="progressScore">0 правильных</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- Question area -->
+  <div id="questionArea"></div>
+
+  <!-- Result -->
+  <div class="result-screen" id="resultScreen"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  QUIZ DATA
+// ══════════════════════════════════════════
+const questions = [
+  {
+    q: "Ты только что придумала название блога и уже хочешь публиковать. Но профиль пустой — нет фото, нет описания, нет ссылки.",
+    opts: [
+      { l:"А", t:"Публикую первый пост — главное начать, профиль потом" },
+      { l:"Б", t:"Сначала настраиваю профиль полностью: фото, описание, ссылка" },
+      { l:"В", t:"Жду идеального фото с профессиональной фотосессии" },
+      { l:"Г", t:"Выбираю платформу заново — вдруг выбрала не ту" }
+    ],
+    correct: 1,
+    fb: [
+      "Смелость — хорошо, но читатель решает подписываться за 3 секунды. Пустой профиль эти секунды не переживёт.",
+      "Именно! Профиль — это твоя витрина. Читатель зашёл, понял кто ты и зачем — и остался.",
+      "Идеальное фото подождёт вечно. Хорошее фото у окна — уже сегодня вечером.",
+      "Платформа уже выбрана. Прокрастинация умеет прятаться под видом «важных вопросов»."
+    ]
+  },
+  {
+    q: "Ты написал пост. Перечитал 6 раз. Исправил запятую. Перечитал ещё. Прошло 3 часа.",
+    opts: [
+      { l:"А", t:"Продолжаю редактировать — пост должен быть идеальным" },
+      { l:"Б", t:"Публикую как есть — первые 20 постов всё равно черновики" },
+      { l:"В", t:"Удаляю и пишу новый — этот уже не нравится" },
+      { l:"Г", t:"Отправляю другу на проверку и жду его мнения" }
+    ],
+    correct: 1,
+    fb: [
+      "Перфекционизм — главный враг блогера. Идеальный пост, который никто не увидел, не существует.",
+      "Вот это настрой! Первые 20 постов — тренировка, не портфолио. Публикуй и иди дальше.",
+      "Новый пост через 3 часа тоже покажется плохим. Это петля, из которой один выход — опубликовать.",
+      "Мнение друга — хорошо, но блог ждать не любит. Публикуй, потом спроси."
+    ]
+  },
+  {
+    q: "Контент-план на неделю составлен. В среду — идей нет совсем, вдохновения ноль, день тяжёлый.",
+    opts: [
+      { l:"А", t:"Пропускаю день — публикую только когда есть настроение" },
+      { l:"Б", t:"Прошу ChatGPT накидать 10 идей, выбираю одну и пишу" },
+      { l:"В", t:"Публикую старый пост повторно — никто не заметит" },
+      { l:"Г", t:"Открываю контент-план — там уже были заготовки на такой случай" }
+    ],
+    correct: 3,
+    fb: [
+      "Алгоритмы любят стабильность, и подписчики тоже. Пропуск из-за настроения входит в привычку очень быстро.",
+      "Неплохой план Б! ИИ как раз для таких моментов. Но лучший вариант — когда заготовки уже есть заранее.",
+      "Заметят чаще, чем кажется. И главное — это не система, это латание дыр.",
+      "Точно! Для этого и нужен контент-план — не как строгое расписание, а как запас на тёмные времена."
+    ]
+  },
+  {
+    q: "Бренд прислал предложение о рекламе. Просит написать пост «наш продукт лучший, покупайте». Платят хорошо.",
+    opts: [
+      { l:"А", t:"Соглашаюсь — деньги есть деньги" },
+      { l:"Б", t:"Отказываюсь — такая реклама разрушит доверие аудитории" },
+      { l:"В", t:"Соглашаюсь, но переписываю в своём стиле через личную историю" },
+      { l:"Г", t:"Прошу поднять оплату в два раза и тогда соглашаюсь" }
+    ],
+    correct: 2,
+    fb: [
+      "Один такой пост может стоить части аудитории. Доверие строится месяцами, рушится одним постом.",
+      "Принципиальность — хорошо, но отказываться не обязательно. Можно переписать в своём стиле — и честно, и эффективно.",
+      "Профессионально! Нативная подача через личный опыт работает и для аудитории, и для рекламодателя.",
+      "Деньги не сделают прямую рекламу органичной. Сумма не меняет формат."
+    ]
+  },
+  {
+    q: "Ты разместила рекламный пост и забыла поставить маркировку «Реклама» и зарегистрировать в ЕРИР.",
+    opts: [
+      { l:"А", t:"Ничего страшного — у меня маленький блог, до меня не дойдут" },
+      { l:"Б", t:"Срочно удаляю пост и делаю вид, что ничего не было" },
+      { l:"В", t:"Это нарушение закона — штраф возможен вне зависимости от размера блога" },
+      { l:"Г", t:"Прошу рекламодателя оформить всё за меня" }
+    ],
+    correct: 2,
+    fb: [
+      "Размер блога в законе не упоминается. Штрафы реальные, и незнание не защищает.",
+      "Удаление не отменяет нарушение, если пост уже был опубликован. Следи за этим заранее.",
+      "Именно. Маркировка обязательна с 2023 года для всех — от 500 подписчиков до миллиона.",
+      "Ответственность в первую очередь на блогере, даже если рекламодатель обещал всё взять на себя."
+    ]
+  },
+  {
+    q: "Подруга советует вести блог сразу на 5 платформах — чтобы охватить всех.",
+    opts: [
+      { l:"А", t:"Отличная идея — больше платформ, больше охват" },
+      { l:"Б", t:"Выбираю одну основную, остальное добавляю постепенно" },
+      { l:"В", t:"Завожу все пять, публикую везде одно и то же" },
+      { l:"Г", t:"Выбираю три — это компромисс" }
+    ],
+    correct: 1,
+    fb: [
+      "Звучит логично, но 5 платформ без фокуса = 5 слабых блогов вместо одного сильного.",
+      "Умно! Одна площадка, освоена хорошо, потом кросспостинг — вот рабочая схема.",
+      "Одинаковый контент везде без адаптации алгоритмы не любят. И выгоришь раньше, чем вырастешь.",
+      "Три — это тоже много для старта. Начни с одной, правда."
+    ]
+  },
+  {
+    q: "ChatGPT написал тебе текст поста. Читаешь — вроде нормально, всё по делу.",
+    opts: [
+      { l:"А", t:"Публикую как есть — нейросеть написала хорошо" },
+      { l:"Б", t:"Добавляю свою историю, детали и голос — потом публикую" },
+      { l:"В", t:"Выбрасываю — ИИ не умеет писать живо, только я могу" },
+      { l:"Г", t:"Меняю пару слов и публикую — и так сойдёт" }
+    ],
+    correct: 1,
+    fb: [
+      "Подписчики чувствуют «нейросетевой» текст. Без твоей истории это просто информация, а не контент.",
+      "Именно так работает связка человек + ИИ. Нейросеть даёт структуру, ты даёшь жизнь.",
+      "Зря! ИИ отлично справляется с черновиком. Твой голос добавляется сверху, а не вместо.",
+      "Пара слов не добавляет личного голоса. Нужна твоя история — хотя бы пара предложений."
+    ]
+  },
+  {
+    q: "Три недели постишь, комментариев почти нет. Рука тянется всё бросить.",
+    opts: [
+      { l:"А", t:"Покупаю рекламу — без денег не раскрутиться" },
+      { l:"Б", t:"Меняю нишу — значит, тема неинтересная" },
+      { l:"В", t:"Задаю в конце каждого поста конкретный вопрос с вариантами ответа" },
+      { l:"Г", t:"Пишу чаще — количество решит проблему" }
+    ],
+    correct: 2,
+    fb: [
+      "Реклама без вовлечённой аудитории — деньги в воздух. Сначала диалог, потом масштаб.",
+      "Три недели — слишком мало для выводов о нише. Большинство блогов раскрываются после 2–3 месяцев.",
+      "Правильно! Конкретный вопрос — «красный или синий?» — вовлекает в разы лучше, чем «что думаете?»",
+      "Больше постов без вовлечения = больше тишины. Качество диалога важнее частоты."
+    ]
+  },
+  {
+    q: "Блогер из смежной ниши предлагает взаимный пиар. У него 50К подписчиков, у тебя 800.",
+    opts: [
+      { l:"А", t:"Отказываюсь — аудитории несопоставимы, это невыгодно мне" },
+      { l:"Б", t:"Соглашаюсь — главное, что тематика совпадает" },
+      { l:"В", t:"Прошу деньги за упоминание" },
+      { l:"Г", t:"Соглашаюсь, но прошу его упомянуть меня дважды" }
+    ],
+    correct: 1,
+    fb: [
+      "Зря. Для маленького блога ВП с большим — это лифт, а не невыгодная сделка.",
+      "Верно! Совпадение тематики и аудитории важнее цифр. Это шанс — бери.",
+      "За ВП деньги не просят. Это обмен, а не коммерческое размещение.",
+      "Условия ВП не торгуются таким образом. Соглашайся или нет — без дополнительных требований."
+    ]
+  },
+  {
+    q: "Ты хочешь найти первых читателей. Денег на рекламу нет совсем.",
+    opts: [
+      { l:"А", t:"Жду, пока алгоритмы меня найдут" },
+      { l:"Б", t:"Пишу личным контактам и захожу в тематические чаты" },
+      { l:"В", t:"Делаю розыгрыш iPhone — это точно привлечёт людей" },
+      { l:"Г", t:"Покупаю подписчиков — для старта нормально" }
+    ],
+    correct: 1,
+    fb: [
+      "Алгоритмы помогают тем, кто уже есть. Первых читателей находят руками.",
+      "Именно. Первые 100 читателей собираются вручную — из контактов, чатов, комментариев у других.",
+      "Розыгрыш iPhone приведёт охотников за призами. Они уйдут сразу после розыгрыша.",
+      "Мёртвые подписчики убивают охваты и доверие. Это ловушка, из которой сложно выбраться."
+    ]
+  },
+  {
+    q: "Ты ведёшь блог 2 месяца. Охваты не растут. Рука тянется всё бросить.",
+    opts: [
+      { l:"А", t:"Бросаю — значит, не моё" },
+      { l:"Б", t:"Вкладываю деньги в продвижение — без этого не раскрутиться" },
+      { l:"В", t:"Анализирую, какие посты зашли лучше, и делаю больше такого" },
+      { l:"Г", t:"Два месяца — это норма, продолжаю в том же ритме" }
+    ],
+    correct: 2,
+    fb: [
+      "Два месяца — это ещё не старт, это разминка. Большинство блогов начинают расти после 3–6 месяцев.",
+      "Деньги без понимания что работает — это слив. Сначала анализ, потом масштаб.",
+      "Отлично! Аналитика — твой лучший советчик. Смотри что резонирует и делай больше этого.",
+      "Хорошая установка, но слепое продолжение тоже не работает. Нужен хотя бы минимальный разбор — что заходит, а что нет."
+    ]
+  },
+  {
+    q: "Ты заработал первые деньги на рекламе. Самозанятым не являешься.",
+    opts: [
+      { l:"А", t:"Небольшие суммы можно не оформлять — до меня не дойдут" },
+      { l:"Б", t:"Работаю через друга с ИП — так проще" },
+      { l:"В", t:"Регистрируюсь как самозанятый до следующего заказа" },
+      { l:"Г", t:"Открываю ИП — самозанятость несерьёзно" }
+    ],
+    correct: 2,
+    fb: [
+      "Налоговая не спрашивает про «небольшие». Легальная работа начинается с первого рубля.",
+      "Схема через третьих лиц создаёт юридические риски для обеих сторон. Не стоит.",
+      "Правильно! Самозанятость оформляется за 10 минут в приложении «Мой налог». Это основа легального блогерства.",
+      "Самозанятость — отличный старт. ИП когда понадобится — перейдёшь. Не усложняй начало."
+    ]
+  }
+];
+
+const results = [
+  {
+    range: [0, 4],
+    emoji: "🌱",
+    badge: "Новичок с потенциалом",
+    title: "Всё впереди — и это честно",
+    message: `<p>Знания придут через практику, а не через тест. Главное, что ты уже здесь и уже действуешь. Каждый блогер с миллионом подписчиков когда-то не знал, что такое маркировка рекламы — и тоже когда-то сидел над первым постом три часа.</p><p>Вернись к конспектам, пройди квиз снова через неделю — и увидишь разницу. Разрыв между «не знаю» и «знаю» закрывается очень быстро, когда начинаешь делать.</p>`
+  },
+  {
+    range: [5, 8],
+    emoji: "🚀",
+    badge: "Блогер в процессе",
+    title: "Ты уже понимаешь логику",
+    message: `<p>Ты знаешь как строить контент, работать с аудиторией и не сжечь доверие одним постом. Осталось перевести это из знания в привычку. А это только через регулярность — не через идеальные условия.</p><p>Ошибки, которые ты ещё сделаешь — это не провалы, это материал для следующих постов. Блог растёт там, где есть честность и последовательность.</p>`
+  },
+  {
+    range: [9, 12],
+    emoji: "⭐️",
+    badge: "Готовый блогер",
+    title: "Ты знаешь как. Теперь — делай",
+    message: `<p>Знания без действия — это красивая полка с книгами. Ты прошёл(ла) курс, ты знаешь инструменты, ты понимаешь как работает аудитория, реклама и системный контент.</p><p>Твой блог ждёт тебя прямо сейчас. Не завтра, не «как только», не «когда будет настроение» — прямо сейчас.</p>`
+  }
+];
+
+const mantra = `Для каждого блога найдётся <span class="mantra-accent">своя аудитория</span>. Для каждого голоса — свои слушатели. Блогинг — это не соревнование за первое место, это марафон, в котором побеждает тот, кто не остановился.<br><br>Публикуй когда страшно. Публикуй когда кажется что никто не читает. Публикуй когда не знаешь о чём. <span class="mantra-accent">Именно в этих моментах и растут настоящие блогеры.</span>`;
+
+const correctEmojis = ["🎉","✨","🔥","💥","🌟","👏","💪","🎊"];
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let current = 0;
+let score = 0;
+let answered = false;
+let answers = []; // true/false per question
+
+// ══════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════
+function render() {
+  const q = questions[current];
+  const area = document.getElementById('questionArea');
+
+  document.getElementById('progressLabel').textContent = `Вопрос ${current + 1} из ${questions.length}`;
+  document.getElementById('progressScore').textContent = `${score} правильных`;
+  document.getElementById('progressFill').style.width = `${(current / questions.length) * 100}%`;
+
+  area.innerHTML = `
+    <div class="question-card" id="qCard">
+      <div class="q-num">Вопрос ${current + 1} / ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options" id="options">
+        ${q.opts.map((o, i) => `
+          <button class="option" data-idx="${i}" onclick="choose(${i})">
+            <span class="option-letter">${o.l}</span>
+            <span>${o.t}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="next()">
+      ${current < questions.length - 1 ? 'Следующий вопрос →' : 'Посмотреть результат →'}
+    </button>
+  `;
+
+  answered = false;
+}
+
+function choose(idx) {
+  if (answered) return;
+  answered = true;
+
+  const q = questions[current];
+  const isCorrect = idx === q.correct;
+  const opts = document.querySelectorAll('.option');
+  const feedback = document.getElementById('feedback');
+
+  opts.forEach((btn, i) => {
+    btn.classList.add('locked');
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === idx && !isCorrect) btn.classList.add('wrong');
+    else if (i !== q.correct) btn.classList.add('dimmed');
+  });
+
+  if (isCorrect) {
+    score++;
+    answers.push(true);
+    feedback.className = 'feedback show correct-fb';
+    feedback.innerHTML = `<span class="feedback-icon">✅</span> ${q.fb[idx]}`;
+    spawnBurst(opts[idx]);
+    launchConfetti();
+  } else {
+    answers.push(false);
+    feedback.className = 'feedback show wrong-fb';
+    feedback.innerHTML = `<span class="feedback-icon">🤔</span> ${q.fb[idx]}`;
+  }
+
+  document.getElementById('progressScore').textContent = `${score} правильных`;
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function next() {
+  current++;
+  if (current >= questions.length) {
+    showResult();
+  } else {
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function submitResult(tier) {
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxe7zaGT9GwyRI7TEMDSNbIH6MBKoGJwzfbd0EoFhiK6dON0QeuzXRyXAegYb2GNOYp/exec';
+  const answerStr = answers.map(a => a ? '✅' : '❌').join(' ');
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      score: score,
+      total: questions.length,
+      tier: tier.badge,
+      answers: answerStr
+    })
+  }).catch(() => {});
+}
+
+function showResult() {
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('questionArea').style.display = 'none';
+
+  const rs = document.getElementById('resultScreen');
+  rs.classList.add('show');
+
+  const tier = results.find(r => score >= r.range[0] && score <= r.range[1]);
+  submitResult(tier);
+
+  const dots = answers.map(a =>
+    `<div class="score-dot ${a ? 'got' : 'miss'}"></div>`
+  ).join('');
+
+  rs.innerHTML = `
+    <div class="result-card">
+      <div class="result-top">
+        <div class="result-emoji">${tier.emoji}</div>
+        <div class="result-badge">${tier.badge}</div>
+        <div class="result-title">${tier.title}</div>
+        <div class="result-score-line">
+          Правильных ответов: <strong>${score}</strong> из ${questions.length}
+        </div>
+        <div class="score-dots">${dots}</div>
+      </div>
+      <div class="result-bottom">
+        <div class="result-message">${tier.message}</div>
+        <div class="result-mantra">${mantra}</div>
+        <button class="restart-btn" onclick="restart()">Пройти ещё раз →</button>
+      </div>
+    </div>
+  `;
+
+  if (score >= 9) launchConfetti(true);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restart() {
+  current = 0; score = 0; answered = false; answers = [];
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('questionArea').style.display = 'block';
+  document.getElementById('resultScreen').classList.remove('show');
+  document.getElementById('resultScreen').innerHTML = '';
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════
+//  ANIMATIONS
+// ══════════════════════════════════════════
+function spawnBurst(el) {
+  const rect = el.getBoundingClientRect();
+  const emoji = correctEmojis[Math.floor(Math.random() * correctEmojis.length)];
+  const span = document.createElement('span');
+  span.className = 'burst';
+  span.textContent = emoji;
+  span.style.left = (rect.left + rect.width / 2 - 14) + 'px';
+  span.style.top  = (rect.top + window.scrollY - 10) + 'px';
+  document.body.appendChild(span);
+  setTimeout(() => span.remove(), 900);
+}
+
+// Confetti
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let animId = null;
+
+function launchConfetti(big = false) {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const count = big ? 120 : 45;
+  const colors = ['#C4F542','#1A1A1A','#ffffff','#B8E83D','#FFD700','#FF6B6B'];
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: -10 - Math.random() * 60,
+      r: 4 + Math.random() * 6,
+      d: Math.random() * count,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      tilt: Math.random() * 10 - 5,
+      tiltAngle: 0,
+      tiltSpeed: 0.1 + Math.random() * 0.1,
+      vx: Math.random() * 3 - 1.5,
+      vy: 2 + Math.random() * 3
+    });
+  }
+  if (!animId) animateConfetti();
+}
+
+function animateConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.fillStyle = p.color;
+    ctx.ellipse(p.x, p.y, p.r, p.r * 0.4, p.tiltAngle, 0, Math.PI * 2);
+    ctx.fill();
+    p.x += p.vx;
+    p.y += p.vy;
+    p.tiltAngle += p.tiltSpeed;
+    p.vy += 0.05;
+  });
+  particles = particles.filter(p => p.y < canvas.height + 20);
+  if (particles.length > 0) {
+    animId = requestAnimationFrame(animateConfetti);
+  } else {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    animId = null;
+  }
+}
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+render();
+</script>
+</body>
+</html>
