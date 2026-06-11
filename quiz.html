@@ -190,58 +190,10 @@ body {
 .result-screen.show { display: block; }
 
 .result-card {
-  border-radius: 28px; overflow: hidden;
+  border-radius: 24px; overflow: hidden;
   border: 1.5px solid var(--line);
   margin-bottom: 20px;
 }
-.result-top {
-  padding: 40px 36px 32px;
-  background: var(--ink); color: #fff; text-align: center;
-}
-.result-emoji { font-size: 56px; margin-bottom: 16px; }
-.result-badge {
-  display: inline-block;
-  background: var(--accent); color: var(--acc-ink);
-  font-family: var(--fm); font-size: 11px; letter-spacing: 0.08em;
-  text-transform: uppercase; padding: 4px 12px; border-radius: 99px;
-  margin-bottom: 14px;
-}
-.result-title {
-  font-family: var(--fd); font-weight: 700;
-  font-size: clamp(22px, 4vw, 30px);
-  line-height: 1.2; letter-spacing: -0.02em;
-  margin-bottom: 8px;
-}
-.result-score-line {
-  font-family: var(--fm); font-size: 13px;
-  color: rgba(255,255,255,.55); letter-spacing: 0.05em;
-}
-.result-score-line strong { color: var(--accent); font-size: 20px; }
-
-.result-bottom { padding: 32px 36px; background: var(--bg-soft); }
-.result-message {
-  font-size: 16px; line-height: 1.75; color: var(--ink); margin-bottom: 24px;
-}
-.result-message p + p { margin-top: 14px; }
-
-.result-mantra {
-  background: var(--ink); color: #fff;
-  border-radius: 16px; padding: 22px 24px;
-  font-family: var(--fd); font-size: 15px;
-  font-weight: 500; line-height: 1.5; letter-spacing: -0.01em;
-  margin-bottom: 24px;
-}
-.result-mantra .mantra-accent { color: var(--accent); }
-
-.restart-btn {
-  width: 100%; padding: 16px;
-  border-radius: 14px; border: none;
-  background: var(--accent); color: var(--acc-ink);
-  font-family: var(--fd); font-size: 14px; font-weight: 700;
-  letter-spacing: -0.01em; cursor: pointer;
-  transition: background .15s;
-}
-.restart-btn:hover { background: var(--accent-h); }
 
 /* ── Score dots ── */
 .score-dots {
@@ -255,6 +207,123 @@ body {
 }
 .score-dot.got { background: var(--accent); }
 .score-dot.miss { background: var(--wrong); }
+
+/* ── Result sections ── */
+.result-congrats {
+  text-align: center;
+  padding: 36px 32px 28px;
+  border-bottom: 1px solid var(--line);
+}
+.result-congrats-eyebrow {
+  font-family: var(--fm); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px;
+}
+.result-congrats-title {
+  font-family: var(--fd); font-weight: 700;
+  font-size: clamp(24px, 4vw, 36px);
+  line-height: 1.1; letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+.result-congrats-title .highlight {
+  background: var(--accent); color: var(--acc-ink);
+  padding: 0 8px; border-radius: 8px;
+}
+.result-congrats-sub {
+  color: var(--ink-2); font-size: 15px; line-height: 1.65;
+  max-width: 500px; margin: 0 auto;
+}
+
+.result-score-section {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--line);
+}
+.result-score-block {
+  padding: 24px 28px;
+  border-right: 1px solid var(--line);
+}
+.result-score-block:last-child { border-right: none; }
+.rsb-label {
+  font-family: var(--fm); font-size: 10px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px;
+}
+.rsb-value {
+  font-family: var(--fd); font-weight: 700;
+  font-size: 28px; letter-spacing: -0.02em; margin-bottom: 4px;
+}
+.rsb-value .accent { color: var(--acc-ink); background: var(--accent); padding: 0 5px; border-radius: 5px; }
+.rsb-sub { font-size: 13px; color: var(--ink-2); }
+
+.result-tier-section {
+  padding: 28px 32px;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-soft);
+}
+.rts-label {
+  font-family: var(--fm); font-size: 10px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px;
+}
+.rts-title {
+  font-family: var(--fd); font-weight: 600;
+  font-size: 20px; letter-spacing: -0.01em; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.rts-text { font-size: 14px; color: var(--ink-2); line-height: 1.7; }
+
+.result-next-section {
+  padding: 28px 32px;
+  border-bottom: 1px solid var(--line);
+}
+.rns-title {
+  font-family: var(--fd); font-weight: 600;
+  font-size: 18px; letter-spacing: -0.01em; margin-bottom: 16px;
+}
+.rns-steps { display: flex; flex-direction: column; gap: 10px; }
+.rns-step {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 14px; line-height: 1.55; color: var(--ink);
+}
+.rns-step-num {
+  font-family: var(--fm); font-size: 11px; color: var(--acc-ink);
+  background: var(--accent); padding: 2px 8px; border-radius: 99px;
+  flex-shrink: 0; margin-top: 2px; font-weight: 600;
+}
+
+.result-mantra-section {
+  background: var(--ink); padding: 32px;
+  border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+}
+.rms-label {
+  font-family: var(--fm); font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 14px;
+}
+.rms-text {
+  font-family: var(--fd); font-size: 16px; font-weight: 500;
+  line-height: 1.6; letter-spacing: -0.01em; color: #fff;
+}
+.rms-text .ma { color: var(--accent); }
+
+.result-actions {
+  padding: 24px 32px 32px;
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+.restart-btn {
+  flex: 1; min-width: 180px; padding: 15px;
+  border-radius: 12px; border: 1.5px solid var(--line);
+  background: var(--bg); color: var(--ink);
+  font-family: var(--fd); font-size: 13px; font-weight: 600;
+  letter-spacing: -0.01em; cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.restart-btn:hover { background: var(--bg-muted); border-color: #C0C3C8; }
+
+@media (max-width: 520px) {
+  .result-score-section { grid-template-columns: 1fr; }
+  .result-score-block { border-right: none; border-bottom: 1px solid var(--line); }
+  .result-congrats { padding: 28px 20px 22px; }
+  .result-tier-section, .result-next-section, .result-mantra-section { padding: 22px 20px; }
+  .result-actions { padding: 18px 20px 24px; flex-direction: column; }
+}
 
 /* ── Floating emoji burst ── */
 .burst {
@@ -663,20 +732,73 @@ function showResult() {
 
   rs.innerHTML = `
     <div class="result-card">
-      <div class="result-top">
-        <div class="result-emoji">${tier.emoji}</div>
-        <div class="result-badge">${tier.badge}</div>
-        <div class="result-title">${tier.title}</div>
-        <div class="result-score-line">
-          Правильных ответов: <strong>${score}</strong> из ${questions.length}
+
+      <!-- Поздравление -->
+      <div class="result-congrats">
+        <div class="result-congrats-eyebrow">Квиз пройден · Блогер с нуля</div>
+        <div class="result-congrats-title">Поздравляем с <span class="highlight">окончанием курса!</span></div>
+        <p class="result-congrats-sub">Ты прошёл(а) весь путь — от первого урока до финального квиза. Это уже не просто знание. Это готовность действовать.</p>
+      </div>
+
+      <!-- Счёт + уровень -->
+      <div class="result-score-section">
+        <div class="result-score-block">
+          <div class="rsb-label">Правильных ответов</div>
+          <div class="rsb-value"><span class="accent">${score}</span> из ${questions.length}</div>
+          <div class="rsb-sub score-dots" style="justify-content:flex-start;margin-top:10px;">${dots}</div>
         </div>
-        <div class="score-dots">${dots}</div>
+        <div class="result-score-block">
+          <div class="rsb-label">Твой уровень</div>
+          <div class="rsb-value" style="font-size:22px;">${tier.emoji} ${tier.badge}</div>
+          <div class="rsb-sub">${tier.title}</div>
+        </div>
       </div>
-      <div class="result-bottom">
-        <div class="result-message">${tier.message}</div>
-        <div class="result-mantra">${mantra}</div>
-        <button class="restart-btn" onclick="restart()">Пройти ещё раз →</button>
+
+      <!-- Что означает результат -->
+      <div class="result-tier-section">
+        <div class="rts-label">Что означает твой результат</div>
+        <div class="rts-text">${tier.message}</div>
       </div>
+
+      <!-- Что делать дальше -->
+      <div class="result-next-section">
+        <div class="rns-title">Что делать дальше?</div>
+        <div class="rns-steps">
+          <div class="rns-step">
+            <span class="rns-step-num">01</span>
+            <span>Вернись к конспектам по темам, где были ошибки — там есть всё, что нужно для уверенного старта.</span>
+          </div>
+          <div class="rns-step">
+            <span class="rns-step-num">02</span>
+            <span>Опубликуй следующий пост сегодня. Не завтра, не «как только» — сегодня. Даже если кажется что не готов(а).</span>
+          </div>
+          <div class="rns-step">
+            <span class="rns-step-num">03</span>
+            <span>Отметь галочки в чек-листе заданий — посмотри, что уже сделано, и выбери одно незакрытое.</span>
+          </div>
+          <div class="rns-step">
+            <span class="rns-step-num">04</span>
+            <span>Зарегистрируйся как самозанятая, если ещё нет. Это 10 минут в приложении «Мой налог» — и ты уже готова к первому рекламному заказу.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Напутствие -->
+      <div class="result-mantra-section">
+        <div class="rms-label">Напутствие</div>
+        <div class="rms-text">
+          Для каждого блога найдётся <span class="ma">своя аудитория</span>. Для каждого голоса — свои слушатели.<br><br>
+          Блогинг — это не соревнование за первое место. Это марафон, в котором побеждает тот, кто <span class="ma">не остановился</span>.<br><br>
+          Публикуй когда страшно. Публикуй когда кажется что никто не читает. Публикуй когда не знаешь о чём. Именно в этих моментах и растут настоящие блогеры.<br><br>
+          <span class="ma">Ты уже сделал(а) первый шаг. Теперь — второй.</span>
+        </div>
+      </div>
+
+      <!-- Кнопки -->
+      <div class="result-actions">
+        <button class="restart-btn" onclick="restart()">← Пройти квиз ещё раз</button>
+      </div>
+
     </div>
   `;
 
