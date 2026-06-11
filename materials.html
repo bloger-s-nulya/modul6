@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Блогер с нуля — Конспекты и задания</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #FFFFFF;
+  --bg-soft:  #F5F6F7;
+  --bg-muted: #EDEEF0;
+  --ink:      #1A1A1A;
+  --ink-2:    #4A4D52;
+  --ink-3:    #8A8E94;
+  --line:     #E4E6E9;
+  --accent:   #C4F542;
+  --accent-h: #B8E83D;
+  --acc-ink:  #0F1A00;
+  --fd: 'Unbounded', sans-serif;
+  --fb: 'Manrope', sans-serif;
+  --fm: 'JetBrains Mono', monospace;
+  --r-sm: 10px; --r-md: 16px; --r-lg: 20px; --r-pill: 999px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--fb); background: var(--bg); color: var(--ink); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+/* ── Layout ── */
+.layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+
+/* ── Sidebar ── */
+.sidebar {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--bg-soft); border-right: 1px solid var(--line);
+  display: flex; flex-direction: column;
+  scrollbar-width: thin; scrollbar-color: var(--line) transparent;
+}
+.sidebar-logo { padding: 22px 18px 18px; border-bottom: 1px solid var(--line); }
+.sidebar-logo .course-name { font-family: var(--fd); font-size: 12px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; }
+.sidebar-logo .course-sub { font-family: var(--fm); font-size: 10px; color: var(--ink-3); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; }
+
+.sidebar-nav { padding: 10px 10px 24px; flex: 1; }
+.nav-section-label { font-family: var(--fm); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); padding: 12px 8px 5px; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 10px; border-radius: var(--r-sm);
+  cursor: pointer; transition: background .12s;
+  border: none; background: transparent; width: 100%; text-align: left; font-family: var(--fb);
+}
+.nav-item:hover { background: var(--bg-muted); }
+.nav-item.active { background: var(--ink); color: #fff; }
+.nav-item.active .nav-dot { background: var(--accent); }
+.nav-item.active .nav-prog { color: rgba(255,255,255,.45); }
+
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--line); flex-shrink: 0; transition: background .15s; }
+.nav-dot.has-progress { background: var(--accent); }
+.nav-label { font-size: 13px; font-weight: 500; flex: 1; line-height: 1.3; }
+.nav-prog { font-family: var(--fm); font-size: 10px; color: var(--ink-3); flex-shrink: 0; }
+
+/* ── Main area ── */
+.main { padding: 44px 44px 80px; }
+
+/* ── Module header ── */
+.mod-header { margin-bottom: 32px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.mod-eyebrow { font-family: var(--fm); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; }
+.mod-title { font-family: var(--fd); font-weight: 600; font-size: clamp(20px, 2.5vw, 28px); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px; }
+.mod-desc { color: var(--ink-2); font-size: 14px; max-width: 600px; line-height: 1.65; }
+
+/* Progress */
+.mod-progress-wrap { margin-top: 18px; display: flex; align-items: center; gap: 12px; }
+.mod-progress-track { height: 5px; background: var(--bg-muted); border-radius: 99px; overflow: hidden; width: 220px; }
+.mod-progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .3s ease; }
+.mod-progress-label { font-family: var(--fm); font-size: 10px; color: var(--ink-3); letter-spacing: 0.05em; white-space: nowrap; }
+
+/* ── Lesson card — the main unit ── */
+.lesson { margin-bottom: 16px; }
+.lesson-meta {
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 0 0 8px 0; margin-bottom: 10px;
+}
+.lesson-num { font-family: var(--fm); font-size: 11px; color: var(--ink-3); flex-shrink: 0; }
+.lesson-title { font-family: var(--fb); font-weight: 700; font-size: 15px; color: var(--ink); flex: 1; line-height: 1.35; }
+
+/* Two-col grid: synopsis card + tasks card */
+.lesson-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: stretch;
+}
+
+/* Synopsis card */
+.synopsis-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px;
+  background: var(--accent);
+  border-radius: var(--r-lg);
+  text-decoration: none;
+  color: var(--acc-ink);
+  transition: background .12s ease, transform .08s ease;
+  min-height: 120px;
+}
+.synopsis-card:hover { background: var(--accent-h); }
+.synopsis-card:active { transform: scale(.99); }
+
+.synopsis-card .sc-label {
+  font-family: var(--fm); font-size: 10px; letter-spacing: 0.08em;
+  text-transform: uppercase; opacity: .6;
+}
+.synopsis-card .sc-name {
+  font-family: var(--fd); font-weight: 600;
+  font-size: 14px; line-height: 1.3; letter-spacing: -0.01em;
+  flex: 1;
+}
+.synopsis-card .sc-arrow {
+  font-size: 18px; align-self: flex-end; opacity: .7;
+}
+
+/* Extra links — full-width guide cards under synopsis */
+.extra-links { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.extra-link {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; border-radius: var(--r-lg);
+  background: var(--bg-muted); color: var(--ink);
+  font-size: 13px; font-weight: 600; text-decoration: none;
+  border: 1px solid var(--line);
+  transition: background .12s ease;
+  gap: 8px;
+}
+.extra-link:hover { background: #DCDDE0; }
+.extra-link .el-arrow { opacity: .45; font-size: 16px; flex-shrink: 0; }
+
+/* Tasks card */
+.tasks-card {
+  padding: 18px 20px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tasks-card .tc-label {
+  font-family: var(--fm); font-size: 10px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 2px;
+}
+
+/* Checklist */
+.checklist { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 9px;
+  padding: 9px 12px; border-radius: var(--r-sm);
+  background: var(--bg); border: 1px solid var(--line);
+  cursor: pointer; transition: border-color .12s, background .12s;
+  user-select: none;
+}
+.check-item:hover { border-color: #C0C3C8; }
+.check-item.done { background: var(--bg); border-color: var(--line); }
+.check-item.done .check-text { color: var(--ink-3); text-decoration: line-through; }
+.check-box {
+  width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0;
+  border: 1.5px solid var(--line); margin-top: 2px; position: relative;
+  background: var(--bg); transition: background .12s, border-color .12s;
+}
+.check-item.done .check-box { background: var(--accent); border-color: var(--accent); }
+.check-item.done .check-box::after {
+  content: ''; position: absolute; left: 4px; top: 1px;
+  width: 5px; height: 9px;
+  border-right: 2px solid var(--acc-ink); border-bottom: 2px solid var(--acc-ink);
+  transform: rotate(45deg);
+}
+.check-text { font-size: 13px; line-height: 1.5; flex: 1; color: var(--ink); }
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 28px 0 20px; font-family: var(--fm); font-size: 10px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3);
+}
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+/* Guide row (for intro guides) */
+.guide-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 14px 18px; border-radius: var(--r-md);
+  background: var(--bg-soft); border: 1px solid var(--line);
+  margin-bottom: 20px;
+}
+.guide-row-text .gr-label { font-family: var(--fm); font-size: 10px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.06em; }
+.guide-row-text .gr-name { font-weight: 600; font-size: 14px; margin-top: 2px; }
+.guide-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 8px 16px; border-radius: var(--r-pill);
+  background: var(--ink); color: #fff;
+  font-size: 13px; font-weight: 600; text-decoration: none; flex-shrink: 0;
+  transition: opacity .12s;
+}
+.guide-btn:hover { opacity: .85; }
+
+/* Mobile */
+.mobile-toggle { display: none; }
+@media (max-width: 800px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: fixed; left: -240px; z-index: 200; transition: left .25s; height: 100vh; width: 240px; }
+  .sidebar.open { left: 0; box-shadow: 4px 0 24px rgba(0,0,0,.12); }
+  .mobile-toggle {
+    display: flex; align-items: center; gap: 8px;
+    position: fixed; top: 14px; left: 14px; z-index: 300;
+    background: var(--ink); color: #fff; border: none;
+    padding: 8px 14px; border-radius: var(--r-pill);
+    font-family: var(--fb); font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .main { padding: 68px 16px 60px; }
+  .lesson-cols { grid-template-columns: 1fr; }
+  .synopsis-card { min-height: auto; }
+}
+</style>
+</head>
+<body>
+
+<button class="mobile-toggle" id="mobileToggle">☰ Модули</button>
+
+<div class="layout">
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="course-name">Блогер с нуля</div>
+    <div class="course-sub">Конспекты · 2026</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Основные модули</div>
+    <button class="nav-item active" onclick="show('m1')" id="nav-m1">
+      <span class="nav-dot" id="dot-m1"></span><span class="nav-label">Старт</span><span class="nav-prog" id="prog-m1"></span>
+    </button>
+    <button class="nav-item" onclick="show('m2')" id="nav-m2">
+      <span class="nav-dot" id="dot-m2"></span><span class="nav-label">Первый контент</span><span class="nav-prog" id="prog-m2"></span>
+    </button>
+    <button class="nav-item" onclick="show('m3')" id="nav-m3">
+      <span class="nav-dot" id="dot-m3"></span><span class="nav-label">Система блога</span><span class="nav-prog" id="prog-m3"></span>
+    </button>
+    <button class="nav-item" onclick="show('m5')" id="nav-m5">
+      <span class="nav-dot" id="dot-m5"></span><span class="nav-label">Рост блога</span><span class="nav-prog" id="prog-m5"></span>
+    </button>
+    <button class="nav-item" onclick="show('m6')" id="nav-m6">
+      <span class="nav-dot" id="dot-m6"></span><span class="nav-label">Монетизация</span><span class="nav-prog" id="prog-m6"></span>
+    </button>
+    <div class="nav-section-label" style="margin-top:6px;">Бонусные материалы</div>
+    <button class="nav-item" onclick="show('m4')" id="nav-m4">
+      <span class="nav-dot" id="dot-m4"></span><span class="nav-label">ИИ для блогера</span><span class="nav-prog" id="prog-m4"></span>
+    </button>
+    <button class="nav-item" onclick="show('lib')" id="nav-lib">
+      <span class="nav-dot" id="dot-lib"></span><span class="nav-label">Библиотека опыта</span><span class="nav-prog" id="prog-lib"></span>
+    </button>
+  </nav>
+</aside>
+
+<!-- ══════════ MAIN ══════════ -->
+<main class="main" id="mainContent">
+
+<!-- ═══════════════════════════════════════
+     МОДУЛЬ 1
+════════════════════════════════════════ -->
+<section id="m1" class="mod-section">
+  <div class="mod-header">
+    <div class="mod-eyebrow">Модуль 1</div>
+    <h1 class="mod-title">Старт: с чего начать вести блог, даже если кажется, что уже поздно</h1>
+    <p class="mod-desc">Находим тему, выбираем платформу и настраиваем профиль. Всё что нужно, чтобы сделать первый шаг уверенно.</p>
+    <div class="mod-progress-wrap">
+      <div class="mod-progress-track"><div class="mod-progress-fill" id="fill-m1" style="width:0%"></div></div>
+      <div class="mod-progress-label" id="label-m1">0 из 13 выполнено</div>
+    </div>
+  </div>
+
+  <!-- Урок 01 -->
+  <div class="lesson">
+    <div class="lesson-meta">
+      <span class="lesson-num">Урок 01</span>
+      <span class="lesson-title">Блогинг в России 2026: что происходит на самом деле</span>
+    </div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul1/urok1.html" target="_blank">
+        <span class="sc-label">Конспект</span>
+        <span class="sc-name">Блогинг в России 2026: что происходит на самом деле</span>
+        <span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m1-1-1"><div class="check-box"></div><span class="check-text">Записал(а) три темы, о которых мне не лень говорить</span></li>
+          <li class="check-item" data-id="m1-1-2"><div class="check-box"></div><span class="check-text">Определил(а), в какой соцсети мне комфортно, а в какой нет</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Урок 02 -->
+  <div class="lesson">
+    <div class="lesson-meta">
+      <span class="lesson-num">Урок 02</span>
+      <span class="lesson-title">Как мы будем работать на курсе</span>
+    </div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul1/urok2.html" target="_blank">
+        <span class="sc-label">Конспект</span>
+        <span class="sc-name">Как мы будем работать на курсе</span>
+        <span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m1-2-1"><div class="check-box"></div><span class="check-text">Записал(а) три личных правила на курс</span></li>
+          <li class="check-item" data-id="m1-2-2"><div class="check-box"></div><span class="check-text">Написал(а) своё представление в чате курса</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Урок 03 -->
+  <div class="lesson">
+    <div class="lesson-meta">
+      <span class="lesson-num">Урок 03</span>
+      <span class="lesson-title">Зачем вести блог и о чём говорить: как найти свою тему</span>
+    </div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul1/urok3.html" target="_blank">
+        <span class="sc-label">Конспект</span>
+        <span class="sc-name">Зачем вести блог и о чём говорить: как найти свою тему</span>
+        <span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m1-3-1"><div class="check-box"></div><span class="check-text">Написал(а) для себя «зачем я веду блог»</span></li>
+          <li class="check-item" data-id="m1-3-2"><div class="check-box"></div><span class="check-text">Составил(а) список тем, о которых мне не лень говорить</span></li>
+          <li class="check-item" data-id="m1-3-3"><div class="check-box"></div><span class="check-text">Сформулировал(а) первый черновик: для кого мой блог и чем помогаю</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Урок 04 -->
+  <div class="lesson">
+    <div class="lesson-meta">
+      <span class="lesson-num">Урок 04</span>
+      <span class="lesson-title">Карта платформ 2026: ВКонтакте, Telegram, MAX, Дзен и другие</span>
+    </div>
+    <div class="lesson-cols">
+      <div>
+        <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul1/urok4.html" target="_blank">
+          <span class="sc-label">Конспект</span>
+          <span class="sc-name">Карта платформ 2026: ВКонтакте, Telegram, MAX, Дзен и другие</span>
+          <span class="sc-arrow">↗</span>
+        </a>
+        <div class="extra-links">
+          <a class="extra-link" href="https://bloger-s-nulya.github.io/modul1/register.html" target="_blank"><span>📋 Гайд по регистрации</span><span class="el-arrow">↗</span></a>
+        </div>
+      </div>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m1-4-1"><div class="check-box"></div><span class="check-text">Выбрал(а) одну основную платформу и зарегистрировался(ась) на ней</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Урок 05 -->
+  <div class="lesson">
+    <div class="lesson-meta">
+      <span class="lesson-num">Урок 05</span>
+      <span class="lesson-title">Профиль, который цепляет: настройка за один вечер</span>
+    </div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul1/urok5.html" target="_blank">
+        <span class="sc-label">Конспект</span>
+        <span class="sc-name">Профиль, который цепляет: настройка за один вечер</span>
+        <span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m1-5-1"><div class="check-box"></div><span class="check-text">Обновил(а) фото, ник и описание профиля</span></li>
+          <li class="check-item" data-id="m1-5-2"><div class="check-box"></div><span class="check-text">Добавил(а) ссылку в профиль</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     МОДУЛЬ 2
+════════════════════════════════════════ -->
+<section id="m2" class="mod-section" style="display:none">
+  <div class="mod-header">
+    <div class="mod-eyebrow">Модуль 2</div>
+    <h1 class="mod-title">Первый контент и первые подписчики</h1>
+    <p class="mod-desc">Тексты, фото, сторис — от первого поста до первых читателей.</p>
+    <div class="mod-progress-wrap">
+      <div class="mod-progress-track"><div class="mod-progress-fill" id="fill-m2" style="width:0%"></div></div>
+      <div class="mod-progress-label" id="label-m2">0 из 10 выполнено</div>
+    </div>
+  </div>
+
+  <div class="guide-row">
+    <div class="guide-row-text">
+      <div class="gr-label">Вводный гайд</div>
+      <div class="gr-name">Как создавать контент на разных площадках</div>
+    </div>
+    <a class="guide-btn" href="https://bloger-s-nulya.github.io/modul2/intro.html" target="_blank">Открыть →</a>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 2.1</span><span class="lesson-title">Первый пост и первые подписчики</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul2/urok1.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Первый пост и первые подписчики</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m2-1-1"><div class="check-box"></div><span class="check-text">Написал(а) и опубликовал(а) пост-знакомство</span></li>
+          <li class="check-item" data-id="m2-1-2"><div class="check-box"></div><span class="check-text">Запустил(а) свой челлендж первых 20 постов</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 2.2</span><span class="lesson-title">Как писать посты: типы и формулы</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul2/urok2.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Как писать посты: типы и формулы</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m2-2-1"><div class="check-box"></div><span class="check-text">Написал(а) пост одного из четырёх типов: вовлекающий, полезный, личный или продающий</span></li>
+          <li class="check-item" data-id="m2-2-2"><div class="check-box"></div><span class="check-text">Опубликовал(а) его, не редактируя дольше 15 минут</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 2.3</span><span class="lesson-title">Снимай прямо сейчас: секреты мобильной съёмки</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul2/urok3.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Снимай прямо сейчас: секреты мобильной съёмки</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m2-3-1"><div class="check-box"></div><span class="check-text">Включил(а) сетку на камере и снял(а) несколько кадров с учётом света и композиции</span></li>
+          <li class="check-item" data-id="m2-3-2"><div class="check-box"></div><span class="check-text">Опубликовал(а) фото к одному из своих постов</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 2.4</span><span class="lesson-title">Практикум по съёмке видео</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul2/urok4.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Практикум по съёмке видео</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m2-4-1"><div class="check-box"></div><span class="check-text">Снял(а) и смонтировал(а) первое короткое видео в CapCut</span></li>
+          <li class="check-item" data-id="m2-4-2"><div class="check-box"></div><span class="check-text">Опубликовал(а) его — даже если кажется что не идеально</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 2.5</span><span class="lesson-title">Вовлекающие истории как часть контента</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul2/urok5.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Вовлекающие истории как часть контента</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m2-5-1"><div class="check-box"></div><span class="check-text">Опубликовал(а) первую сторис</span></li>
+          <li class="check-item" data-id="m2-5-2"><div class="check-box"></div><span class="check-text">Добавил(а) в сторис интерактивный элемент — опрос, вопрос или реакцию</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     МОДУЛЬ 3
+════════════════════════════════════════ -->
+<section id="m3" class="mod-section" style="display:none">
+  <div class="mod-header">
+    <div class="mod-eyebrow">Модуль 3</div>
+    <h1 class="mod-title">Работаем с блогом как с системой</h1>
+    <p class="mod-desc">Контент-план, аналитика и кросс-постинг без лишней работы.</p>
+    <div class="mod-progress-wrap">
+      <div class="mod-progress-track"><div class="mod-progress-fill" id="fill-m3" style="width:0%"></div></div>
+      <div class="mod-progress-label" id="label-m3">0 из 9 выполнено</div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 3.1</span><span class="lesson-title">Контент-система: рубрики, план и место для жизни</span></div>
+    <div class="lesson-cols">
+      <div>
+        <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul3/urok1.html" target="_blank">
+          <span class="sc-label">Конспект</span><span class="sc-name">Контент-система: рубрики, план и место для жизни</span><span class="sc-arrow">↗</span>
+        </a>
+        <div class="extra-links">
+          <a class="extra-link" href="https://docs.google.com/spreadsheets/d/1XQgEXMoRFaqtMVMebefbhSC4d-h7ypDxWMIGNFN4b-k/edit?usp=sharing" target="_blank"><span>📊 Таблица контент-плана</span><span class="el-arrow">↗</span></a>
+        </div>
+      </div>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m3-1-1"><div class="check-box"></div><span class="check-text">Записала минимум 10 идей для будущих постов</span></li>
+          <li class="check-item" data-id="m3-1-2"><div class="check-box"></div><span class="check-text">Выбрала форматы для своей основной площадки</span></li>
+          <li class="check-item" data-id="m3-1-3"><div class="check-box"></div><span class="check-text">Определила реальный ритм — сколько раз в неделю смогу публиковать</span></li>
+          <li class="check-item" data-id="m3-1-4"><div class="check-box"></div><span class="check-text">Составила контент-план на ближайшие 7 дней</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 3.2</span><span class="lesson-title">Что важно в блоге: учимся понимать аналитику</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul3/urok2.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Что важно в блоге: учимся понимать аналитику</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m3-2-1"><div class="check-box"></div><span class="check-text">Зашла в аналитику своей платформы и нашла раздел с охватами и реакциями</span></li>
+          <li class="check-item" data-id="m3-2-2"><div class="check-box"></div><span class="check-text">Определила 2–3 метрики, за которыми буду следить регулярно</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 3.3</span><span class="lesson-title">Один пост — несколько площадок: без лишней работы</span></div>
+    <div class="lesson-cols">
+      <div>
+        <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul3/urok3.html" target="_blank">
+          <span class="sc-label">Конспект</span><span class="sc-name">Один пост — несколько площадок: без лишней работы</span><span class="sc-arrow">↗</span>
+        </a>
+        <div class="extra-links">
+          <a class="extra-link" href="https://bloger-s-nulya.github.io/modul3/gid.html" target="_blank"><span>📋 Гайд по кросспостингу</span><span class="el-arrow">↗</span></a>
+        </div>
+      </div>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m3-3-1"><div class="check-box"></div><span class="check-text">Определила свою связку площадок — одну основную и 1–2 дополнительные</span></li>
+          <li class="check-item" data-id="m3-3-2"><div class="check-box"></div><span class="check-text">Взяла один готовый пост и адаптировала его для дополнительной площадки</span></li>
+          <li class="check-item" data-id="m3-3-3"><div class="check-box"></div><span class="check-text">Проверила, какие автоматические связки между моими площадками доступны</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     МОДУЛЬ 5
+════════════════════════════════════════ -->
+<section id="m5" class="mod-section" style="display:none">
+  <div class="mod-header">
+    <div class="mod-eyebrow">Модуль 5</div>
+    <h1 class="mod-title">Инструменты роста блога</h1>
+    <p class="mod-desc">Органика, кросс-промо, вовлечённость и первая реклама.</p>
+    <div class="mod-progress-wrap">
+      <div class="mod-progress-track"><div class="mod-progress-fill" id="fill-m5" style="width:0%"></div></div>
+      <div class="mod-progress-label" id="label-m5">0 из 9 выполнено</div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 5.1</span><span class="lesson-title">Как растёт блог: все способы наращивания аудитории</span></div>
+    <div class="lesson-cols">
+      <div>
+        <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul5/urok1.html" target="_blank">
+          <span class="sc-label">Конспект</span><span class="sc-name">Как растёт блог: все способы наращивания аудитории</span><span class="sc-arrow">↗</span>
+        </a>
+        <div class="extra-links">
+          <a class="extra-link" href="https://bloger-s-nulya.github.io/modul5/bonus1.html" target="_blank"><span>📋 Триггерный контент</span><span class="el-arrow">↗</span></a>
+        </div>
+      </div>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m5-1-1"><div class="check-box"></div><span class="check-text">Изучил(а) программу «Фонд авторов ВКонтакте» и проверила, подхожу ли под критерии</span></li>
+          <li class="check-item" data-id="m5-1-2"><div class="check-box"></div><span class="check-text">Выбрал(а) один органический инструмент из шести и написала, как буду его использовать</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 5.2</span><span class="lesson-title">Как выйти на новую аудиторию без бюджета</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul5/urok2.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Как выйти на новую аудиторию без бюджета</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m5-2-1"><div class="check-box"></div><span class="check-text">Выписал(а) 3–5 авторов из смежной ниши с похожим размером аудитории для ВП</span></li>
+          <li class="check-item" data-id="m5-2-2"><div class="check-box"></div><span class="check-text">Составил(а) черновик первого сообщения для предложения взаимного пиара</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 5.3</span><span class="lesson-title">Как удержать и вовлекать подписчиков?</span></div>
+    <div class="lesson-cols">
+      <div>
+        <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul5/urok3.html" target="_blank">
+          <span class="sc-label">Конспект</span><span class="sc-name">Как удержать и вовлекать подписчиков?</span><span class="sc-arrow">↗</span>
+        </a>
+        <div class="extra-links">
+          <a class="extra-link" href="https://bloger-s-nulya.github.io/modul5/bonus3.html" target="_blank"><span>📋 Доп. гайд</span><span class="el-arrow">↗</span></a>
+        </div>
+      </div>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m5-3-1"><div class="check-box"></div><span class="check-text">Придумала узкий вопрос с готовыми вариантами ответа для следующего поста</span></li>
+          <li class="check-item" data-id="m5-3-2"><div class="check-box"></div><span class="check-text">Ответила на все комментарии к последнему посту и задала уточняющий вопрос в каждом</span></li>
+          <li class="check-item" data-id="m5-3-3"><div class="check-box"></div><span class="check-text">Опубликовала пост по одному из четырёх приёмов урока</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 5.4</span><span class="lesson-title">Когда стоит закупать рекламу блога?</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul5/urok4.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Когда стоит закупать рекламу блога?</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m5-4-1"><div class="check-box"></div><span class="check-text">Определил(а) свой этап — готов(а) к рекламе или пока нет, и почему</span></li>
+          <li class="check-item" data-id="m5-4-2"><div class="check-box"></div><span class="check-text">Нашёл(а) один канал в своей нише и проверил(а) его по критериям урока</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     МОДУЛЬ 6
+════════════════════════════════════════ -->
+<section id="m6" class="mod-section" style="display:none">
+  <div class="mod-header">
+    <div class="mod-eyebrow">Модуль 6</div>
+    <h1 class="mod-title">Монетизация блога по правилам и финал курса</h1>
+    <p class="mod-desc">Нативные продажи, поиск рекламодателей, маркировка и долгая игра.</p>
+    <div class="mod-progress-wrap">
+      <div class="mod-progress-track"><div class="mod-progress-fill" id="fill-m6" style="width:0%"></div></div>
+      <div class="mod-progress-label" id="label-m6">0 из 10 выполнено</div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 6.1</span><span class="lesson-title">Как зарабатывать с FitStars: механика нативных продаж</span></div>
+    <div class="lesson-cols">
+      <div>
+        <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul6/urok1.html" target="_blank">
+          <span class="sc-label">Конспект</span><span class="sc-name">Как зарабатывать с FitStars: механика нативных продаж</span><span class="sc-arrow">↗</span>
+        </a>
+        <div class="extra-links">
+          <a class="extra-link" href="https://bloger-s-nulya.github.io/modul6/guide1.html" target="_blank"><span>📋 Примеры амбассадоров</span><span class="el-arrow">↗</span></a>
+        </div>
+      </div>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m6-1-1"><div class="check-box"></div><span class="check-text">Написал(а) свою «боль» — ту, которую FitStars помогает решить</span></li>
+          <li class="check-item" data-id="m6-1-2"><div class="check-box"></div><span class="check-text">Опубликовал(а) пост по формуле «боль → опыт → результат → продукт»</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 6.2</span><span class="lesson-title">Как искать рекламодателей и что им показать</span></div>
+    <div class="lesson-cols">
+      <div>
+        <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul6/urok2.html" target="_blank">
+          <span class="sc-label">Конспект</span><span class="sc-name">Как искать рекламодателей и что им показать</span><span class="sc-arrow">↗</span>
+        </a>
+        <div class="extra-links">
+          <a class="extra-link" href="https://bloger-s-nulya.github.io/modul6/mediakit.html" target="_blank"><span>📋 Гайд: медиакит</span><span class="el-arrow">↗</span></a>
+        </div>
+      </div>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m6-2-1"><div class="check-box"></div><span class="check-text">Составил(а) список из 10 брендов, близких к теме моего блога</span></li>
+          <li class="check-item" data-id="m6-2-2"><div class="check-box"></div><span class="check-text">Разместил(а) свой канал на бирже рекламы (Telega.in или аналог)</span></li>
+          <li class="check-item" data-id="m6-2-3"><div class="check-box"></div><span class="check-text">Написал(а) и отправил(а) первое письмо рекламодателю по шаблону из урока</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 6.3</span><span class="lesson-title">Маркировка, реестр и оформление — минимум который нужно знать</span></div>
+    <div class="lesson-cols">
+      <div>
+        <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul6/urok3.html" target="_blank">
+          <span class="sc-label">Конспект</span><span class="sc-name">Маркировка, реестр и оформление — минимум который нужно знать</span><span class="sc-arrow">↗</span>
+        </a>
+        <div class="extra-links">
+          <a class="extra-link" href="https://bloger-s-nulya.github.io/modul6/guide3.html" target="_blank"><span>📋 Регистрация самозанятого</span><span class="el-arrow">↗</span></a>
+        </div>
+      </div>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m6-3-1"><div class="check-box"></div><span class="check-text">Зарегистрировался(ась) как самозанятый или открыл(а) ИП</span></li>
+          <li class="check-item" data-id="m6-3-2"><div class="check-box"></div><span class="check-text">Разобрал(а) урок и сохранил(а) шаблон маркировки</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 6.4</span><span class="lesson-title">Как развиваться дальше и не бросить</span></div>
+    <div class="lesson-cols">
+      <div>
+        <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul6/urok4.html" target="_blank">
+          <span class="sc-label">Конспект</span><span class="sc-name">Как развиваться дальше и не бросить</span><span class="sc-arrow">↗</span>
+        </a>
+        <div class="extra-links">
+          <a class="extra-link" href="https://bloger-s-nulya.github.io/modul6/product.html" target="_blank"><span>📋 Гайд: свои продукты</span><span class="el-arrow">↗</span></a>
+        </div>
+      </div>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m6-4-1"><div class="check-box"></div><span class="check-text">Определил(а) минимальный ритм публикаций, который точно смогу поддерживать</span></li>
+          <li class="check-item" data-id="m6-4-2"><div class="check-box"></div><span class="check-text">Поставил(а) напоминание на неделю вперёд — проверить, держу ли ритм</span></li>
+          <li class="check-item" data-id="m6-4-3"><div class="check-box"></div><span class="check-text">Записал(а) одну метрику, по которой буду отслеживать прогресс раз в месяц</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     МОДУЛЬ 4 (ИИ)
+════════════════════════════════════════ -->
+<section id="m4" class="mod-section" style="display:none">
+  <div class="mod-header">
+    <div class="mod-eyebrow">Бонусный модуль</div>
+    <h1 class="mod-title">ИИ как инструмент для блогера</h1>
+    <p class="mod-desc">ChatGPT, голосовые заметки и персональный GPT-ассистент.</p>
+    <div class="mod-progress-wrap">
+      <div class="mod-progress-track"><div class="mod-progress-fill" id="fill-m4" style="width:0%"></div></div>
+      <div class="mod-progress-label" id="label-m4">0 из 12 выполнено</div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 4.1</span><span class="lesson-title">Знакомство с ChatGPT: первые шаги и правильные запросы</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul4/urok1.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Знакомство с ChatGPT: первые шаги и правильные запросы</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m4-1-1"><div class="check-box"></div><span class="check-text">Зарегистрировалась в ChatGPT</span></li>
+          <li class="check-item" data-id="m4-1-2"><div class="check-box"></div><span class="check-text">Создала проект под свой блог и назвала его</span></li>
+          <li class="check-item" data-id="m4-1-3"><div class="check-box"></div><span class="check-text">Написала первый запрос по формуле (аудитория + задача + формат) и получила результат</span></li>
+          <li class="check-item" data-id="m4-1-4"><div class="check-box"></div><span class="check-text">Сгенерировала 5 идей для постов под свою аудиторию</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Бонус</span><span class="lesson-title">Гайд: голосовые заметки и свой стиль в ChatGPT</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul4/bonus.html" target="_blank">
+        <span class="sc-label">Гайд</span><span class="sc-name">Голосовые заметки и свой стиль в ChatGPT</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m4-b-1"><div class="check-box"></div><span class="check-text">Подключила бота для транскрибации (@WhisperSummaryAI_bot или Буквица)</span></li>
+          <li class="check-item" data-id="m4-b-2"><div class="check-box"></div><span class="check-text">Записала голосовую заметку и расшифровала её в пост</span></li>
+          <li class="check-item" data-id="m4-b-3"><div class="check-box"></div><span class="check-text">Скормила 5–10 своих постов в ChatGPT для анализа стиля</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 4.2</span><span class="lesson-title">Эффективное создание контента с ChatGPT</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul4/urok2.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Эффективное создание контента с ChatGPT</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m4-2-1"><div class="check-box"></div><span class="check-text">Запросила 10 идей для постов и выбрала лучшие</span></li>
+          <li class="check-item" data-id="m4-2-2"><div class="check-box"></div><span class="check-text">Развернула одну идею в готовый текст поста и добавила что-то своё</span></li>
+          <li class="check-item" data-id="m4-2-3"><div class="check-box"></div><span class="check-text">Собрала контент-план на неделю одним финальным запросом</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Урок 4.3</span><span class="lesson-title">Как создать персонального ИИ-помощника для блогера</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/modul4/urok3.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Как создать персонального ИИ-помощника для блогера</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card">
+        <div class="tc-label">Задания на внедрение</div>
+        <ul class="checklist">
+          <li class="check-item" data-id="m4-3-1"><div class="check-box"></div><span class="check-text">Создала первого Custom GPT-ассистента и дала ему название</span></li>
+          <li class="check-item" data-id="m4-3-2"><div class="check-box"></div><span class="check-text">Написала инструкции: описала свою аудиторию и стиль</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     БИБЛИОТЕКА
+════════════════════════════════════════ -->
+<section id="lib" class="mod-section" style="display:none">
+  <div class="mod-header">
+    <div class="mod-eyebrow">Библиотека опыта</div>
+    <h1 class="mod-title">Амбассадоры FitStars — реальные истории</h1>
+    <p class="mod-desc">Необязательные материалы. Возвращайтесь, когда нужно вдохновение или застряли с конкретным вопросом.</p>
+  </div>
+
+  <div class="divider">Истории блогеров</div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">№ 1</span><span class="lesson-title">Как не сдаться и получить 10К+ аудитории</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/biblioteka/video1.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Как не сдаться и получить 10К+ аудитории</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card" style="background: var(--bg);">
+        <p style="font-size:13px;color:var(--ink-2);line-height:1.6;">Ксения ушла из найма благодаря блогу. Первые 7 месяцев почти ничего не было — делится двумя приёмами против желания бросить.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">№ 2</span><span class="lesson-title">Как три раза поменять нишу и не потерять аудиторию</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/biblioteka/video2.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Как три раза поменять нишу и не потерять аудиторию</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card" style="background: var(--bg);">
+        <p style="font-size:13px;color:var(--ink-2);line-height:1.6;">Полина меняла нишу трижды — аудитория оставалась. Люди подписаны на человека, а не на тему.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">№ 3</span><span class="lesson-title">Как начать с нуля дважды</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/biblioteka/video3.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Как начать с нуля дважды</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card" style="background: var(--bg);">
+        <p style="font-size:13px;color:var(--ink-2);line-height:1.6;">Эльвира намеренно бросила блог с 80К и выросла заново. Плюс практика против страха осуждения.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">№ 4</span><span class="lesson-title">Как набрать 127К в Дзене без видео и нейросетей</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/biblioteka/video4.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Как набрать 127К в Дзене без видео и нейросетей</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card" style="background: var(--bg);">
+        <p style="font-size:13px;color:var(--ink-2);line-height:1.6;">Светлана начала в декрете — за три года 127 тысяч. Как писать так, чтобы тебя читали.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">№ 5</span><span class="lesson-title">Как вести блог без напряжения</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/biblioteka/video5.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Как вести блог без напряжения</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card" style="background: var(--bg);">
+        <p style="font-size:13px;color:var(--ink-2);line-height:1.6;">Елена ведёт швейный блог 9 лет без выгорания. Как зарабатывать на рекламе, оставаясь собой.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">№ 6</span><span class="lesson-title">Как стать первым в нише и вырасти до 3,5 млн без вложений</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://bloger-s-nulya.github.io/biblioteka/video6.html" target="_blank">
+        <span class="sc-label">Конспект</span><span class="sc-name">Как стать первым в нише и вырасти до 3,5 млн без вложений</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card" style="background: var(--bg);">
+        <p style="font-size:13px;color:var(--ink-2);line-height:1.6;">Анна — первый садовый блогер России, 300К во ВКонтакте без рубля вложений. Уникальность важнее трендовости.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">Дополнительные платформы</div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Доп.</span><span class="lesson-title">Threads — мультиплатформенное продвижение</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://influencerexpert.ru/pl/teach/control/lesson/view?id=347088126" target="_blank">
+        <span class="sc-label">Урок</span><span class="sc-name">Threads — мультиплатформенное продвижение</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card" style="background: var(--bg);"></div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Доп.</span><span class="lesson-title">Pinterest — визуальные доски для продвижения блога</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://influencerexpert.ru/pl/teach/control/lesson/view?id=347088127" target="_blank">
+        <span class="sc-label">Урок</span><span class="sc-name">Pinterest — визуальные доски для продвижения блога</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card" style="background: var(--bg);"></div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-meta"><span class="lesson-num">Доп.</span><span class="lesson-title">TikTok и мультиплатформенность</span></div>
+    <div class="lesson-cols">
+      <a class="synopsis-card" href="https://influencerexpert.ru/pl/teach/control/lesson/view?id=347088128" target="_blank">
+        <span class="sc-label">Урок</span><span class="sc-name">TikTok и мультиплатформенность</span><span class="sc-arrow">↗</span>
+      </a>
+      <div class="tasks-card" style="background: var(--bg);"></div>
+    </div>
+  </div>
+
+</section>
+
+</main>
+</div>
+
+<script>
+function getState() {
+  try { return JSON.parse(localStorage.getItem('bloger_checks2') || '{}'); } catch(e) { return {}; }
+}
+function saveState(s) { localStorage.setItem('bloger_checks2', JSON.stringify(s)); }
+
+function initChecks() {
+  const state = getState();
+  document.querySelectorAll('.check-item').forEach(item => {
+    if (state[item.dataset.id]) item.classList.add('done');
+    item.addEventListener('click', () => {
+      item.classList.toggle('done');
+      const s = getState(); s[item.dataset.id] = item.classList.contains('done');
+      saveState(s); updateProgress();
+    });
+  });
+  updateProgress();
+}
+
+function updateProgress() {
+  const state = getState();
+  ['m1','m2','m3','m5','m6','m4'].forEach(mod => {
+    const items = [...document.querySelectorAll(`#${mod} .check-item`)];
+    const done = items.filter(i => state[i.dataset.id]).length;
+    const total = items.length;
+    const pct = total ? Math.round(done / total * 100) : 0;
+    const fill = document.getElementById('fill-' + mod);
+    const label = document.getElementById('label-' + mod);
+    const prog = document.getElementById('prog-' + mod);
+    const dot = document.getElementById('dot-' + mod);
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.textContent = `${done} из ${total} выполнено`;
+    if (prog) prog.textContent = done > 0 ? `${done}/${total}` : '';
+    if (dot) dot.classList.toggle('has-progress', done > 0);
+  });
+}
+
+let current = 'm1';
+function show(id) {
+  document.getElementById(current).style.display = 'none';
+  document.getElementById('nav-' + current).classList.remove('active');
+  current = id;
+  document.getElementById(id).style.display = 'block';
+  document.getElementById('nav-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+document.getElementById('mobileToggle').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('open');
+});
+document.getElementById('mainContent').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.remove('open');
+});
+
+initChecks();
+</script>
+</body>
+</html>
